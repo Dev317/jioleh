@@ -1,4 +1,5 @@
 # Jio Leh - Discover, Earn and Share
+![alt_text](https://github.com/Dev317/jioleh/blob/main/jioleh%20splash.png)
 
 # How to Sanity
 To initiate Sanity GUI, please run `sanity start` to compile and deploy the back end on `localhost:3333`
