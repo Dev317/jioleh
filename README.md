@@ -44,3 +44,10 @@ npm install react-router-dom
 ```powershell
 npm install uuid
 ```
+
+- Install dependencies for QR code
+
+```powershell
+npm install html5-qrcode
+npm install react-qr-code
+```
