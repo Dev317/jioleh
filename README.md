@@ -3,6 +3,7 @@
 
 # How to Sanity
 Firstly, ensure that node modules are installed by running `npm install`.
+Next install Sanity CLI via `npm install -g @sanity/cli`.
 Open the backend folder by `cd backend` then initiate Sanity backend GUI, please run `sanity start` to compile and get the back end live on `localhost:3333`.
 Please inform if you are not added into to project as there is an authentication to access the project backend!
 
