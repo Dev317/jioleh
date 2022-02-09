@@ -1,6 +1,8 @@
 # Jio Leh - Discover, Earn and Share
 ![alt_text](https://github.com/Dev317/jioleh/blob/main/jioleh%20splash.png)
 
+Pinterest clone from : https://github.com/adrianhajdin/project_shareme_social_media, https://gist.github.com/adrianhajdin/a53fdfe71225af2f550b853ae983f0d0
+
 # How to Sanity
 Firstly, ensure that node modules are installed by running `npm install`.
 Next install Sanity CLI via `npm install -g @sanity/cli`.
