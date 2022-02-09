@@ -2,18 +2,15 @@
 ![alt_text](https://github.com/Dev317/jioleh/blob/main/jioleh%20splash.png)
 
 # How to Sanity
-To initiate Sanity backend GUI, please run `sanity start` to compile and deploy the back end on `localhost:3333`
-
-Remember to install these modules that are needed for sanity:
-```powershell
-npm install -g @sanity/cli && sanity init
-```
+Firstly, ensure that node modules are installed by running `npm install`
+Open the backend folder by `cd backend` then initiate Sanity backend GUI, please run `sanity start` to compile and get the back end live on `localhost:3333`.
+Please inform if you are not added into to project as there is an authentication to access the project backend!
 
 To edit other Sanity-related project info, run `sanity manage` to open the Sanity project management UI.
 
 
 # How to React
-To initiate React frontend, please run `npm start` to compile and the React client will be live on `localhost:3000`
+Ensure that node modules are installed by running `npm install`. To initiate React frontend, please run `npm start` to compile and the React client will be live on `localhost:3000`
 
 - Install dependencies to connect to sanity backend
 
