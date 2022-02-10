@@ -7,6 +7,9 @@ import { client, urlFor } from '../client';
 import MasonryLayout from './MasonryLayout';
 import { pinDetailMorePinQuery, pinDetailQuery } from '../utils/data';
 import Spinner from './Spinner';
+import { fetchUser } from '../utils/fetchUser';
+import SanityMuxPlayer from 'sanity-mux-player';
+
 
 const PinDetail = ({ user }) => {
   const [pins, setPins] = useState(null);
@@ -15,6 +18,8 @@ const PinDetail = ({ user }) => {
   const [addingComment, setAddingComment] = useState(false);
 
   const { pinId } = useParams();
+
+  const loggedinUser = fetchUser();
 
   const addComment = () => {
     if (comment) {
@@ -59,15 +64,29 @@ const PinDetail = ({ user }) => {
   if (!pinDetail) return <Spinner message='Loading pin'/>
 
 
+
   return (
     <>
       <div className='flex xl:flex-row flex-col m-auto bg-white' style={{ maxWidth: '1500px', borderRadius: '32px' }}>
         <div className='flex justify-center items-center md:items-start flex-initial'>
-          <img
+          {!pinDetail.video ? (<img
             className="rounded-t-3xl rounded-b-lg"
             src={(pinDetail?.image && urlFor(pinDetail?.image).url())}
             alt="user-post"
-          />
+          />) : (
+            (
+              <SanityMuxPlayer
+                assetDocument={pinDetail.video.asset}
+                autoload={true}
+                autoplay={true}
+                loop={true}
+                muted={false}
+                showControls={true}
+                height={250}
+                width={300}
+              />
+          )
+          )}
         </div>
 
         <div className='w-full p-5 flex-1 xl:min-w-620'>
@@ -128,7 +147,7 @@ const PinDetail = ({ user }) => {
               <Link to={`user-profile/${pinDetail.postedBy?._id}`}>
                 <img 
                   className='w-10 h-10 rounded-full'
-                  src={pinDetail.postedBy?.image}
+                  src={loggedinUser?.imageUrl} // should be user's image
                   alt='user-profile'
                 />
               </Link>

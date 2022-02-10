@@ -28,6 +28,12 @@ export const searchQuery = (searchTerm) => {
                 url
             }
         },
+        video {
+          asset -> {
+              ...,
+              "url" : "https://stream.mux.com/" + playbackId
+          }
+        },
         _id,
         destination,
         postedBy -> {
@@ -81,6 +87,12 @@ export const pinDetailQuery = (pinId) => {
           image{
             asset->{
               url
+            }
+          },
+          video {
+            asset -> {
+                ...,
+                "url" : "https://stream.mux.com/" + playbackId
             }
           },
           _id,
