@@ -9,7 +9,7 @@ import MasonryLayout from './MasonryLayout';
 import Spinner from './Spinner';
 import QRModal from './QRModal';
 
-const randomImg = 'https://source.unsplash.com/1600x900/?cafeshop';
+const randomImg = 'https://cdn.wallpapersafari.com/29/50/7acBKo.jpg';
 const activeBtnStyles = 'bg-red-500 text-white font-bold p-2 rounded-full w-20 outline-none';
 const notActiveBtnStyles = 'bg-primary mr-4 text-black font-bold p-2 rounded-full w-20 outline-none';
 
@@ -121,7 +121,7 @@ const UserProfile = () => {
             onClick={(e) => {
               setShowQRModal(true);
             }}
-            className={activeBtnStyles}
+            className={notActiveBtnStyles}
           >
             QR
           </button>

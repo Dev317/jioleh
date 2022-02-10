@@ -10,7 +10,6 @@ import Spinner from './Spinner';
 import { fetchUser } from '../utils/fetchUser';
 import SanityMuxPlayer from 'sanity-mux-player';
 
-
 const PinDetail = ({ user }) => {
   const [pins, setPins] = useState(null);
   const [pinDetail, setPinDetail] = useState(null);
@@ -63,8 +62,6 @@ const PinDetail = ({ user }) => {
 
   if (!pinDetail) return <Spinner message='Loading pin'/>
 
-
-
   return (
     <>
       <div className='flex xl:flex-row flex-col m-auto bg-white' style={{ maxWidth: '1500px', borderRadius: '32px' }}>
@@ -74,18 +71,16 @@ const PinDetail = ({ user }) => {
             src={(pinDetail?.image && urlFor(pinDetail?.image).url())}
             alt="user-post"
           />) : (
-            (
-              <SanityMuxPlayer
-                assetDocument={pinDetail.video.asset}
-                autoload={true}
-                autoplay={true}
-                loop={true}
-                muted={false}
-                showControls={true}
-                height={250}
-                width={300}
-              />
-          )
+            <SanityMuxPlayer
+              assetDocument={pinDetail.video.asset}
+              autoload={true}
+              autoplay={true}
+              loop={true}
+              muted={false}
+              showControls={true}
+              height={250}
+              width={300}
+            />
           )}
         </div>
 
@@ -179,10 +174,7 @@ const PinDetail = ({ user }) => {
       ) : (
         <Spinner message="Loading more pins" />
       )}
-    
-    </>  
-
-      
+    </> 
   );
 };
 
