@@ -36,7 +36,7 @@ const Sidebar = ({ user, closeToggle }) => {
                 <h3 className='mt-2 px-5 text-base 2xl:text-xl'>Discover cateogries</h3>
                 {categories.slice(0, categories.length).map((category) => (
                     <NavLink
-                        to={`category/${category.name}`}
+                        to={`/category/${category.name}`}
                         className={({ isActive }) => isActive ? isActiveStyle : isNotActiveStyle}
                         onClick={handleCloseSidebar}
                         key={category.name}
@@ -52,7 +52,7 @@ const Sidebar = ({ user, closeToggle }) => {
         </div>
         {user && (
             <Link
-                to={`user-profile/${user._id}`}
+                to={`/user-profile/${user._id}`}
                 className='flex my-5 mb-3 gap-2 p-2 items-center bg-white rounder-lg shadow-lg mx-3'
                 onClick={handleCloseSidebar}
             >

@@ -18,6 +18,7 @@ export default {
       name: "visitedPlacesId",
       type: "array",
       of: [{ type: "string" }],
+      validation: (Rule) => Rule.unique(),
     },
   ],
 };
