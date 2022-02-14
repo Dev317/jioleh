@@ -9,6 +9,7 @@ import comment from "./comment";
 import save from "./save";
 import postedBy from "./postedBy";
 import qr_scanned from "./qr_scanned";
+import vendor from "./vendor";
 
 // Then we give our schema to the builder and provide the result to Sanity
 export default createSchema({
@@ -24,5 +25,6 @@ export default createSchema({
     save,
     postedBy,
     qr_scanned,
+    vendor,
   ]),
 });
