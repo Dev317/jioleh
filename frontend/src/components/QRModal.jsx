@@ -13,7 +13,7 @@ export default function QRModal({setShow, poster}) {
             <QRCode value={URL} />
             <button type='button'
                     onClick={() => setShow(false)}
-                    className='bg-primary mr-4 text-black font-bold p-2 rounded-full w-20 outline-none'>
+                    className='bg-primary text-black font-bold p-2 rounded-full w-20 outline-none'>
                         Close
         </button>
         </div>

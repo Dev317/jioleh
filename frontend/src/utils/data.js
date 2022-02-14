@@ -99,6 +99,7 @@ export const pinDetailQuery = (pinId) => {
           title, 
           about,
           category,
+          taggedVendor,
           destination,
           postedBy->{
             _id,
