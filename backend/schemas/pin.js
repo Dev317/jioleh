@@ -36,7 +36,6 @@ export default {
             title: "Video file",
             type: "mux.video"
         },
-
         {
             name : 'userId',
             title : 'UserID',
