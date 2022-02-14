@@ -93,6 +93,8 @@ export default function VendorScanner() {
       } else {
         const viewer = url.searchParams.get("viewer");
         const poster = url.searchParams.get("poster");
+        if (viewer == poster)
+          reject(new Error("Cannot scan user's own QR code"));
         const query =
           '*[_type == "qr_scanned" && viewer == $viewer && vendor == $vendor]';
         const vendor = JSON.parse(localStorage.getItem("vendor"));
