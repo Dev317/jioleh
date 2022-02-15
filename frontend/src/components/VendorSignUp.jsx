@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import shareVideo from "../assets/share.mp4";
+import shareVideo from "../assets/share1.mp4";
 import { Link, useNavigate } from "react-router-dom";
 import logo from "../assets/logo.png";
 import { client } from "../client";
