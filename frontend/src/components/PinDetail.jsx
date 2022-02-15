@@ -64,10 +64,12 @@ const PinDetail = ({ user }) => {
     }
   };
 
-  const fetchTaggedVendor = (pinDetail) => {
-    client.getDocument(pinDetail?.taggedVendor).then((res) => {
+  const fetchTaggedVendor = (taggedVendor) => {
+    client.getDocument(taggedVendor).then((res) => {
       setTaggedVendor(res.name);
-    });
+    }).catch((err) => {
+      console.log(err.message);
+    })
   };
 
   useEffect(() => {
