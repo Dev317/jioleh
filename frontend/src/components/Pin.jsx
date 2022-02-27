@@ -35,10 +35,10 @@ const Pin = ({ pin }) => {
         .setIfMissing({ save : [] })
         .insert('after', 'save[-1]', [{
           _key : uuidv4(),
-          userId: user.googleId,
+          userId: user?.googleId,
           postedBy : {
             _type : 'postedBy',
-            _ref : user.googleId
+            _ref : user?.googleId
           }
         }])
         .commit()
@@ -65,7 +65,7 @@ const Pin = ({ pin }) => {
             onClick={() => navigate(`/pin-detail/${_id}`)}
             className='relative cursor-zoom-in w-auto hover:shadow-lg rounded-lg overflow-hidden transition-all duration-500 ease-in-out'
           >
-            {!pin.video ? 
+            {(!pin.video && pin.image) ? 
             (<img className='rounded-lg w-full' alt='user-post' src={urlFor(pin.image).width(250).url()}/>)
             :(
                 <SanityMuxPlayer
@@ -76,7 +76,7 @@ const Pin = ({ pin }) => {
                   muted={false}
                   showControls={true}
                   height={250}
-                  width={300}
+                  width={400}
                 />
             )}
             {postHovered && (
@@ -125,10 +125,10 @@ const Pin = ({ pin }) => {
                       className='bg-white flex items-center gap-2 text-black font-bold p-2 pl-4 pr-4 rounded-full opacity-70 hover:100 hover:shadow-md'
                     >
                       <BsFillArrowUpRightCircleFill />
-                      {destination.length > 15 ? `${destination.slice(0, 15)}...` : destination}
+                      {destination.length > 15 ? `${destination.slice(0, 5)}...` : destination}
                     </a>
                   )}
-                  {postedBy?._id === user.googleId && (
+                  {postedBy?._id === user?.googleId && (
                     <button
                       type='button'
                       onClick={(e) => {

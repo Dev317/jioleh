@@ -2,10 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+@import url("./modal.css");
+
 body {
-    font-family : 'Lato', sans-serif;
+  font-family: "Lato", sans-serif;
 }
 
 .hide-scrollbar::-webkit-scrollbar {
-    display : none
+  display: none;
 }

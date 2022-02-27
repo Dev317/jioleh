@@ -7,8 +7,9 @@ import { userCreatedPinsQuery, userQuery, userSavedPinsQuery } from '../utils/da
 import { client } from '../client';
 import MasonryLayout from './MasonryLayout';
 import Spinner from './Spinner';
+import QRModal from './QRModal';
 
-const randomImg = 'https://source.unsplash.com/1600x900/?cafeshop';
+const randomImg = 'https://cdn.wallpapersafari.com/29/50/7acBKo.jpg';
 const activeBtnStyles = 'bg-red-500 text-white font-bold p-2 rounded-full w-20 outline-none';
 const notActiveBtnStyles = 'bg-primary mr-4 text-black font-bold p-2 rounded-full w-20 outline-none';
 
@@ -17,6 +18,7 @@ const UserProfile = () => {
   const [pins, setPins] = useState(null);
   const [text, setText ] = useState('Created');
   const [activeBtn, setActiveBtn] = useState('created');
+  const [showQRModal, setShowQRModal] = useState(false);
   const navigate = useNavigate();
   const { userId } = useParams();
 
@@ -114,6 +116,15 @@ const UserProfile = () => {
           >
             Saved
           </button>
+          <button
+            type="button"
+            onClick={(e) => {
+              setShowQRModal(true);
+            }}
+            className={notActiveBtnStyles}
+          >
+            QR
+          </button>
         </div>
 
         <div className="px-2">
@@ -127,6 +138,7 @@ const UserProfile = () => {
         )}
 
       </div>
+      {showQRModal ? <QRModal poster={userId} setShow={setShowQRModal}/> : <div></div>}
     </div>
   );
 };
