@@ -53,6 +53,40 @@ export const searchQuery = (searchTerm) => {
   return query;
 };
 
+export const followingFeedQuery = (following) => {
+  const string = JSON.stringify(following);
+  const query = `*[_type == "pin" && userId in ${string}] | order(_createdAt desc) {
+    image {
+      asset -> {
+        url
+      }
+    },
+    video {
+        asset -> {
+            ...,
+            "url" : "https://stream.mux.com/" + playbackId
+        }
+    },
+    _id,
+    destination,
+    postedBy -> {
+        _id,
+        userName,
+        image
+    },
+    save[]{
+        _key,
+        postedBy -> {
+            _id,
+            userName,
+            image
+          },
+        },
+    } `;
+
+  return query;
+};
+
 export const feedQuery = `*[_type == "pin"] | order(_createdAt desc) {
     image {
       asset -> {

@@ -13,6 +13,7 @@ import MasonryLayout from "./MasonryLayout";
 import Spinner from "./Spinner";
 import QRModal from "./QRModal";
 import { fetchUser } from "../utils/fetchUser";
+import { IoMdGrid } from "react-icons/io";
 
 const randomImg = "https://cdn.wallpapersafari.com/29/50/7acBKo.jpg";
 const activeBtnStyles =
@@ -29,12 +30,13 @@ const UserProfile = () => {
   const [followed, setFollowed] = useState(false);
   const navigate = useNavigate();
   const { userId } = useParams();
+  const loggedInUser = fetchUser();
 
   useEffect(() => {
     const query = userQuery(userId);
     client.fetch(query).then((data) => {
       setUser(data[0]);
-      const loggedInUser = fetchUser();
+      if (loggedInUser.googleId == userId) setFollowed(true);
       if (data[0].followers?.includes(loggedInUser.googleId)) {
         setFollowed(true);
       }
@@ -63,7 +65,7 @@ const UserProfile = () => {
 
   const handleFollow = (e) => {
     e.preventDefault();
-    const loggedInUser = fetchUser();
+
     if (!followed) {
       client
         .patch(loggedInUser.googleId)
@@ -96,34 +98,36 @@ const UserProfile = () => {
           console.log(err.message);
         });
     } else {
-      client
-        .patch(loggedInUser.googleId)
-        .unset([`following[@=="${userId}"]`])
-        .commit()
-        .then((res) => {
-          client
-            .patch(userId)
-            .unset([`followers[@=="${loggedInUser.googleId}"]`])
-            .commit()
-            .then((res) => {
-              const query = userQuery(userId);
-              client
-                .fetch(query)
-                .then((data) => {
-                  setUser(data[0]);
-                  setFollowed(false);
-                })
-                .catch((err) => {
-                  console.log(err.message);
-                });
-            })
-            .catch((err) => {
-              console.log(err.message);
-            });
-        })
-        .catch((err) => {
-          console.log(err.message);
-        });
+      if (loggedInUser.googleId != userId) {
+        client
+          .patch(loggedInUser.googleId)
+          .unset([`following[@=="${userId}"]`])
+          .commit()
+          .then((res) => {
+            client
+              .patch(userId)
+              .unset([`followers[@=="${loggedInUser.googleId}"]`])
+              .commit()
+              .then((res) => {
+                const query = userQuery(userId);
+                client
+                  .fetch(query)
+                  .then((data) => {
+                    setUser(data[0]);
+                    setFollowed(false);
+                  })
+                  .catch((err) => {
+                    console.log(err.message);
+                  });
+              })
+              .catch((err) => {
+                console.log(err.message);
+              });
+          })
+          .catch((err) => {
+            console.log(err.message);
+          });
+      }
     }
   };
 
@@ -156,42 +160,46 @@ const UserProfile = () => {
             {user.followers ? user.followers.length : 0} followers
           </p>
 
-          <div className="flex mt-4 items-center justify-center mx-5">
-            <button
-              type="button"
-              onClick={handleFollow}
-              className={
-                followed
-                  ? "md:w-20 flex-1 border-red-500 border-2 text-red-500 outline-solid font-bold rounded-lg p-3 mx-1"
-                  : "md:w-20 bg-red-500 flex-1 font-bold text-white rounded-lg p-3 mx-1"
-              }
-            >
-              {followed ? "Following" : "Follow"}
-            </button>
-            <button
-              type="button"
-              onClick={(e) => {
-                setShowQRModal(true);
-              }}
-              className="flex md:w-20 justify-center flex-1 border-red-500 border-2 text-red-500 outline-solid font-bold rounded-lg p-3 mx-1"
-            >
-              <svg
-                class="w-6 h-6 mr-1"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
+          {userId == loggedInUser.googleId ? (
+            <></>
+          ) : (
+            <div className="flex mt-4 items-center justify-center mx-5">
+              <button
+                type="button"
+                onClick={handleFollow}
+                className={
+                  followed
+                    ? "md:w-20 flex-1 border-red-500 border-2 text-red-500 outline-solid font-bold rounded-lg p-3 mx-1"
+                    : "md:w-20 bg-red-500 flex-1 font-bold text-white rounded-lg p-3 mx-1"
+                }
               >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"
-                ></path>
-              </svg>
-              QR
-            </button>
-          </div>
+                {followed ? "Following" : "Follow"}
+              </button>
+              <button
+                type="button"
+                onClick={(e) => {
+                  setShowQRModal(true);
+                }}
+                className="flex md:w-20 justify-center flex-1 border-red-500 border-2 text-red-500 outline-solid font-bold rounded-lg p-3 mx-1"
+              >
+                <svg
+                  class="w-6 h-6 mr-1"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"
+                  ></path>
+                </svg>
+                QR
+              </button>
+            </div>
+          )}
 
           <div className="absolute top-0 z-1 right-0 p-2">
             {userId === user._id && (
