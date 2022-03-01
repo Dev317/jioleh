@@ -8,7 +8,7 @@ export default function QRModal({ setShow, poster }) {
 
   return (
     <div className="modal">
-      <div className="modal-main">
+      <div className="modal-main rounded-lg">
         <QRCode value={URL} />
         <button
           type="button"

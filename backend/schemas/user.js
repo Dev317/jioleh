@@ -20,5 +20,19 @@ export default {
       of: [{ type: "string" }],
       validation: (Rule) => Rule.unique(),
     },
+    {
+      title: "Followers",
+      name: "followers",
+      type: "array",
+      of: [{ type: "string" }],
+      validation: (Rule) => Rule.unique(),
+    },
+    {
+      title: "Following",
+      name: "following",
+      type: "array",
+      of: [{ type: "string" }],
+      validation: (Rule) => Rule.unique(),
+    },
   ],
 };

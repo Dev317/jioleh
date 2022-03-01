@@ -65,11 +65,14 @@ const PinDetail = ({ user }) => {
   };
 
   const fetchTaggedVendor = (taggedVendor) => {
-    client.getDocument(taggedVendor).then((res) => {
-      setTaggedVendor(res.name);
-    }).catch((err) => {
-      console.log(err.message);
-    })
+    client
+      .getDocument(taggedVendor)
+      .then((res) => {
+        setTaggedVendor(res.name);
+      })
+      .catch((err) => {
+        console.log(err.message);
+      });
   };
 
   useEffect(() => {
@@ -81,10 +84,10 @@ const PinDetail = ({ user }) => {
   return (
     <>
       <div
-        className="flex xl:flex-row flex-col m-auto bg-white"
+        className="flex xl:flex-row flex-col m-auto md:bg-white"
         style={{ maxWidth: "1500px", borderRadius: "32px" }}
       >
-        <div className="flex justify-center items-center md:items-start flex-initial">
+        <div className="sm:bg-white flex justify-center items-center md:items-start flex-initial">
           {!pinDetail.video ? (
             <img
               className="rounded-t-3xl rounded-b-lg"
@@ -104,88 +107,92 @@ const PinDetail = ({ user }) => {
             />
           )}
         </div>
-
-        <div className="w-full p-5 flex-1 xl:min-w-620">
-          <div className="flex items-center justify-between">
-            <div className="flex gap-2 items-center">
-              <a
-                href={`${pinDetail?.image?.asset?.url}?dl=`}
-                download
-                onClick={(e) => e.stopPropagation()}
-                className="bg-secondaryColor p-2 text-xl rounded-full flex items-center justify-center text-dark opacity-75 hover:opacity-100"
-              >
-                <MdDownloadForOffline />
+        <div className="w-full flex flex-col flex-1 xl:min-w-620 md:bg-white">
+          <div className="md:px-5 px-2 py-3 md:order-2 rounded-lg bg-white">
+            {/* <div className="flex items-center justify-between">
+              <div className="flex gap-2 items-center">
+                <a
+                  href={`${pinDetail?.image?.asset?.url}?dl=`}
+                  download
+                  onClick={(e) => e.stopPropagation()}
+                  className="bg-secondaryColor p-2 text-xl rounded-full flex items-center justify-center text-dark opacity-75 hover:opacity-100"
+                >
+                  <MdDownloadForOffline />
+                </a>
+              </div>
+              <a href={pinDetail.destination} target="_blank" rel="noreferrer">
+                {pinDetail.destination?.slice(8)}
               </a>
+            </div> */}
+            <Link
+              to={`/user-profile/${pinDetail.postedBy?._id}`}
+              className="flex gap-2 mt-5 items-center bg-white rounded-lg"
+            >
+              <img
+                className="w-10 h-10 rounded-full"
+                src={pinDetail.postedBy?.image}
+                alt="user-profile"
+              />
+              <p className="font-semibold capitalize">
+                {pinDetail.postedBy?.userName}
+              </p>
+            </Link>
+          </div>
+          <div className="my-3 p-5 rounded-lg bg-white md:order-1">
+            <div>
+              <h1 className="text-4xl font-bold break-words mt-3">
+                {pinDetail.title}
+              </h1>
+              <p className="my-3 pb-5">{pinDetail.about}</p>
             </div>
-            <a href={pinDetail.destination} target="_blank" rel="noreferrer">
-              {pinDetail.destination?.slice(8)}
-            </a>
-          </div>
-
-          <div>
-            <h1 className="text-4xl font-bold break-words mt-3">
-              {pinDetail.title}
-            </h1>
-            <p className="mt-3">{pinDetail.about}</p>
-          </div>
-          <div className="flex mt-3">
-            <svg
-              className="w-6 h-6"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
+            <div className="flex mt-3">
+              <svg
+                className="w-6 h-6 mr-3"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+                ></path>
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+                ></path>
+              </svg>
+              <p>{taggedVendor}</p>
+            </div>
+            <div
+              className="flex mt-3 mb-5 order-5 text-red-500 cursor-pointer"
+              onClick={() => setShowQRModal(true)}
             >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
-              ></path>
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
-              ></path>
-            </svg>
-            <p>{taggedVendor}</p>
+              <svg
+                class="w-6 h-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"
+                ></path>
+              </svg>
+              <p className="ml-3 font-semibold">Redeem Now</p>
+            </div>
           </div>
-          <div
-            className="flex mt-3 mb-5 text-red-500 cursor-pointer"
-            onClick={() => setShowQRModal(true)}
-          >
-            <svg
-              class="w-6 h-6"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"
-              ></path>
-            </svg>
-            <p className="ml-3 font-semibold">Redeem Now</p>
-          </div>
-
-          <Link
-            to={`/user-profile/${pinDetail.postedBy?._id}`}
-            className="flex gap-2 mt-5 items-center bg-white rounded-lg"
-          >
-            <img
-              className="w-10 h-10 rounded-full"
-              src={pinDetail.postedBy?.image}
-              alt="user-profile"
-            />
-            <p className="font-semibold capitalize">
-              {pinDetail.postedBy?.userName}
-            </p>
-          </Link>
-
+        </div>
+      </div>
+      <div className="my-3 rounded-lg p-5 md:px-5 bg-white md:order-3">
+        <div className="comments">
           <h2 className="mt-5 text-2xl">Comments</h2>
           <div className="max-h-370 overflow-y-auto">
             {pinDetail?.comments?.map((comment, i) => (
