@@ -53,6 +53,16 @@ export const searchQuery = (searchTerm) => {
   return query;
 };
 
+export const vendorSearchQuery = (searchTerm) => {
+  const query = `*[_type == "vendor" && username match '${searchTerm}*' || name match '${searchTerm}*']{
+        _id,
+        username,
+        name,
+        category
+    }`;
+  return query;
+};
+
 export const followingFeedQuery = (following) => {
   const string = JSON.stringify(following);
   const query = `*[_type == "pin" && userId in ${string}] | order(_createdAt desc) {
