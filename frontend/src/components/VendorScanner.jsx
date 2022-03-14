@@ -1,6 +1,9 @@
 import React, { useEffect, useState, useRef } from "react";
 import { Html5Qrcode } from "html5-qrcode";
 import { client } from "../client";
+import { EthContext } from "../context/EthContext";
+import { useContext } from "react";
+import { fetchVendor } from "../utils/fetchUser";
 
 const qrConfig = { fps: 10, qrbox: { width: 300, height: 300 } };
 
@@ -9,6 +12,36 @@ let html5QrCode;
 const SAMPLE_VENDOR = "12345678910";
 
 const Scanner = (props) => {
+
+  const { currentAccount, connectWallet, formData, handleChange, handleRewardChange, createCampaign, rewardFormData, transferReward } = useContext(EthContext);
+  const vendor = fetchVendor();
+  console.log(currentAccount, connectWallet)
+  console.log(vendor);
+  const vendorName = vendor.username;
+  formData.vendorName = vendorName;
+  rewardFormData.vendorName = vendorName;
+
+  const handleSubmit = async (e) => {
+    const { campaignName, rewardAmount, fundingAmount } = formData;
+    e.preventDefault();
+
+    if ( !campaignName || !rewardAmount || !fundingAmount) {
+      return;
+    }
+
+    createCampaign();
+  }
+
+  const handleTransfer = async (e) => {
+    const { promoterUsername, promoterUserId, postId, promoterAddress, vendorName } = rewardFormData;
+    e.preventDefault();
+
+    console.log(rewardFormData)
+    
+    console.log('transferring');
+    transferReward();
+  }
+
   useEffect(() => {
     html5QrCode = new Html5Qrcode("reader");
 
@@ -33,6 +66,7 @@ const Scanner = (props) => {
     <div className="flex items-center flex-col">
       <div id="reader" width="100%" />
       <div className="pt-3 flex flex-col">
+      
         <button
           type="button"
           onClick={() => handleClickAdvanced()}
@@ -47,8 +81,78 @@ const Scanner = (props) => {
         >
           Stop
         </button>
+        {currentAccount ? (<div></div>) : (
+        <button
+            type="button"
+            onClick={() => connectWallet()}
+            className="bg-blue-500 text-white font-bold p-4 rounded-full w-28 outline-none"
+          >
+            Connect Wallet
+          </button>
+        )}
+      </div>
+      <br/>
+      <h1 className="outline-none text-2xl sm:text-xl font-bold border-gray-200 p-2">Campaign Creation</h1>
+
+      <div className="flex flex-1 flex-col gap-2 lg:pl-5 mt-5 w-full">
+          <input
+            type="text"
+            // value={campaignNameForm}
+            onChange={(e) => handleChange(e, 'campaignName')}
+            placeholder="Campaign name"
+            className="outline-none text-base sm:text-lg border-b-2 border-gray-200 p-2"
+          />
+          <input
+            type="number"
+            // value={rewardAmountForm}
+            onChange={(e) => handleChange(e, 'rewardAmount')}
+            placeholder="Reward amount"
+            className="outline-none text-base sm:text-lg border-b-2 border-gray-200 p-2"
+          />
+          <input
+            type="number"
+            // value={fundingAmountForm}
+            onChange={(e) => handleChange(e, 'fundingAmount')}
+            placeholder="Budget"
+            className="outline-none text-base sm:text-lg border-b-2 border-gray-200 p-2"
+          />
+      </div>
+      <div className="flex justify-end items-end mt-5">
+        <button
+          type="button"
+          onClick={(e) => handleSubmit(e)}
+          className="bg-purple-500 text-white font-bold p-2 rounded-full w-28 outline-none"
+        >
+          Create
+        </button>
+      </div>
+      <br/>
+      <h1 className="outline-none text-2xl sm:text-xl font-bold border-gray-200 p-1">Transfer Reward</h1>
+      <div className="flex flex-1 flex-col gap-2 lg:pl-5 mt-5 w-full">
+          <input
+            type="text"
+            onChange={(e) => handleRewardChange(e, 'promoterUsername')}
+            placeholder="Promoter username"
+            className="outline-none text-base sm:text-lg border-b-2 border-gray-200 p-2"
+          />
+          <input
+            type="text"
+            onChange={(e) => handleRewardChange(e, 'promoterAddress')}
+            placeholder="Promoter address"
+            className="outline-none text-base sm:text-lg border-b-2 border-gray-200 p-2"
+          />
+      </div>
+      <div className="flex justify-end items-end mt-5">
+        <button
+          type="button"
+          onClick={(e) => handleTransfer(e)}
+          className="bg-green-500 text-white font-bold p-2 rounded-full w-28 outline-none"
+        >
+          Transfer
+        </button>
       </div>
     </div>
+    
   );
 };
 

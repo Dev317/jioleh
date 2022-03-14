@@ -201,3 +201,17 @@ export const userCreatedPinsQuery = (userId) => {
         }`;
   return query;
 };
+
+export const campaignQuery = (vendorName) => {
+  const query = `*[_type == 'campaign' && vendorName == '${vendorName}']{
+    _id,
+    campaignName,
+    rewardAmount,
+    fundingAmount,
+    vendorName,
+    campaignAddress,
+    promoter[]{},
+    post[]{},
+  }`;
+  return query;
+}

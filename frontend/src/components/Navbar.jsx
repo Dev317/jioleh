@@ -1,11 +1,14 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { IoMdAdd, IoMdSearch } from 'react-icons/io';
+import { EthContext } from '../context/EthContext';
+import { useContext } from 'react';
 
 const Navbar = ({ searchTerm, setSearchTerm, user }) => {
     const navigate = useNavigate();
-
+    const { currentAccount, connectWalletUser } = useContext(EthContext);
     if (!user) return null;
+    console.log(user);
 
     return (
         <div className='flex gap-2 md:gap-5 w-full mt-5 pb-7'>
@@ -27,6 +30,14 @@ const Navbar = ({ searchTerm, setSearchTerm, user }) => {
                 <Link to='create-pin' className='bg-black text-white rounded-lg w-12 h-12 md:w-14 md:h-12 flex justify-center items-center'>
                     <IoMdAdd />
                 </Link>
+                {currentAccount ? (<></>) : (
+                <div 
+                    className='bg-blue-500 text-white rounded-lg w-12 h-12 md:w-14 md:h-12 flex justify-center items-center'
+                    onClick = {() => connectWalletUser(user?._id)}
+                    >
+                    Wallet
+                </div>)
+                }
             </div>
         </div>
     );
