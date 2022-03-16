@@ -14,6 +14,11 @@ export const categories = [
     image:
       "https://i.pinimg.com/564x/87/12/d5/8712d56c722be25ad2496c99934624d8.jpg",
   },
+  {
+    name: "Pet Friendly",
+    image:
+        "https://static.honeykidsasia.com/wp-content/uploads/2019/05/dog-friendly-places-singapore-HERO-900x643.png",
+  },
 ];
 
 export const userQuery = (userId) => {

@@ -57,6 +57,11 @@ export default {
       title: "Reward Money per Scan",
       type: "number",
     },
+    {
+      name: "vendorId",
+      title: "Vendor ID",
+      type: "string",
+    },
   ],
   validation: (Rule) => Rule.required(),
 };
