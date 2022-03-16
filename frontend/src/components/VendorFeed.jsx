@@ -14,6 +14,7 @@ const VendorFeed = () => {
   const [loading, setLoading] = useState(true);
   const [pins, setPins] = useState();
 
+  // query for pins
   useEffect(() => {
     const query = vendorQuery(vendorId);
     console.log(vendorId);
@@ -22,26 +23,19 @@ const VendorFeed = () => {
     });
   }, [vendorId]);
 
+  // load pins
   useEffect(() => {
       setLoading(true);
 
-      // if (categoryId) {
-          const query = searchByVendor(vendorId);
-          console.log("querying for pins of vendor");
-          client.fetch(query)
-            .then((data) => {
-              console.log(data);
-              setPins(data);
-              setLoading(false);
-            });
-      // } else {
-      //     client.fetch(feedQuery)
-      //       .then((data) => {
-      //         console.log(data);
-      //         setPins(data);
-      //         setLoading(false);
-      //       });
-      // }
+      const vendorQuery = searchByVendor(vendorId);
+      console.log("querying for pins of vendor");
+      client.fetch(vendorQuery)
+        .then((data) => {
+          console.log(data);
+          setPins(data);
+          setLoading(false);
+        });
+
   }, [vendorId]);
 
   if (loading) return <Spinner message='Adding media to your feed!'/>
