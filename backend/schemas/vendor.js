@@ -38,6 +38,11 @@ export default {
         }).error(),
     },
     {
+      name: "image",
+      title: "Image",
+      type: "string",
+    },
+    {
       name: "password",
       title: "Password",
       type: "string",
@@ -50,6 +55,16 @@ export default {
     {
       name: "category",
       title: "Category",
+      type: "string",
+    },
+    {
+      name: "location",
+      title: "Location",
+      type: "string",
+    },
+    {
+      name: "description",
+      title: "Description",
       type: "string",
     },
     {

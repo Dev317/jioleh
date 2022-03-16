@@ -11,7 +11,6 @@ const Login = () => {
 
   const responseGoogle = (res) => {
     console.log(res ? res : "empty object!");
-    console.log(res.profileObj);
     localStorage.setItem("user", JSON.stringify(res.profileObj));
 
     let { name, googleId, imageUrl } = res.profileObj;

@@ -21,8 +21,45 @@ export const userQuery = (userId) => {
   return query;
 };
 
+export const vendorQuery = (vendorId) => {
+  const query = `*[_type == "vendor" && _id == '${vendorId}']`;
+  return query;
+};
+
 export const searchQuery = (searchTerm) => {
   const query = `*[_type == "pin" && title match '${searchTerm}*' || category match '${searchTerm}*' || about match '${searchTerm}*']{
+        image {
+            asset -> {
+                url
+            }
+        },
+        video {
+          asset -> {
+              ...,
+              "url" : "https://stream.mux.com/" + playbackId
+          }
+        },
+        _id,
+        destination,
+        postedBy -> {
+            _id,
+            userName,
+            image
+        },
+        save[] {
+            _key,
+            postedBy -> {
+                _id,
+                userName,
+                image
+            },
+        },
+    }`;
+  return query;
+};
+
+export const searchByVendor = (searchTerm) => {
+  const query = `*[_type == "pin" && taggedVendor == '${searchTerm}' ]{
         image {
             asset -> {
                 url
