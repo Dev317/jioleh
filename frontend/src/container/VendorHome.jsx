@@ -10,6 +10,7 @@ import { vendorQuery } from "../utils/data";
 import { client } from "../client";
 import logo from "../assets/logo.png";
 import { fetchVendor } from "../utils/fetchVendor";
+import { VendorScanner } from "../components";
 
 const VendorHome = () => {
   const [toggleSidebar, setToggleSidebar] = useState(false);
@@ -68,6 +69,7 @@ const VendorHome = () => {
         <Routes>
           <Route path="/vendor-profile/:vendorId" element={<VendorProfile />} />
           <Route path="/" element={<VendorPins vendor={vendor && vendor}/>} />
+          <Route path="/vendor-scanner" element={<VendorScanner />} />
         </Routes>
       </div>
     </div>

@@ -27,27 +27,35 @@ const VendorSidebar = ({ user, closeToggle }) => {
             </Link>
             <div className='flex flex-col gap-5'>
                 <NavLink
-                    to='/'
+                    to='/vendor'
                     className={({ isActive }) => isActive ? isActiveStyle : isNotActiveStyle}
                     onClick={handleCloseSidebar}
                 >
                     <RiHomeFill /> Home
                 </NavLink>
-                <h3 className='mt-2 px-5 text-base 2xl:text-xl'>Discover cateogries</h3>
-                {categories.slice(0, categories.length).map((category) => (
-                    <NavLink
-                        to={`/category/${category.name}`}
+                <h3 className='mt-2 px-5 text-base 2xl:text-xl'>Manage Campaign</h3>
+                <NavLink
+                        to={`/vendor/vendor-scanner`}
                         className={({ isActive }) => isActive ? isActiveStyle : isNotActiveStyle}
                         onClick={handleCloseSidebar}
-                        key={category.name}
                     >
-                    <img 
+                    {/* <img 
                         src={category.image}
                         className='w-8 h-8 rounded-full shadow-sm' alt='category'
-                    />
-                        {category.name}
+                    /> */}
+                        Scan QR Code
                     </NavLink>
-                ))}
+                    <NavLink
+                        to={`/vendor/vendor-create-campaign`}
+                        className={({ isActive }) => isActive ? isActiveStyle : isNotActiveStyle}
+                        onClick={handleCloseSidebar}
+                    >
+                    {/* <img 
+                        src={category.image}
+                        className='w-8 h-8 rounded-full shadow-sm' alt='category'
+                    /> */}
+                        Create Campaign
+                    </NavLink>
             </div>
         </div>
         {user && (
