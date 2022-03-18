@@ -11,6 +11,7 @@ import { client } from "../client";
 import logo from "../assets/logo.png";
 import { fetchVendor } from "../utils/fetchVendor";
 import { VendorScanner } from "../components";
+import { UserProfile } from "../components";
 
 const VendorHome = () => {
   const [toggleSidebar, setToggleSidebar] = useState(false);
@@ -68,6 +69,7 @@ const VendorHome = () => {
       <div className="pb-2 flex-1 h-screen overflow-y-scroll" ref={scrollRef}>
         <Routes>
           <Route path="/vendor-profile/:vendorId" element={<VendorProfile />} />
+          <Route path="/user-profile/:userId" element={<UserProfile />} />
           <Route path="/*" element={<VendorPins vendor={vendor && vendor}/>} />
           <Route path="/vendor-scanner" element={<VendorScanner />} />
         </Routes>

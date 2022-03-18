@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { Routes, Route } from 'react-router-dom';
-import { Navbar, PinDetail, CreatePin, Search } from '../components';
+import { Navbar, CreatePin, Search } from '../components';
 import VendorFeed from '../components/VendorFeed';
+import VendorPinDetail from '../components/VendorPinDetail';
 
 const VendorPins = ({ vendor }) => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -15,7 +16,7 @@ const VendorPins = ({ vendor }) => {
         <Routes>
           <Route path='/' element={<VendorFeed />}/>
           {/* <Route path='/category/:categoryId' element={<VendorFeed />}/> */}
-          <Route path='/pin-detail/:pinId' element={<PinDetail user={vendor}/>}/>
+          <Route path='/pin-detail/:pinId' element={<VendorPinDetail user={vendor}/>}/>
           {/* <Route path='/create-pin' element={<CreatePin user={user}/>}/> */}
           {/* <Route path='/search' element={<Search searchTerm={searchTerm} setSearchTerm={setSearchTerm}/>}/> */}
         </Routes>

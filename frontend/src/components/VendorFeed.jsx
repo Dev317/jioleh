@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 
 import { client } from '../client';
-import MasonryLayout from './MasonryLayout';
+import VendorMasonryLayout from './VendorMasonryLayout';
 import Spinner from './Spinner';
 import { feedQuery, searchQuery, vendorQuery, searchByVendor } from '../utils/data';
 import { fetchVendor } from '../utils/fetchVendor';
@@ -44,7 +44,7 @@ const VendorFeed = () => {
 
   return (
       <div>
-          {pins && (<MasonryLayout pins={pins}/>)}
+          {pins && (<VendorMasonryLayout pins={pins}/>)}
       </div>
   );
 };
