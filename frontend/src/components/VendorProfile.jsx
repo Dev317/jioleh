@@ -11,8 +11,8 @@ import QRModal from './QRModal';
 import { vendorQuery } from '../utils/data';
 
 const randomImg = 'https://cdn.wallpapersafari.com/29/50/7acBKo.jpg';
-const activeBtnStyles = "p-2 font-bold border-b-2 w-20 outline-solid border-red-500 text-red-500";
-const notActiveBtnStyles = "bg-primary text-black w-20 font-bold p-2 outline-none";
+const activeBtnStyles = "p-2 font-bold border-b-2 outline-solid border-red-500 text-red-500";
+const notActiveBtnStyles = "bg-primary text-black font-bold p-2 outline-none";
 const EditBtnStyle = 'bg-red-500 text-white font-bold p-2 rounded-full w-20 outline-none';
 
 const About = ({vendor, editingMode, setEditingMode}) => {
@@ -21,7 +21,35 @@ const About = ({vendor, editingMode, setEditingMode}) => {
   const [location, setLocation] = useState("");
   const [description, setDescription] = useState("");
 
-  useEffect(() => { setName(vendor.name) }, [])
+  useEffect(() => { 
+    setName(vendor.name);
+    setCategory(vendor.category);
+    setLocation(vendor.location);
+    setDescription(vendor.description); 
+  }, [])
+
+  const handleSaveChanges = (e) => {
+
+    client
+      .patch(vendor._id) // Document ID to patch
+      .set({
+        name,
+        category,
+        location,
+        description,
+      }) // Shallow merge
+      .commit()
+      .then((updatedVendor) => {
+        console.log('Updated')
+        console.log(updatedVendor)
+      })
+      .catch((err) => {
+        console.error('Update failed: ', err.message)
+      })
+
+    setEditingMode(!editingMode);
+    e.preventDefault();
+  }
   
   return (
     <div className='text-center mb-7'>
@@ -32,11 +60,19 @@ const About = ({vendor, editingMode, setEditingMode}) => {
             }}
             className={EditBtnStyle}
           >
-            {editingMode ? "Save" : "Edit Profile"}
+            {editingMode ? "Cancel" : "Edit Profile"}
         </button>
 
         {editingMode ? 
-          <form class="w-full p-6">
+          <form class="w-full p-6" //onSubmit={handleSaveChanges}
+          >
+            <button
+              //type="submit"
+              className="bg-red-500 text-white font-bold mt-2 p-3 rounded-full w-28 outline-none" 
+              onClick={e => handleSaveChanges(e)}
+              >
+              Save Changes
+            </button>
             <div class="mb-6">
               <label class="text-left block text-gray-700 text-sm font-bold mb-2" for="name">
                 Company Name
@@ -47,39 +83,26 @@ const About = ({vendor, editingMode, setEditingMode}) => {
               <label class="text-left block text-gray-700 text-sm font-bold mb-2" for="category">
                 Category
               </label>
-              <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="category" type="text" placeholder="Category" />
+              <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="category" type="text" placeholder="Category" value={category} onChange={e => setCategory(e.target.value)} />
             </div>
             <div class="mb-6">
               <label class="text-left block text-gray-700 text-sm font-bold mb-2" for="Location">
                 Location
               </label>
-              <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" id="location" placeholder="Location" />
+              <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" id="location" placeholder="Location" value={location} onChange={e => setLocation(e.target.value)} />
             </div>
             <div class="mb-6">
               <label class="text-left block text-gray-700 text-sm font-bold mb-2" for="Description">
                 Description
               </label>
               <textarea
-                class="
-                  form-control
-                  block
-                  w-full
-                  px-3
-                  py-1.5
-                  text-base
-                  font-normal
-                  text-gray-700
-                  bg-white bg-clip-padding
-                  border border-solid border-gray-300
-                  rounded
-                  transition
-                  ease-in-out
-                  m-0
-                  focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none
-                "
-                id="description"
-                rows="4"
-                placeholder="Description"
+                class="form-control block w-full px-3 py-1.5 text-base 
+                font-normal text-gray-700 bg-white bg-clip-padding
+                border border-solid border-gray-300 rounded transition
+                ease-in-out m-0 focus:text-gray-700 focus:bg-white 
+                focus:border-blue-600 focus:outline-none"
+                id="description" rows="4" placeholder="Description"
+                value={description} onChange={e => setDescription(e.target.value)}
               ></textarea>
             </div>
           </form> 
@@ -109,6 +132,13 @@ const About = ({vendor, editingMode, setEditingMode}) => {
   )
 }
 
+const ChangePhoto = () => {
+
+  return (
+    <></>
+  );
+};
+
 const VendorProfile = () => {
   const [vendor, setVendor] = useState(null);
   const [pins, setPins] = useState(null);
@@ -124,7 +154,7 @@ const VendorProfile = () => {
     client.fetch(query).then((data) => {
       setVendor(data[0]);
     });
-  }, [vendorId]);
+  }, [vendorId, setEditingMode]);
 
   const logout = () => {
     localStorage.clear();
@@ -154,7 +184,10 @@ const VendorProfile = () => {
           </div>
           
           <h1 className="font-bold text-2xl text-center mt-3">
-            {vendor.username}
+            {vendor.name}
+          </h1>
+          <h1 className="text-xl text-center">
+            @{vendor.username}
           </h1>
 
           <div className='absolute top-0 z-1 right-0 p-2'>logout
@@ -163,7 +196,6 @@ const VendorProfile = () => {
               type="button"
               className=" bg-white p-2 rounded-full cursor-pointer outline-none shadow-md"
               onClick={logout}
-              // disabled={renderProps.disabled}
             >
               <AiOutlineLogout color="red" fontSize={21} />
             </button>
@@ -171,7 +203,7 @@ const VendorProfile = () => {
           </div>
         </div>
 
-        <div className="text-center mb-7">
+        <div className="flex gap-2 justify-center mb-7">
           <button
             type="button"
             onClick={(e) => {
