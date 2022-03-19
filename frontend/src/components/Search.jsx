@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import MasonryLayout from "./MasonryLayout";
 import { client } from "../client";
 import { feedQuery, searchQuery, vendorSearchQuery } from "../utils/data";
+import { vendorQuery } from "../utils/data";
 import Spinner from "./Spinner";
 import Carousel from "./Carousel";
 
@@ -13,9 +14,9 @@ const Search = ({ searchTerm }) => {
   useEffect(() => {
     if (searchTerm !== "") {
       setLoading(true);
-      const vendorQuery = vendorSearchQuery(searchTerm.toLowerCase());
+      const vendorSrchQuery = vendorSearchQuery(searchTerm.toLowerCase());
       const pinQuery = searchQuery(searchTerm.toLowerCase());
-      Promise.all([client.fetch(pinQuery), client.fetch(vendorQuery)]).then(
+      Promise.all([client.fetch(pinQuery), client.fetch(vendorSrchQuery)]).then(
         (data) => {
           setPins(data[0]);
           setVendors(data[1]);
@@ -23,11 +24,13 @@ const Search = ({ searchTerm }) => {
         }
       );
     } else {
-      setVendors([]);
-      client.fetch(feedQuery).then((data) => {
-        setPins(data);
-        setLoading(false);
-      });
+        Promise.all([client.fetch(feedQuery), client.fetch(vendorQuery)]).then(
+        (data) => {
+            setPins(data[0]);
+            setVendors(data[1]);
+            setLoading(false);
+        }
+    );
     }
   }, [searchTerm]);
 
@@ -37,13 +40,16 @@ const Search = ({ searchTerm }) => {
       {loading && <Spinner message="Searching pins" />}
       <div className="py-2">
         <h2 className="text-gray-500 pl-2 my-3">Eateries</h2>
-        <Carousel data={vendors} />
+          {pins?.length !== 0 && <Carousel data={vendors}  />}
+          {pins?.length === 0 && searchTerm !== "" && !loading && (
+              <div className="mt-10 text-center text-xl ">No Eateries Found!</div>
+          )}
       </div>
       <div className="py-2">
         <h2 className="text-gray-500 pl-2 my-3">Foodsteps</h2>
         {pins?.length !== 0 && <MasonryLayout pins={pins} />}
         {pins?.length === 0 && searchTerm !== "" && !loading && (
-          <div className="mt-10 text-center text-xl ">No Pins Found!</div>
+          <div className="mt-10 text-center text-xl ">No Foodsteps Found!</div>
         )}
       </div>
     </div>

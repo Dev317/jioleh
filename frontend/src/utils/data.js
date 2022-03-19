@@ -102,6 +102,15 @@ export const followingFeedQuery = (following) => {
   return query;
 };
 
+/* default query to fetch all vendors sorted by create date*/
+export const vendorQuery = `*[_type == "vendor"] | order(_createdAt desc) {
+      _id,
+      username,
+      name,
+      category
+    } `;
+
+/* default query to fetch all foodsteps sorted by create date*/
 export const feedQuery = `*[_type == "pin"] | order(_createdAt desc) {
     image {
       asset -> {
