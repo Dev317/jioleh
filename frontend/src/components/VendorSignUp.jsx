@@ -33,8 +33,7 @@ export default function VendorSignUp() {
     const doc = {
       _type: "vendor",
       ...form,
-      password: bcrypt.hashSync(form.password, bcrypt.genSaltSync()),
-      rewardMoney: 0.0,
+      password: bcrypt.hashSync(form.password, bcrypt.genSaltSync())
     };
 
     const validationQuery = `*[_type == 'vendor' && username == $username]`;
