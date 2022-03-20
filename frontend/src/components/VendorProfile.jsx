@@ -5,13 +5,14 @@ import { client } from '../client';
 import Spinner from './Spinner';
 import QRModal from './QRModal';
 import { vendorQuery } from '../utils/data';
+import { fetchVendor } from '../utils/fetchVendor';
 
 const randomImg = 'https://cdn.wallpapersafari.com/29/50/7acBKo.jpg';
 const activeBtnStyles = "p-2 font-bold border-b-2 outline-solid border-red-500 text-red-500";
 const notActiveBtnStyles = "bg-primary text-black font-bold p-2 outline-none";
-const EditBtnStyle = 'bg-red-500 text-white font-bold p-2 rounded-2xl outline-none';
+const EditBtnStyle = 'bg-red-500 text-white font-bold p-2 rounded-xl outline-none w-40';
 
-const About = ({vendor, editingMode, setEditingMode}) => {
+const About = ({vendor, editProfileMode, setEditProfileMode, loggedInVendor}) => {
   const [name, setName] = useState("");
   const [category, setCategory] = useState("");
   const [location, setLocation] = useState("");
@@ -43,7 +44,7 @@ const About = ({vendor, editingMode, setEditingMode}) => {
         vendor.category = category;
         vendor.location = location;
         vendor.description = description;
-        setEditingMode(!editingMode);
+        setEditProfileMode(!editProfileMode);
       })
       .catch((err) => {
         console.error('Update failed: ', err.message)
@@ -51,27 +52,29 @@ const About = ({vendor, editingMode, setEditingMode}) => {
   }
   
   return (
+    
     <div className='text-center mb-7'>
-        <button
-            type="button"
-            onClick={(e) => {
-              setEditingMode(!editingMode);
-            }}
-            className={EditBtnStyle}
+        {editProfileMode ? 
+          <form class="w-full px-6" onSubmit={e => handleSaveChanges(e)}
           >
-            {editingMode ? "Cancel" : "Edit Profile"}
-        </button>
-
-        {editingMode ? 
-          <form class="w-full p-6" onSubmit={e => handleSaveChanges(e)}
-          >
-            <button
-              type="submit"
-              className="bg-red-500 text-white font-bold mt-2 p-3 rounded-full w-28 outline-none" 
-              //onClick={e => handleSaveChanges(e)}
+            <div className="flex gap-2 justify-center mb-7">
+              <button
+                type="button"
+                onClick={(e) => {
+                  setEditProfileMode(!editProfileMode);
+                }}
+                className={EditBtnStyle}
               >
-              Save Changes
-            </button>
+                Cancel
+              </button>
+              <button
+                type="submit"
+                className={EditBtnStyle} 
+                //onClick={e => handleSaveChanges(e)}
+                >
+                Save Changes
+              </button>
+            </div>
             <div class="mb-6">
               <label class="text-left block text-gray-700 text-sm font-bold mb-2" for="name">
                 Company Name
@@ -106,6 +109,28 @@ const About = ({vendor, editingMode, setEditingMode}) => {
             </div>
           </form> 
         :
+        <div>
+          <div>
+            {loggedInVendor._id == vendor._id ? 
+            <div className="flex gap-2 justify-center mb-7">
+              <button
+                  type="button"
+                  onClick={(e) => {
+                    setEditProfileMode(!editProfileMode);
+                  }}
+                  className={EditBtnStyle}
+                >
+                  Edit Profile
+              </button>
+              <button
+                  type="button"
+                  className={EditBtnStyle}
+                >
+                  Edit Picture
+              </button>
+            </div>
+            : <></>}
+          </div>
           <div class="grid grid-cols-3 gap-2" >
             <div class="...">
               <p className="text-xl font-bold break-words mt-3">Category:</p>
@@ -124,6 +149,7 @@ const About = ({vendor, editingMode, setEditingMode}) => {
             <div class="col-span-3 ...">
               <p className="text-xl break-words mt-3">{vendor.description == null ? "no text" : vendor.description}</p>
             </div>
+          </div>
           </div>
         }
 
@@ -144,9 +170,10 @@ const VendorProfile = () => {
   const [text, setText ] = useState('about');
   const [activeBtn, setActiveBtn] = useState('about');
   const [showQRModal, setShowQRModal] = useState(false);
-  const [editingMode, setEditingMode] = useState(false);
+  const [editProfileMode, setEditProfileMode] = useState(false);
   const navigate = useNavigate();
   const { vendorId } = useParams();
+  const loggedInVendor = fetchVendor();
 
   useEffect(() => {
     const query = vendorQuery(vendorId);
@@ -230,7 +257,7 @@ const VendorProfile = () => {
         </div>
 
         {activeBtn == "about" ? 
-          <About vendor={vendor} editingMode={editingMode} setEditingMode={setEditingMode}/>
+          <About vendor={vendor} editProfileMode={editProfileMode} setEditProfileMode={setEditProfileMode} loggedInVendor={loggedInVendor}/>
           :
           <div class='text-center'>Campaign Information</div>
         }
