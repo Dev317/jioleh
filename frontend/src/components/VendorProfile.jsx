@@ -1,11 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { AiOutlineLogout } from 'react-icons/ai';
 import { useParams, useNavigate } from 'react-router-dom';
-// import { GoogleLogout } from 'react-google-login';
-
-// import { userCreatedPinsQuery, userQuery, userSavedPinsQuery } from '../utils/data';
 import { client } from '../client';
-import MasonryLayout from './MasonryLayout';
 import Spinner from './Spinner';
 import QRModal from './QRModal';
 import { vendorQuery } from '../utils/data';
@@ -13,7 +9,7 @@ import { vendorQuery } from '../utils/data';
 const randomImg = 'https://cdn.wallpapersafari.com/29/50/7acBKo.jpg';
 const activeBtnStyles = "p-2 font-bold border-b-2 outline-solid border-red-500 text-red-500";
 const notActiveBtnStyles = "bg-primary text-black font-bold p-2 outline-none";
-const EditBtnStyle = 'bg-red-500 text-white font-bold p-2 rounded-full w-20 outline-none';
+const EditBtnStyle = 'bg-red-500 text-white font-bold p-2 rounded-2xl outline-none';
 
 const About = ({vendor, editingMode, setEditingMode}) => {
   const [name, setName] = useState("");
@@ -42,13 +38,16 @@ const About = ({vendor, editingMode, setEditingMode}) => {
       .then((updatedVendor) => {
         console.log('Updated')
         console.log(updatedVendor)
+
+        vendor.name = name;
+        vendor.category = category;
+        vendor.location = location;
+        vendor.description = description;
+        setEditingMode(!editingMode);
       })
       .catch((err) => {
         console.error('Update failed: ', err.message)
       })
-
-    setEditingMode(!editingMode);
-    e.preventDefault();
   }
   
   return (
@@ -64,12 +63,12 @@ const About = ({vendor, editingMode, setEditingMode}) => {
         </button>
 
         {editingMode ? 
-          <form class="w-full p-6" //onSubmit={handleSaveChanges}
+          <form class="w-full p-6" onSubmit={e => handleSaveChanges(e)}
           >
             <button
-              //type="submit"
+              type="submit"
               className="bg-red-500 text-white font-bold mt-2 p-3 rounded-full w-28 outline-none" 
-              onClick={e => handleSaveChanges(e)}
+              //onClick={e => handleSaveChanges(e)}
               >
               Save Changes
             </button>
@@ -154,7 +153,7 @@ const VendorProfile = () => {
     client.fetch(query).then((data) => {
       setVendor(data[0]);
     });
-  }, [vendorId, setEditingMode]);
+  }, [vendorId, vendor]);
 
   const logout = () => {
     localStorage.clear();
