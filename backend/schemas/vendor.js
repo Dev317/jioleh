@@ -68,10 +68,40 @@ export default {
       type: "string",
     },
     {
-      name: "rewardMoney",
-      title: "Reward Money per Scan",
+      name: "hasCampaign",
+      title: "Has Campaign?",
+      type: "boolean",
+    },
+    {
+      name: "campaignName",
+      title: "Campaign Name",
+      type: "string",
+    },
+    {
+      name: "budget",
+      title: "Campaign Budget",
       type: "number",
     },
+    {
+      name: "rewardAmount",
+      title: "Reward Amount per Scan",
+      type: "number",
+    },
+    {
+      name: "dailyLimit",
+      title: "Daily Redemption Limit",
+      type: "number",
+    },
+    {
+      name: "startDate",
+      title: "Campaign Start Date",
+      type: "date",
+    },
+    {
+      name: "duration",
+      title: "Campaign Duration (Days)",
+      type: "number",
+    }
   ],
   validation: (Rule) => Rule.required(),
 };

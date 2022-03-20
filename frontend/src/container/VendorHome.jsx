@@ -12,6 +12,8 @@ import logo from "../assets/logo.png";
 import { fetchVendor } from "../utils/fetchVendor";
 import { VendorScanner } from "../components";
 import { UserProfile } from "../components";
+import VendorCampaignDetail from "../components/VendorCampaignDetail";
+import VendorCreateCampaign from "../components/VendorCreateCampaign";
 
 const VendorHome = () => {
   const [toggleSidebar, setToggleSidebar] = useState(false);
@@ -70,8 +72,10 @@ const VendorHome = () => {
         <Routes>
           <Route path="/vendor-profile/:vendorId" element={<VendorProfile />} />
           <Route path="/user-profile/:userId" element={<UserProfile />} />
-          <Route path="/*" element={<VendorPins vendor={vendor && vendor}/>} />
+          <Route path="/*" element={<VendorPins vendor={vendor && vendor} />} />
+          <Route path="/vendor-campaign-detail" element={<VendorCampaignDetail />} />
           <Route path="/vendor-scanner" element={<VendorScanner />} />
+          <Route path="/vendor-create-campaign" element={<VendorCreateCampaign />} />
         </Routes>
       </div>
     </div>
