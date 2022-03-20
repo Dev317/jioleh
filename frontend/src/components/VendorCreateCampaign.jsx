@@ -21,7 +21,7 @@ export default function VendorCreateCampaign() {
     };
 
     useEffect(() => {
-        setVendor(JSON.parse(localStorage.getItem("campaign")));
+        localStorage.getItem("campaign") ? setVendor(JSON.parse(localStorage.getItem("campaign"))) : setVendor(fetchVendor());
     }, []);
 
     useEffect(() => {
