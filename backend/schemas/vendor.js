@@ -103,5 +103,8 @@ export default {
       type: "number",
     }
   ],
+  initialValue: {
+    hasCampaign: false
+  },
   validation: (Rule) => Rule.required(),
 };
