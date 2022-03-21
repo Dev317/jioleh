@@ -1,15 +1,14 @@
-import React, { useState } from 'react';
-import { client, urlFor } from '../client';
-import SanityMuxPlayer from 'sanity-mux-player';
-import { Link, useNavigate } from 'react-router-dom';
-import { v4 as uuidv4 } from 'uuid';
-import { MdDownloadForOffline } from 'react-icons/md';
-import { AiTwotoneDelete } from 'react-icons/ai';
-import { BsFillArrowUpRightCircleFill } from 'react-icons/bs';
-import { fetchUser } from '../utils/fetchUser';
+import React, { useState } from "react";
+import { client, urlFor } from "../client";
+import SanityMuxPlayer from "sanity-mux-player";
+import { Link, useNavigate } from "react-router-dom";
+import { v4 as uuidv4 } from "uuid";
+import { MdDownloadForOffline } from "react-icons/md";
+import { AiTwotoneDelete } from "react-icons/ai";
+import { BsFillArrowUpRightCircleFill } from "react-icons/bs";
+import { fetchUser } from "../utils/fetchUser";
 
 const Pin = ({ pin }) => {
-
   const [postHovered, setPostHovered] = useState(false);
   const [savingPost, setSavingPost] = useState(false);
 
@@ -20,12 +19,13 @@ const Pin = ({ pin }) => {
     const { asset } = pin.video;
     assetDocument = asset;
   }
-  const { destination, postedBy, image, _id } = pin
+  const { destination, postedBy, image, _id } = pin;
   const user = fetchUser();
 
-  let alreadySaved = pin?.save?.filter((item) => item?.postedBy?._id === user?.googleId);
+  let alreadySaved = pin?.save?.filter(
+    (item) => item?.postedBy?._id === user?.googleId
+  );
   alreadySaved = alreadySaved?.length > 0 ? alreadySaved : [];
-
 
   // const savePin = (id) => {
   //   if(alreadySaved?.length === 0) {
@@ -58,28 +58,32 @@ const Pin = ({ pin }) => {
   // }
 
   return (
-      <div className='m-2'>
-          <div
-            onMouseEnter={() => setPostHovered(true)}
-            onMouseLeave={() => setPostHovered(false)}
-            onClick={() => navigate(`/vendor/pin-detail/${_id}`)}
-            className='relative cursor-zoom-in w-auto hover:shadow-lg rounded-lg overflow-hidden transition-all duration-500 ease-in-out'
-          >
-            {(!pin.video && pin.image) ? 
-            (<img className='rounded-lg w-full' alt='user-post' src={urlFor(pin.image).width(250).url()}/>)
-            :(
-                <SanityMuxPlayer
-                  assetDocument={assetDocument}
-                  autoload={true}
-                  autoplay={true}
-                  loop={true}
-                  muted={false}
-                  showControls={true}
-                  height={250}
-                  width={400}
-                />
-            )}
-            {/* {postHovered && (
+    <div className="m-2">
+      <div
+        onMouseEnter={() => setPostHovered(true)}
+        onMouseLeave={() => setPostHovered(false)}
+        onClick={() => navigate(`/vendor/pin-detail/${_id}`)}
+        className="relative cursor-zoom-in w-auto hover:shadow-lg rounded-lg overflow-hidden transition-all duration-500 ease-in-out"
+      >
+        {!pin.video && pin.image ? (
+          <img
+            className="rounded-lg w-full"
+            alt="user-post"
+            src={urlFor(pin.image).width(250).url()}
+          />
+        ) : (
+          <SanityMuxPlayer
+            assetDocument={assetDocument}
+            autoload={true}
+            autoplay={true}
+            loop={true}
+            muted={false}
+            showControls={true}
+            height={250}
+            width={400}
+          />
+        )}
+        {/* {postHovered && (
               <div
                 className='absolute top-0 w-full h-full flex flex-col justify-between p-1 pr-2 pt-2 pb-2 z-50'
                 style={{ height : '100%' }}
@@ -143,16 +147,19 @@ const Pin = ({ pin }) => {
                 </div>
               </div>
             )} */}
-          </div>
-          <Link to={`user-profile/${postedBy?._id}`} className='flex gap-2 mt-2 items-center'>
-            <img 
-              className='w-8 h-8 rounded-full object-cover'
-              src={postedBy?.image}
-              alt='user-profile'
-            />
-            <p className='font-semibold capitalize'>{postedBy?.userName}</p>
-          </Link>
       </div>
+      <Link
+        to={`user-profile/${postedBy?._id}`}
+        className="flex gap-2 mt-2 items-center"
+      >
+        <img
+          className="w-8 h-8 rounded-full object-cover"
+          src={postedBy?.image}
+          alt="user-profile"
+        />
+        <p className="font-semibold capitalize">{postedBy?.userName}</p>
+      </Link>
+    </div>
   );
 };
 
