@@ -20,5 +20,10 @@ export default {
       of: [{ type: "string" }],
       validation: (Rule) => Rule.unique(),
     },
+    {
+      name: "walletAddress",
+      title: "Wallet Address",
+      type: "string"
+    }
   ],
 };

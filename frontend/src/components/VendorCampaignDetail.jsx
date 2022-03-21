@@ -78,7 +78,9 @@ const VendorCampaignDetail = () => {
                 rewardAmount: 0,
                 dailyLimit: 0,
                 startDate: "1970-01-01",
-                duration: 0
+                duration: 0,
+                contractAddress: "",
+                pendingPayment : false
             })
             .commit()
             .then((updatedVendor) => {
