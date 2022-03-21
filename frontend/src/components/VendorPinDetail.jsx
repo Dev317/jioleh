@@ -65,11 +65,14 @@ const VendorPinDetail = ({ user }) => {
   };
 
   const fetchTaggedVendor = (taggedVendor) => {
-    client.getDocument(taggedVendor).then((res) => {
-      setTaggedVendor(res.name);
-    }).catch((err) => {
-      console.log(err.message);
-    })
+    client
+      .getDocument(taggedVendor)
+      .then((res) => {
+        setTaggedVendor(res.name);
+      })
+      .catch((err) => {
+        console.log(err.message);
+      });
   };
 
   useEffect(() => {
