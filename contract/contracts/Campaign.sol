@@ -86,8 +86,8 @@ contract Campaign {
         deadline = (block.timestamp / 1 days) + (_duration * 1 days);
     }
 
-    function funding() public payable {
-        require(msg.value >= fundingAmount);
+    function setNewFunding(uint _fundingAmount) public {
+        fundingAmount = _fundingAmount;
     }
 
     modifier onlyBrandOwner() {
@@ -115,22 +115,12 @@ contract Campaign {
     }
 
     function sendReward(address payable promoterAddress) public payable {
-        require(
-            rewardCheck[promoterAddress] != true,
-            "Promoter already received reward!"
-        );
+        require(rewardCheck[promoterAddress] != true, "Promoter already received reward!");
         require(msg.value == rewardAmount, "Reward amount does not match!");
-        require(block.timestamp <= deadline);
         rewardCheck[promoterAddress] = true;
-        (bool sent, ) = promoterAddress.call{value: msg.value}(
-            "Sending reward"
-        );
+        (bool sent,) = promoterAddress.call{value: msg.value}("Sending reward");
         promoterEarning[promoterAddress] = msg.value;
         require(sent, "Failed to send Ether");
-    }
-
-    function getBalance() public view returns (uint256) {
-        return address(this).balance;
     }
 
     function retrievePromoterEarning(address promoterAddress)

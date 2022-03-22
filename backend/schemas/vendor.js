@@ -115,7 +115,13 @@ export default {
     {
       name : "pendingPayment",
       title: "Pending Payment",
-      type: "bolean"
+      type: "boolean"
+    },
+    {
+      name : "pendingAddresses",
+      title: "Pending Addresses",
+      type: "array",
+      of: [{ type: "string" }],
     }
   ],
   initialValue: {

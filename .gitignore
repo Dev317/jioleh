@@ -1,5 +1,4 @@
 /backend/node_modules
-/backend/sanity.json
 /frontend/node_modules
 /frontend/.env
 /contract/node_modules

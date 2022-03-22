@@ -1,6 +1,8 @@
 import React, { useEffect, useState, useRef } from "react";
 import { Html5Qrcode } from "html5-qrcode";
 import { client } from "../client";
+import { userQuery } from "../utils/data";
+import { fetchVendor } from "../utils/fetchVendor";
 
 const qrConfig = { fps: 10, qrbox: { width: 300, height: 300 } };
 
@@ -53,6 +55,8 @@ const Scanner = (props) => {
 };
 
 export default function VendorScanner() {
+  const [vendor, setVendor] = useState(fetchVendor());
+  const [posterWallet, setPosterWallet] = useState();
   const [alertMessage, setAlertMessage] = useState({
     message: "",
     error: false,
@@ -84,7 +88,7 @@ export default function VendorScanner() {
     }
   };
 
-  const handleScanQR = (data) => {
+  const handleScanQR = async (data) => {
     return new Promise((resolve, reject) => {
       handleStop();
       const url = new URL(data);
@@ -111,7 +115,7 @@ export default function VendorScanner() {
               vendor: vendor._id,
             };
 
-            client
+              client
               .create(doc)
               .then((res) => {
                 client
@@ -121,14 +125,38 @@ export default function VendorScanner() {
                   .commit()
                   .then((res) => {
                     resolve("Successfully redeemed!");
+                    const query = userQuery(poster);
+
+                    setTimeout(() => {
+                      client.fetch(query)
+                    .then((data) => {
+                      console.log(data);
+                      setPosterWallet(data[0].walletAddress);
+
+                      console.log("patching");
+                      client
+                      .patch(vendor._id)
+                      .set({
+                        pendingPayment : true
+                      })
+                      .setIfMissing({ pendingAddresses: [] })
+                      .append("pendingAddresses", [data[0].walletAddress])
+                      .commit()
+                      .catch((err) => console.log(err));
+                    })
+                    .catch((err) => console.log(err));
+                    }, 10000);
+
                   })
                   .catch((err) => {
                     reject(err);
                   });
               })
-              .catch((err) => {
-                reject(err);
-              });
+
+            setTimeout(() => {
+              localStorage.setItem("campaign", JSON.stringify(fetchVendor()));
+              console.log("updated!");
+            }, 15000);
           }
         });
       }

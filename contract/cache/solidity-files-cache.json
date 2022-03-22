@@ -2,8 +2,8 @@
   "_format": "hh-sol-cache-2",
   "files": {
     "/Users/minhvu/Developer/jioleh/jioleh/contract/contracts/Campaign.sol": {
-      "lastModificationDate": 1647869433877,
-      "contentHash": "7ce3abf027147c8ca5e2e83156402b5b",
+      "lastModificationDate": 1647965081425,
+      "contentHash": "05d7aaf0047aabad77df56574d95d823",
       "sourceName": "contracts/Campaign.sol",
       "solcConfig": {
         "version": "0.8.10",

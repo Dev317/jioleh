@@ -85,21 +85,17 @@ export default function VendorCreateCampaign() {
 
     const campaignCount = await factoryContract.getTotalCampaigns();
     const campaignAddress = await factoryContract.getCampaignAddress(campaignCount - 1);
-    const campaignContract = getCampaignContract(campaignAddress);
-    transactionHash = await campaignContract.funding({ value : parsedBudget});
-    await transactionHash.wait();
 
-    let campaignFunding = await campaignContract.getBalance();
-    campaignFunding = ethers.utils.formatEther(campaignFunding);
     console.log('Campaign created successfully!');
     console.log("Campaign address: ",campaignAddress);
-    console.log("Campaign balance: ", campaignFunding);
     return campaignAddress;
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const contractAddress = createCampaign(form);
+    let contractAddress = await createCampaign(form);
+    contractAddress = contractAddress.toString();
+
     client
       .patch(vendor._id)
       .set({
@@ -131,7 +127,7 @@ export default function VendorCreateCampaign() {
           >
           Connect Wallet
         </button>) : (<button
-          onClick={() => { window.open("https://pay.sendwyre.com/purchase?accountId=AC-7AG3W4XH4N2&utm_campaign=AC-7AG3W4XH4N2&destCurrency=ETH&utm_medium=widget&paymentMethod=debit-card&reservation=4G2AMGQED8WTEUFH272A&dest=ethereum%3A0x8ec69229fe781fa9fbae3bb07bf0daec7f9712ea&utm_source=checkout" , "_blank");}}
+          onClick={() => { window.open("https://pay.sendwyre.com/" , "_blank");}}
           className="bg-purple-500 text-white font-bold p-2 rounded-full w-fit outline-none"
           >
           Fund Wallet
