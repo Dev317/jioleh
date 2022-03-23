@@ -88,7 +88,7 @@ export default function VendorScanner() {
     }
   };
 
-  const handleScanQR = async (data) => {
+  const handleScanQR = (data) => {
     return new Promise((resolve, reject) => {
       handleStop();
       const url = new URL(data);
@@ -129,34 +129,32 @@ export default function VendorScanner() {
 
                     setTimeout(() => {
                       client.fetch(query)
-                    .then((data) => {
-                      console.log(data);
-                      setPosterWallet(data[0].walletAddress);
+                            .then((data) => {
+                              setPosterWallet(data[0].walletAddress);
+                              console.log("Adding new address to bbackend");
 
-                      console.log("patching");
-                      client
-                      .patch(vendor._id)
-                      .set({
-                        pendingPayment : true
-                      })
-                      .setIfMissing({ pendingAddresses: [] })
-                      .append("pendingAddresses", [data[0].walletAddress])
-                      .commit()
-                      .catch((err) => console.log(err));
-                    })
-                    .catch((err) => console.log(err));
-                    }, 10000);
-
+                              client
+                              .patch(vendor._id)
+                              .set({
+                                pendingPayment : true
+                              })
+                              .setIfMissing({ pendingAddresses: [] })
+                              .append("pendingAddresses", [data[0].walletAddress])
+                              .commit()
+                              .catch((err) => console.log(err));
+                          })
+                          .catch((err) => console.log(err));
+                          }, 3000);
                   })
-                  .catch((err) => {
-                    reject(err);
-                  });
+              .catch((err) => {
+                reject(err);
+              });
               })
 
             setTimeout(() => {
+              console.log("Updating client campaign");
               localStorage.setItem("campaign", JSON.stringify(fetchVendor()));
-              console.log("updated!");
-            }, 15000);
+            }, 5000);
           }
         });
       }
