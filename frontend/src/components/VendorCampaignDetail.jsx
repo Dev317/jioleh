@@ -120,7 +120,7 @@ const VendorCampaignDetail = () => {
         await campaignContract.sendReward(vendor.pendingAddresses[0], { value: parsedRewardAmount, gasPrice: '90000', gasLimit: '2500000'});
         const newBudget = vendor.budget - vendor.rewardAmount;
 
-        const pendingPayment = vendor.pendingAddresses.length === 1 ? false : true
+        const pendingPayment = (vendor.pendingAddresses.length - 1) === 0 ? false : true
 
         console.log("updating backend");
         await client.patch(vendor._id)
