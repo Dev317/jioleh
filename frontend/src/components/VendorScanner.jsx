@@ -55,8 +55,6 @@ const Scanner = (props) => {
 };
 
 export default function VendorScanner() {
-  const [vendor, setVendor] = useState(fetchVendor());
-  const [posterWallet, setPosterWallet] = useState();
   const [alertMessage, setAlertMessage] = useState({
     message: "",
     error: false,
@@ -97,7 +95,7 @@ export default function VendorScanner() {
       } else {
         const viewer = url.searchParams.get("viewer");
         const poster = url.searchParams.get("poster");
-        if (viewer == poster)
+        if (viewer === poster)
           reject(new Error("Cannot scan user's own QR code"));
         const query =
           '*[_type == "qr_scanned" && viewer == $viewer && vendor == $vendor]';
@@ -127,12 +125,14 @@ export default function VendorScanner() {
                     resolve("Successfully redeemed!");
                     const query = userQuery(poster);
 
+                    // Retrieving promoter wallet address
                     setTimeout(() => {
                       client.fetch(query)
                             .then((data) => {
-                              setPosterWallet(data[0].walletAddress);
-                              console.log("Adding new address to bbackend");
+                              console.log("Promoter address:", data[0].walletAddress);
 
+                              // Updating vendor 'pendingPayment' and 'pendingAddress' attributes
+                              console.log("Adding new address to backend");
                               client
                               .patch(vendor._id)
                               .set({
@@ -151,10 +151,11 @@ export default function VendorScanner() {
               });
               })
 
+            // Updating vendor's campaign attributes
             setTimeout(() => {
               console.log("Updating client campaign");
               localStorage.setItem("campaign", JSON.stringify(fetchVendor()));
-            }, 5000);
+            }, 6000);
           }
         });
       }
