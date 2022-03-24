@@ -1,8 +1,9 @@
 import React, { useEffect, useState, useRef } from "react";
 import { Html5Qrcode } from "html5-qrcode";
 import { client } from "../client";
-import { userQuery } from "../utils/data";
+import { userQuery, vendorQuery } from "../utils/data";
 import { fetchVendor } from "../utils/fetchVendor";
+import { useNavigate } from "react-router-dom";
 
 const qrConfig = { fps: 10, qrbox: { width: 300, height: 300 } };
 
@@ -60,6 +61,8 @@ export default function VendorScanner() {
     error: false,
     show: false,
   });
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (alertMessage.show) {
@@ -122,9 +125,7 @@ export default function VendorScanner() {
                   .append("visitedPlacesId", [vendor._id])
                   .commit()
                   .then((res) => {
-                    resolve("Successfully redeemed!");
                     const query = userQuery(poster);
-
                     // Retrieving promoter wallet address
                     setTimeout(() => {
                       client.fetch(query)
@@ -154,8 +155,15 @@ export default function VendorScanner() {
             // Updating vendor's campaign attributes
             setTimeout(() => {
               console.log("Updating client campaign");
-              localStorage.setItem("campaign", JSON.stringify(fetchVendor()));
+              client.fetch(vendorQuery(vendor._id))
+                    .then((data) => {
+                      window.localStorage.setItem('campaign', JSON.stringify(data[0]));
+                      window.localStorage.setItem('vendor', JSON.stringify(data[0]));
+                    })
+                    .catch((err) => console.log(err));
+              // navigate("/vendor/vendor-campaign-detail");
             }, 6000);
+            resolve("Successfully redeemed!");
           }
         });
       }

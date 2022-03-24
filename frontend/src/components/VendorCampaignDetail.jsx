@@ -19,7 +19,7 @@ const getCampaignContract = (campaignAddress) => {
         Campaign.abi,
         signer
     );
-  
+
     return factoryContract;
   }
 
@@ -120,8 +120,9 @@ const VendorCampaignDetail = () => {
         await campaignContract.sendReward(vendor.pendingAddresses[0], { value: parsedRewardAmount, gasPrice: '90000', gasLimit: '2500000'});
         const newBudget = vendor.budget - vendor.rewardAmount;
 
-        const pendingPayment = (vendor.pendingAddresses.length - 1) === 0 ? true : false
+        const pendingPayment = vendor.pendingAddresses.length === 1 ? false : true
 
+        console.log("updating backend");
         await client.patch(vendor._id)
                 .set({
                     budget : newBudget,
@@ -132,6 +133,7 @@ const VendorCampaignDetail = () => {
                 .then((updatedVendor) => {
                     setVendor(updatedVendor)
                 });
+        window.location.reload();
     }
 
 
@@ -208,7 +210,6 @@ const VendorCampaignDetail = () => {
                                         value={form.duration}
                                         onChange={(e) => setFormField("duration", e.target.value)} />
                                 </div>
-                                
 
                                 <div className="flex justify-between ...">
                                     <button
