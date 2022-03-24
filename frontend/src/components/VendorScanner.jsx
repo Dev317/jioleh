@@ -116,7 +116,6 @@ export default function VendorScanner() {
               vendor: vendor._id,
             };
             const query = userQuery(poster);
-
             client
               .create(doc)
               .then((res) => {
@@ -146,10 +145,9 @@ export default function VendorScanner() {
                                 .then((data) => {
                                   window.localStorage.setItem('campaign', JSON.stringify(data[0]));
                                   window.localStorage.setItem('vendor', JSON.stringify(data[0]));
+                                  resolve("Successful");
                                 })
-                                .then((res) => {
-                                  resolve("Succesfully redeemed!");
-                                })
+                                
                             })
                           })
                   })
