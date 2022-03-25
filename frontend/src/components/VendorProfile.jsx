@@ -185,22 +185,22 @@ const VendorProfile = () => {
   const logout = () => {
     localStorage.clear();
 
-    navigate('/login')
-  }
+    navigate("/login");
+  };
 
   if (!vendor) {
-    return <Spinner message ='Loading profile...'/>
+    return <Spinner message="Loading profile..." />;
   }
 
   return (
-    <div className='relative pb-2 h-full justify-center items-center'>
-      <div className='flex flex-col pb-5'>
-        <div className='relative flex flex-col mb-7'>
-          <div className='flex flex-col justify-center items-center'>
-            <img 
+    <div className="relative pb-2 h-full justify-center items-center">
+      <div className="flex flex-col pb-5">
+        <div className="relative flex flex-col mb-7">
+          <div className="flex flex-col justify-center items-center">
+            <img
               src={randomImg}
-              className='w-full h-370 2xl:h-510 shadow-lg object-cove'
-              alt='banner-pic'
+              className="w-full h-370 2xl:h-510 shadow-lg object-cove"
+              alt="banner-pic"
             />
             <img
               className="rounded-full w-20 h-20 -mt-10 shadow-xl object-cover"
@@ -208,7 +208,7 @@ const VendorProfile = () => {
               alt="vendor-pic"
             />
           </div>
-          
+
           <h1 className="font-bold text-2xl text-center mt-3">
             {vendor.name}
           </h1>

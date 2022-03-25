@@ -24,20 +24,22 @@ const VendorCampaignDetail = () => {
     };
 
     useEffect(() => {
-        setVendor(JSON.parse(localStorage.getItem("campaign")));
+        localStorage.getItem("campaign") ? setVendor(JSON.parse(localStorage.getItem("campaign"))) : setVendor(fetchVendor());
     }, []);
 
     useEffect(() => {
         localStorage.setItem("campaign", JSON.stringify(vendor));
 
-        setForm({
-            campaignName: vendor.campaignName,
-            budget: parseFloat(vendor.budget),
-            rewardAmount: parseFloat(vendor.rewardAmount),
-            dailyLimit: parseInt(vendor.dailyLimit),
-            startDate: vendor.startDate,
-            duration: parseInt(vendor.duration)
-        })
+        if (vendor != null) {
+            setForm({
+                campaignName: vendor.campaignName,
+                budget: parseFloat(vendor.budget),
+                rewardAmount: parseFloat(vendor.rewardAmount),
+                dailyLimit: parseInt(vendor.dailyLimit),
+                startDate: vendor.startDate,
+                duration: parseInt(vendor.duration)
+            })
+        }
 
         if (errorMessage.show) {
             new Promise((r) => {
@@ -47,7 +49,6 @@ const VendorCampaignDetail = () => {
     }, [vendor, errorMessage.show]);
 
     const handleUpdate = (e) => {
-        console.log(form)
         client
             .patch(vendor._id)
             .set({

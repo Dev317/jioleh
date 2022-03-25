@@ -101,7 +101,10 @@ export default {
       name: "duration",
       title: "Campaign Duration (Days)",
       type: "number",
-    }
+    },
   ],
+  initialValue: {
+    hasCampaign: false,
+  },
   validation: (Rule) => Rule.required(),
 };

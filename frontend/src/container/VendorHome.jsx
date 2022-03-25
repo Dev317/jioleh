@@ -63,7 +63,10 @@ const VendorHome = () => {
                 onClick={() => setToggleSidebar(false)}
               />
             </div>
-            <VendorSidebar user={vendor && vendor} closeToggle={setToggleSidebar} />
+            <VendorSidebar
+              user={vendor && vendor}
+              closeToggle={setToggleSidebar}
+            />
           </div>
         )}
       </div>
@@ -73,9 +76,15 @@ const VendorHome = () => {
           <Route path="/vendor-profile/:vendorId" element={<VendorProfile />} />
           <Route path="/user-profile/:userId" element={<UserProfile />} />
           <Route path="/*" element={<VendorPins vendor={vendor && vendor} />} />
-          <Route path="/vendor-campaign-detail" element={<VendorCampaignDetail />} />
+          <Route
+            path="/vendor-campaign-detail"
+            element={<VendorCampaignDetail />}
+          />
           <Route path="/vendor-scanner" element={<VendorScanner />} />
-          <Route path="/vendor-create-campaign" element={<VendorCreateCampaign />} />
+          <Route
+            path="/vendor-create-campaign"
+            element={<VendorCreateCampaign />}
+          />
         </Routes>
       </div>
     </div>
