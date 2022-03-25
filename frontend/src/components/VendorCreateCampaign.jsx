@@ -33,8 +33,8 @@ const getCampaignContract = (campaignAddress) => {
   return factoryContract;
 };
 
-export default function VendorCreateCampaign() {
-  const [vendor, setVendor] = useState(fetchVendor());
+export default function VendorCreateCampaign(props) {
+  const [vendor, setVendor] = useState(props.vendor);
   const [form, setForm] = useState({});
   const navigate = useNavigate();
   const { connectWallet, currentAccount } = useContext(TokenContext);
@@ -54,7 +54,7 @@ export default function VendorCreateCampaign() {
   useEffect(() => {
     localStorage.getItem("campaign")
       ? setVendor(JSON.parse(localStorage.getItem("campaign")))
-      : setVendor(fetchVendor());
+      : setVendor(props.vendor);
   }, []);
 
   useEffect(() => {

@@ -77,12 +77,15 @@ const VendorHome = () => {
           <Route path="/*" element={<VendorPins vendor={vendor && vendor} />} />
           <Route
             path="/vendor-campaign-detail"
-            element={<VendorCampaignDetail />}
+            element={<VendorCampaignDetail vendor={vendor && vendor} />}
           />
-          <Route path="/vendor-scanner" element={<VendorScanner />} />
+          <Route
+            path="/vendor-scanner"
+            element={<VendorScanner vendor={vendor && vendor} />}
+          />
           <Route
             path="/vendor-create-campaign"
-            element={<VendorCreateCampaign />}
+            element={<VendorCreateCampaign vendor={vendor && vendor} />}
           />
         </Routes>
       </div>
