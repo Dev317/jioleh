@@ -82,12 +82,11 @@ export default function VendorCreateCampaign() {
   );
 
     await transactionHash.wait();
-
     const campaignCount = await factoryContract.getTotalCampaigns();
     const campaignAddress = await factoryContract.getCampaignAddress(campaignCount - 1);
 
-    console.log('Campaign created successfully!');
-    console.log("Campaign address: ",campaignAddress);
+    // console.log('Campaign created successfully!');
+    // console.log("Campaign address: ",campaignAddress);
     return campaignAddress;
   }
 
@@ -112,7 +111,7 @@ export default function VendorCreateCampaign() {
       .commit()
       .then((updatedVendor) => {
         localStorage.setItem("campaign", JSON.stringify(updatedVendor));
-        navigate("/vendor");
+        navigate("/vendor/vendor-campaign-detail");
       })
       .catch((err) => setErrorMessage({ message: err.message, show: true }));
   };

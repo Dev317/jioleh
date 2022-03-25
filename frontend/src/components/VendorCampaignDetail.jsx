@@ -10,7 +10,6 @@ const regBtnStyles = 'bg-red-500 text-white font-bold p-2 rounded-full w-fit out
 const delBtnStyles = 'bg-white text-red-500 font-bold p-2 border border-red-500 rounded-full w-fit outline-none';
 const rewardBtnStyles = 'bg-purple-500 text-white font-bold p-2 rounded-full w-fit outline-none';
 
-
 const getCampaignContract = (campaignAddress) => {
     const provider = new ethers.providers.Web3Provider(window.ethereum);
     const signer = provider.getSigner();
@@ -122,7 +121,7 @@ const VendorCampaignDetail = () => {
 
         const pendingPayment = (vendor.pendingAddresses.length - 1) === 0 ? false : true
 
-        console.log("updating backend");
+        // console.log("updating backend");
         await client.patch(vendor._id)
                 .set({
                     budget : newBudget,

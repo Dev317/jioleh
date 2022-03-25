@@ -128,9 +128,9 @@ export default function VendorScanner() {
                     // Retrieving promoter wallet address
                     client.fetch(query)
                           .then((data) => {
-                          console.log("Promoter address:", data[0].walletAddress);
+                          // console.log("Promoter address:", data[0].walletAddress);
                           // Updating vendor 'pendingPayment' and 'pendingAddress' attributes
-                          console.log("Adding new address to backend");
+                          // console.log("Adding new address to backend");
                           client
                             .patch(vendor._id)
                             .set({
@@ -140,14 +140,13 @@ export default function VendorScanner() {
                             .append("pendingAddresses", [data[0].walletAddress])
                             .commit()
                             .then((res) => {
-                              console.log("Updating client campaign");
+                              // console.log("Updating client campaign");
                               client.fetch(vendorQuery(vendor._id))
                                 .then((data) => {
                                   window.localStorage.setItem('campaign', JSON.stringify(data[0]));
                                   window.localStorage.setItem('vendor', JSON.stringify(data[0]));
                                   resolve("Successful");
                                 })
-                                
                             })
                           })
                   })
