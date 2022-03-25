@@ -23,7 +23,7 @@ const App = () => {
     <TokenProvider>
       <Routes>
         <Route path="/login" element={<Login />} />
-        <Route path="/vendor-scanner" element={<VendorScanner />} />
+        {/* <Route path="/vendor-scanner" element={<VendorScanner />} /> */}
         <Route path="/vendor-login" element={<VendorLogin />} />
         <Route path="/vendor-signup" element={<VendorSignUp />} />
         <Route path="/*" element={<Home />} />

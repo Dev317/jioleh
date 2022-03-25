@@ -27,7 +27,6 @@ const VendorHome = () => {
     const query = vendorQuery(vendorInfo?._id);
     client.fetch(query).then((data) => {
       setVendor(data[0]);
-      console.log(data[0]);
     });
   }, []);
 
