@@ -61,6 +61,16 @@ export default {
       type: "string",
     },
     {
+      name: "walletAddress",
+      title: "Wallet Address",
+      type: "string",
+    },
+    {
+      name: "contractAddress",
+      title: "Contract Address",
+      type: "string",
+    },
+    {
       name: "location",
       title: "Location",
       type: "string",
@@ -105,6 +115,17 @@ export default {
       title: "Campaign Duration (Days)",
       type: "number",
     },
+    {
+      name : "pendingPayment",
+      title: "Pending Payment",
+      type: "boolean"
+    },
+    {
+      name : "pendingAddresses",
+      title: "Pending Addresses",
+      type: "array",
+      of: [{ type: "string" }],
+    }
   ],
   initialValue: {
     hasCampaign: false,
