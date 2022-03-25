@@ -1,6 +1,9 @@
 import React, { useEffect, useState, useRef } from "react";
 import { Html5Qrcode } from "html5-qrcode";
 import { client } from "../client";
+import { userQuery, vendorQuery } from "../utils/data";
+import { fetchVendor } from "../utils/fetchVendor";
+import { useNavigate } from "react-router-dom";
 
 const qrConfig = { fps: 10, qrbox: { width: 300, height: 300 } };
 
@@ -59,6 +62,8 @@ export default function VendorScanner() {
     show: false,
   });
 
+  const navigate = useNavigate();
+
   useEffect(() => {
     if (alertMessage.show) {
       new Promise((r) => {
@@ -93,7 +98,7 @@ export default function VendorScanner() {
       } else {
         const viewer = url.searchParams.get("viewer");
         const poster = url.searchParams.get("poster");
-        if (viewer == poster)
+        if (viewer === poster)
           reject(new Error("Cannot scan user's own QR code"));
         const query =
           '*[_type == "qr_scanned" && viewer == $viewer && vendor == $vendor]';
@@ -110,7 +115,7 @@ export default function VendorScanner() {
               poster: poster,
               vendor: vendor._id,
             };
-
+            const query = userQuery(poster);
             client
               .create(doc)
               .then((res) => {
@@ -120,15 +125,35 @@ export default function VendorScanner() {
                   .append("visitedPlacesId", [vendor._id])
                   .commit()
                   .then((res) => {
-                    resolve("Successfully redeemed!");
+                    // Retrieving promoter wallet address
+                    client.fetch(query)
+                          .then((data) => {
+                          // console.log("Promoter address:", data[0].walletAddress);
+                          // Updating vendor 'pendingPayment' and 'pendingAddress' attributes
+                          // console.log("Adding new address to backend");
+                          client
+                            .patch(vendor._id)
+                            .set({
+                                pendingPayment : true
+                            })
+                            .setIfMissing({ pendingAddresses: [] })
+                            .append("pendingAddresses", [data[0].walletAddress])
+                            .commit()
+                            .then((res) => {
+                              // console.log("Updating client campaign");
+                              client.fetch(vendorQuery(vendor._id))
+                                .then((data) => {
+                                  window.localStorage.setItem('campaign', JSON.stringify(data[0]));
+                                  window.localStorage.setItem('vendor', JSON.stringify(data[0]));
+                                  resolve("Successful");
+                                })
+                            })
+                          })
                   })
-                  .catch((err) => {
-                    reject(err);
-                  });
-              })
               .catch((err) => {
                 reject(err);
               });
+            })
           }
         });
       }

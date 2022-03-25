@@ -1,12 +1,30 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { client } from '../client';
 import Spinner from './Spinner';
 import { fetchVendor } from '../utils/fetchVendor';
+import { TokenContext } from '../context/TokenContext';
+import { ethers } from 'ethers';
+import Campaign from '../contracts/Campaign.json';
 
 const regBtnStyles = 'bg-red-500 text-white font-bold p-2 rounded-full w-fit outline-none';
 const delBtnStyles = 'bg-white text-red-500 font-bold p-2 border border-red-500 rounded-full w-fit outline-none';
+const rewardBtnStyles = 'bg-purple-500 text-white font-bold p-2 rounded-full w-fit outline-none';
+
+const getCampaignContract = (campaignAddress) => {
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
+    const signer = provider.getSigner();
+    const factoryContract = new ethers.Contract(
+        campaignAddress,
+        Campaign.abi,
+        signer
+    );
+
+    return factoryContract;
+  }
 
 const VendorCampaignDetail = () => {
+    const { connectWallet, currentAccount } = useContext(TokenContext);
+
     const [vendor, setVendor] = useState(fetchVendor());
     const [editingMode, setEditingMode] = useState(false);
     const [form, setForm] = useState();
@@ -78,7 +96,9 @@ const VendorCampaignDetail = () => {
                 rewardAmount: 0,
                 dailyLimit: 0,
                 startDate: "1970-01-01",
-                duration: 0
+                duration: 0,
+                contractAddress: "",
+                pendingPayment : false
             })
             .commit()
             .then((updatedVendor) => {
@@ -88,6 +108,33 @@ const VendorCampaignDetail = () => {
                 setErrorMessage({ message: err.message, show: true })
             );
     };
+
+    const transferReward = async() => {
+        const ethValue = vendor.rewardAmount;
+        const parsedRewardAmount = ethers.utils.parseEther(ethValue.toString());
+
+        const campaignContract = getCampaignContract(vendor.contractAddress);
+
+        await campaignContract.approvePromoter("promoterUsername", "promoterUserId", "postId", vendor.pendingAddresses[0], {gasLimit : 2500000});
+        await campaignContract.sendReward(vendor.pendingAddresses[0], { value: parsedRewardAmount, gasPrice: '90000', gasLimit: '2500000'});
+        const newBudget = vendor.budget - vendor.rewardAmount;
+
+        const pendingPayment = (vendor.pendingAddresses.length - 1) === 0 ? false : true
+
+        // console.log("updating backend");
+        await client.patch(vendor._id)
+                .set({
+                    budget : newBudget,
+                    pendingPayment : pendingPayment
+                })
+                .unset(['pendingAddresses[0]'])
+                .commit()
+                .then((updatedVendor) => {
+                    setVendor(updatedVendor)
+                });
+        window.location.reload();
+    }
+
 
     if (!vendor) {
         return <Spinner message='Loading campaign...' />
@@ -222,6 +269,20 @@ const VendorCampaignDetail = () => {
                                 </div>
                                 <div className="col-span-2 ...">
                                     <p className="break-words mt-3">{vendor.duration == null ? "-" : vendor.duration}</p>
+                                </div>
+
+                                <div className="...">
+                                    <p className="font-bold break-words mt-3">Payment Pending:</p>
+                                </div>
+                                <div className="flex flex-row col-span-2 ...">
+                                    {vendor.pendingPayment ? (
+                                    <button
+                                    type="button"
+                                    onClick={() => {transferReward();}}
+                                    className={`${rewardBtnStyles}`}
+                                >
+                                    Transfer
+                                </button>) : (<p className="break-words mt-3">No pending payment</p>)}
                                 </div>
 
                                 <button

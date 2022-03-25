@@ -1,12 +1,43 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { client } from "../client";
 import { fetchVendor } from "../utils/fetchVendor";
+import { TokenContext } from "../context/TokenContext";
+import { ethers } from 'ethers';
+import Factory from '../contracts/Factory.json'
+import Campaign from '../contracts/Campaign.json';
+
+const factoryAddress = process.env.REACT_APP_FACTORY_ADDRESS;
+
+const getFactoryContract = () => {
+  const provider = new ethers.providers.Web3Provider(window.ethereum);
+  const signer = provider.getSigner();
+  const factoryContract = new ethers.Contract(
+      factoryAddress,
+      Factory.abi,
+      signer
+  );
+
+  return factoryContract;
+}
+
+const getCampaignContract = (campaignAddress) => {
+  const provider = new ethers.providers.Web3Provider(window.ethereum);
+  const signer = provider.getSigner();
+  const factoryContract = new ethers.Contract(
+      campaignAddress,
+      Campaign.abi,
+      signer
+  );
+
+  return factoryContract;
+}
 
 export default function VendorCreateCampaign() {
   const [vendor, setVendor] = useState(fetchVendor());
   const [form, setForm] = useState({});
   const navigate = useNavigate();
+  const { connectWallet, currentAccount } = useContext(TokenContext);
 
   const [errorMessage, setErrorMessage] = useState({
     message: "",
@@ -36,8 +67,34 @@ export default function VendorCreateCampaign() {
     }
   }, [vendor, errorMessage.show]);
 
-  const handleSubmit = (e) => {
+  const createCampaign = async (form) => {
+    const factoryContract = getFactoryContract();
+    const parsedBudget = ethers.utils.parseEther(form.budget);
+    const parsedRewardAmount = ethers.utils.parseEther(form.rewardAmount);
+
+    let transactionHash = await factoryContract.createCampaign(
+      vendor.walletAddress,
+      form.campaignName,
+      parsedRewardAmount,
+      parsedBudget,
+      parseInt(form.dailyLimit),
+      parseInt(form.duration)
+  );
+
+    await transactionHash.wait();
+    const campaignCount = await factoryContract.getTotalCampaigns();
+    const campaignAddress = await factoryContract.getCampaignAddress(campaignCount - 1);
+
+    // console.log('Campaign created successfully!');
+    // console.log("Campaign address: ",campaignAddress);
+    return campaignAddress;
+  }
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    let contractAddress = await createCampaign(form);
+    contractAddress = contractAddress.toString();
+
     client
       .patch(vendor._id)
       .set({
@@ -48,11 +105,13 @@ export default function VendorCreateCampaign() {
         dailyLimit: parseInt(form.dailyLimit),
         startDate: form.startDate,
         duration: parseInt(form.duration),
+        contractAddress : contractAddress,
+        pendingPayment : false
       })
       .commit()
       .then((updatedVendor) => {
         localStorage.setItem("campaign", JSON.stringify(updatedVendor));
-        navigate("/vendor");
+        navigate("/vendor/vendor-campaign-detail");
       })
       .catch((err) => setErrorMessage({ message: err.message, show: true }));
   };
@@ -60,6 +119,18 @@ export default function VendorCreateCampaign() {
   return (
     <div className="relative pb-2 h-full justify-center items-center">
       <div className="flex flex-col pb-5">
+        <br></br>
+        {!currentAccount ? (<button
+          onClick={() => connectWallet(vendor._id)}
+          className="bg-blue-500 text-white font-bold p-2 rounded-full w-fit outline-none"
+          >
+          Connect Wallet
+        </button>) : (<button
+          onClick={() => { window.open("https://pay.sendwyre.com/" , "_blank");}}
+          className="bg-purple-500 text-white font-bold p-2 rounded-full w-fit outline-none"
+          >
+          Fund Wallet
+        </button>)}
         <div className="relative flex flex-col mb-7">
           {vendor.hasCampaign ? (
             <p className="block font-bold mb-2 mt-3">
