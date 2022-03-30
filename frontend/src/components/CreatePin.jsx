@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { AiOutlineCloudUpload } from "react-icons/ai";
 import { MdDelete } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
@@ -6,8 +6,10 @@ import { useNavigate } from "react-router-dom";
 import { client } from "../client";
 import Spinner from "./Spinner";
 import { categories } from "../utils/data";
+import { TokenContext } from "../context/TokenContext";
 
 const CreatePin = ({ user }) => {
+  const { currentAccount, connectWallet } = useContext(TokenContext);
   const [title, setTitle] = useState("");
   const [about, setAbout] = useState("");
   const [destination, setDestination] = useState("");
@@ -233,13 +235,20 @@ const CreatePin = ({ user }) => {
             </div>
 
             <div className="flex justify-end items-end mt-5">
+            {!currentAccount ? (<button
+                type="button"
+                className="bg-purple-500 text-white font-bold p-2 rounded-full w-28 outline-none"
+                onClick={() => connectWallet(user._id)}
+              >
+                Connect Wallet
+              </button>) : (
               <button
                 type="button"
                 onClick={savePin}
                 className="bg-red-500 text-white font-bold p-2 rounded-full w-28 outline-none"
               >
-                Save pin
-              </button>
+                Save FoodStep
+              </button>)}
             </div>
           </div>
         </div>

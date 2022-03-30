@@ -4,8 +4,8 @@ export default {
   type: "document",
   fields: [
     {
-      name: "userName",
-      title: "UserName",
+      name: "username",
+      title: "Username",
       type: "string",
     },
     {
@@ -33,6 +33,11 @@ export default {
       type: "array",
       of: [{ type: "string" }],
       validation: (Rule) => Rule.unique(),
+    },
+    {
+      name: "walletAddress",
+      title: "Wallet Address",
+      type: "string",
     },
   ],
 };

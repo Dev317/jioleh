@@ -11,14 +11,13 @@ const Login = () => {
 
   const responseGoogle = (res) => {
     console.log(res ? res : "empty object!");
-    console.log(res.profileObj);
     localStorage.setItem("user", JSON.stringify(res.profileObj));
 
     let { name, googleId, imageUrl } = res.profileObj;
     const doc = {
       _id: googleId,
       _type: "user",
-      userName: name,
+      username: name,
       image: imageUrl,
     };
 
@@ -41,7 +40,7 @@ const Login = () => {
         />
       </div>
       <div className="absolute flex flex-col justify-center items-center top-0 right-0 left-0 bottom-0 h-screen bg-blackOverlay">
-        <div class="p-5 max-w-sm rounded overflow-hidden shadow-lg bg-mainColor flex flex-col">
+        <div className="p-5 max-w-sm rounded overflow-hidden shadow-lg bg-mainColor flex flex-col">
           <div className="flex py-5 justify-center items-center">
             <img src={logo} alt="logo" width="200px" />
           </div>

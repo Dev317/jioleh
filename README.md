@@ -4,12 +4,11 @@
 Pinterest clone from : https://github.com/adrianhajdin/project_shareme_social_media, https://gist.github.com/adrianhajdin/a53fdfe71225af2f550b853ae983f0d0
 
 # How to Sanity
-Firstly, ensure that node modules are installed by running `npm install`.
-Next install Sanity CLI via `npm install -g @sanity/cli`.
-Open the backend folder by `cd backend` then initiate Sanity backend GUI, please run `sanity start` to compile and get the back end live on `localhost:3333`.
-Please inform if you are not added into to project as there is an authentication to access the project backend!
-
-To edit other Sanity-related project info, run `sanity manage` to open the Sanity project management UI.
+Firstly, ensure that node modules are installed by running `npm install`. <br>
+Next install Sanity CLI via `npm install -g @sanity/cli`. <br>
+Open the backend folder by `cd backend` then initiate Sanity backend GUI, please run `sanity start` to compile and get the back end live on `localhost:3333`. <br>
+Please inform if you are not added into to project as there is an authentication to access the project backend! <br>
+To edit other Sanity-related project info, run `sanity manage` to open the Sanity project management UI. <br>
 
 
 # How to React

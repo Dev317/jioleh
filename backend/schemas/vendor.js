@@ -38,6 +38,11 @@ export default {
         }).error(),
     },
     {
+      name: "image",
+      title: "Image",
+      type: "string",
+    },
+    {
       name: "password",
       title: "Password",
       type: "string",
@@ -53,10 +58,74 @@ export default {
       type: "string",
     },
     {
-      name: "rewardMoney",
-      title: "Reward Money per Scan",
+      name: "walletAddress",
+      title: "Wallet Address",
+      type: "string",
+    },
+    {
+      name: "contractAddress",
+      title: "Contract Address",
+      type: "string",
+    },
+    {
+      name: "location",
+      title: "Location",
+      type: "string",
+    },
+    {
+      name: "description",
+      title: "Description",
+      type: "string",
+    },
+    {
+      name: "hasCampaign",
+      title: "Has Campaign?",
+      type: "boolean",
+    },
+    {
+      name: "campaignName",
+      title: "Campaign Name",
+      type: "string",
+    },
+    {
+      name: "budget",
+      title: "Campaign Budget",
       type: "number",
     },
+    {
+      name: "rewardAmount",
+      title: "Reward Amount per Scan",
+      type: "number",
+    },
+    {
+      name: "dailyLimit",
+      title: "Daily Redemption Limit",
+      type: "number",
+    },
+    {
+      name: "startDate",
+      title: "Campaign Start Date",
+      type: "date",
+    },
+    {
+      name: "duration",
+      title: "Campaign Duration (Days)",
+      type: "number",
+    },
+    {
+      name : "pendingPayment",
+      title: "Pending Payment",
+      type: "boolean"
+    },
+    {
+      name : "pendingAddresses",
+      title: "Pending Addresses",
+      type: "array",
+      of: [{ type: "string" }],
+    }
   ],
+  initialValue: {
+    hasCampaign: false,
+  },
   validation: (Rule) => Rule.required(),
 };

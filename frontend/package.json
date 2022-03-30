@@ -10,6 +10,7 @@
     "@testing-library/react": "^12.1.2",
     "@testing-library/user-event": "^13.5.0",
     "bcryptjs": "^2.4.3",
+    "ethers": "^5.6.1",
     "html5-qrcode": "^2.1.6",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",

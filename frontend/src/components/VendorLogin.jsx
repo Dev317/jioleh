@@ -42,7 +42,7 @@ export default function VendorLogin() {
           if (doesPasswordMatch) {
             delete vendorAcc.password;
             localStorage.setItem("vendor", JSON.stringify(vendorAcc));
-            navigate("/vendor-scanner");
+            navigate("/vendor");
           } else {
             setErrorMessage({ message: "Wrong password.", show: true });
           }
