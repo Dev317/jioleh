@@ -1,9 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import { Html5Qrcode } from "html5-qrcode";
 import { client } from "../client";
-import { userQuery, vendorQuery } from "../utils/data";
-import { fetchVendor } from "../utils/fetchVendor";
-import { useNavigate } from "react-router-dom";
+import { fetchUser } from "../utils/fetchUser";
 
 const qrConfig = { fps: 10, qrbox: { width: 300, height: 300 } };
 
@@ -56,16 +54,13 @@ const Scanner = (props) => {
   );
 };
 
-export default function VendorScanner({ vendor }) {
+export default function UserScanner({ user }) {
+  const [startQR, setStartQR] = useState(true);
   const [alertMessage, setAlertMessage] = useState({
     message: "",
     error: false,
     show: false,
   });
-
-  const [startQR, setStartQR] = useState(true);
-
-  const navigate = useNavigate();
 
   useEffect(() => {
     if (alertMessage.show) {
@@ -85,68 +80,27 @@ export default function VendorScanner({ vendor }) {
       if (url.hostname !== "jioleh.kuehbies.com") {
         reject(new Error("Invalid QR code"));
       } else {
-        const viewer = url.searchParams.get("viewer");
-        const poster = url.searchParams.get("poster");
-        if (viewer === poster)
-          reject(new Error("Cannot scan user's own QR code"));
-        const query =
-          '*[_type == "qr_scanned" && viewer == $viewer && vendor == $vendor]';
-        //const vendor = JSON.parse(localStorage.getItem("vendor"));
-        const params = { viewer: viewer, vendor: vendor._id };
-
-        client.fetch(query, params).then((qrScanned) => {
-          if (qrScanned.length > 0) {
-            reject(new Error("Already redeemed for this vendor"));
-          } else {
-            const doc = {
-              _type: "qr_scanned",
-              viewer: viewer,
-              poster: poster,
-              vendor: vendor._id,
-            };
-            const query = userQuery(poster);
-            client.create(doc).then((res) => {
+        const vendor = url.searchParams.get("vendor");
+        client
+          .getDocument(user?._id)
+          .then((userDoc) => {
+            if (userDoc.visitedPlacesId.includes(vendor)) {
+              reject(new Error("Already visited this vendor"));
+            } else {
               client
-                .patch(viewer)
+                .patch(userDoc._id)
                 .setIfMissing({ visitedPlacesId: [] })
-                .append("visitedPlacesId", [vendor._id])
+                .append("visitedPlacesId", [vendor])
                 .commit()
                 .then((res) => {
-                  // Retrieving promoter wallet address
-                  client.fetch(query).then((data) => {
-                    // console.log("Promoter address:", data[0].walletAddress);
-                    // Updating vendor 'pendingPayment' and 'pendingAddress' attributes
-                    // console.log("Adding new address to backend");
-                    client
-                      .patch(vendor._id)
-                      .set({
-                        pendingPayment: true,
-                      })
-                      .setIfMissing({ pendingAddresses: [] })
-                      .append("pendingAddresses", [data[0].walletAddress])
-                      .commit()
-                      .then((res) => {
-                        // console.log("Updating client campaign");
-                        client.fetch(vendorQuery(vendor._id)).then((data) => {
-                          window.localStorage.setItem(
-                            "campaign",
-                            JSON.stringify(data[0])
-                          );
-                          window.localStorage.setItem(
-                            "vendor",
-                            JSON.stringify(data[0])
-                          );
-                          resolve("Successful");
-                        });
-                      });
-                  });
+                  resolve("Successfully added!");
                 })
                 .catch((err) => {
                   reject(err);
                 });
-            });
-          }
-        });
+            }
+          })
+          .catch((err) => reject(err));
       }
     });
   };
@@ -162,9 +116,9 @@ export default function VendorScanner({ vendor }) {
   }
 
   return (
-    <div className="relative h-screen flex flex-col items-center">
+    <div className="relative pb-5 h-screen flex flex-col justify-center items-center">
       <span className="flex py-5">
-        <h1 className="text-lg font-bold mr-2">Scan a user's QR code</h1>
+        <h1 className="text-lg font-bold mr-2">Scan a vendor's QR code</h1>
       </span>
       <Scanner
         onResult={(res) => {
@@ -201,7 +155,7 @@ export default function VendorScanner({ vendor }) {
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              class="h-6 w-6"
+              className="inline flex-shrink-0 mr-3 w-5 h-5"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"

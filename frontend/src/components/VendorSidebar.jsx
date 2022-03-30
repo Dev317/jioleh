@@ -36,6 +36,15 @@ const VendorSidebar = ({ user, closeToggle }) => {
           >
             <RiHomeFill /> Home
           </NavLink>
+          <NavLink
+            to={`/vendor/vendor-qr`}
+            className={({ isActive }) =>
+              isActive ? isActiveStyle : isNotActiveStyle
+            }
+            onClick={handleCloseSidebar}
+          >
+            QR Code
+          </NavLink>
           <h3 className="mt-2 px-5 text-base 2xl:text-xl">Manage Campaign</h3>
           <NavLink
             to={`/vendor/vendor-campaign-detail`}
