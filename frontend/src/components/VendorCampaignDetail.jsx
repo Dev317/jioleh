@@ -153,19 +153,21 @@ const VendorCampaignDetail = (props) => {
   }
 
   return (
-    <div className="relative pb-2 h-full justify-center items-center">
+    <div className="relative pb-2 h-full justify-center">
       <div className="flex flex-col pb-5">
         {!vendor.hasCampaign ? (
-          <p className="block font-bold mb-2 mt-3">
-            A campaign has not been started.
-          </p>
+          <div className="relative flex flex-col w-full items-center">
+            <p className="block font-bold mb-2 mt-3">
+              A campaign has not been started.
+            </p>
+          </div>
         ) : (
-          <div className="relative flex flex-col mb-7">
+          <div className="relative flex flex-col w-full items-center">
             {editingMode ? (
-              <form className="w-full max-w-sm text-sm">
+              <form className="w-full max-w-sm text-sm p-5">
                 <div className="mb-4">
                   <label
-                    className="block font-bold mb-2 mt-3"
+                    className="block font-bold mb-2"
                     for="campaignName"
                   >
                     Campaign Name
@@ -268,101 +270,103 @@ const VendorCampaignDetail = (props) => {
                 </div>
               </form>
             ) : (
-              <div className="grid grid-cols-3 gap-2 text-sm">
-                <div className="...">
-                  <p className="font-bold break-words mt-3">Campaign Name:</p>
-                </div>
-                <div className="col-span-2 ...">
-                  <p className="break-words mt-3">
-                    {vendor.campaignName == null ? "-" : vendor.campaignName}
-                  </p>
-                </div>
-                <div className="...">
-                  <p className="font-bold break-words mt-3">Campaign Budget:</p>
-                </div>
-                <div className="col-span-2 ...">
-                  <p className="break-words mt-3">
-                    {vendor.budget == null ? "-" : vendor.budget}
-                  </p>
-                </div>
-                <div className="...">
-                  <p className="font-bold break-words mt-3">
-                    Reward Amount per Scan:
-                  </p>
-                </div>
-                <div className="col-span-2 ...">
-                  <p className="break-words mt-3">
-                    {vendor.rewardAmount == null ? "-" : vendor.rewardAmount}
-                  </p>
-                </div>
-                <div className="...">
-                  <p className="font-bold break-words mt-3">
-                    Daily Redemption Limit:
-                  </p>
-                </div>
-                <div className="col-span-2 ...">
-                  <p className="break-words mt-3">
-                    {vendor.dailyLimit == null ? "-" : vendor.dailyLimit}
-                  </p>
-                </div>
-                <div className="...">
-                  <p className="font-bold break-words mt-3">
-                    Campaign Start Date:
-                  </p>
-                </div>
-                <div className="col-span-2 ...">
-                  <p className="break-words mt-3">
-                    {vendor.startDate == null ? "-" : vendor.startDate}
-                  </p>
-                </div>
-                <div className="...">
-                  <p className="font-bold break-words mt-3">
-                    Campaign Duration (Days):
-                  </p>
-                </div>
-                <div className="col-span-2 ...">
-                  <p className="break-words mt-3">
-                    {vendor.duration == null ? "-" : vendor.duration}
-                  </p>
-                </div>
+              <div className="w-full max-w-md text-sm p-5">
+                <div className="grid grid-cols-5 gap-2 text-sm">
+                  <div className="col-span-3 ...">
+                    <p className="font-bold break-words mt-3">Campaign Name:</p>
+                  </div>
+                  <div className="col-span-2 ...">
+                    <p className="break-words mt-3">
+                      {vendor.campaignName == null ? "-" : vendor.campaignName}
+                    </p>
+                  </div>
+                  <div className="col-span-3 ...">
+                    <p className="font-bold break-words mt-3">Campaign Budget:</p>
+                  </div>
+                  <div className="col-span-2 ...">
+                    <p className="break-words mt-3">
+                      {vendor.budget == null ? "-" : vendor.budget}
+                    </p>
+                  </div>
+                  <div className="col-span-3 ...">
+                    <p className="font-bold break-words mt-3">
+                      Reward Amount per Scan:
+                    </p>
+                  </div>
+                  <div className="col-span-2 ...">
+                    <p className="break-words mt-3">
+                      {vendor.rewardAmount == null ? "-" : vendor.rewardAmount}
+                    </p>
+                  </div>
+                  <div className="col-span-3 ...">
+                    <p className="font-bold break-words mt-3">
+                      Daily Redemption Limit:
+                    </p>
+                  </div>
+                  <div className="col-span-2 ...">
+                    <p className="break-words mt-3">
+                      {vendor.dailyLimit == null ? "-" : vendor.dailyLimit}
+                    </p>
+                  </div>
+                  <div className="col-span-3 ...">
+                    <p className="font-bold break-words mt-3">
+                      Campaign Start Date:
+                    </p>
+                  </div>
+                  <div className="col-span-2 ...">
+                    <p className="break-words mt-3">
+                      {vendor.startDate == null ? "-" : vendor.startDate}
+                    </p>
+                  </div>
+                  <div className="col-span-3 ...">
+                    <p className="font-bold break-words mt-3">
+                      Campaign Duration (Days):
+                    </p>
+                  </div>
+                  <div className="col-span-2 ...">
+                    <p className="break-words mt-3">
+                      {vendor.duration == null ? "-" : vendor.duration}
+                    </p>
+                  </div>
 
-                <div className="...">
-                  <p className="font-bold break-words mt-3">Payment Pending:</p>
-                </div>
-                <div className="flex flex-row col-span-2 ...">
-                  {vendor.pendingPayment ? (
-                    <button
-                      type="button"
-                      onClick={() => {
-                        transferReward();
-                      }}
-                      className={`${rewardBtnStyles}`}
-                    >
-                      Transfer
-                    </button>
-                  ) : (
-                    <p className="break-words mt-3">No pending payment</p>
-                  )}
-                </div>
+                  <div className="col-span-3 ...">
+                    <p className="font-bold break-words mt-3">Payment Pending:</p>
+                  </div>
+                  <div className="col-span-2  ...">
+                    {vendor.pendingPayment ? (
+                      <button
+                        type="button"
+                        onClick={() => {
+                          transferReward();
+                        }}
+                        className={`${rewardBtnStyles}`}
+                      >
+                        Transfer
+                      </button>
+                    ) : (
+                      <p className="break-words mt-3">No pending payment</p>
+                    )}
+                  </div>
 
-                <button
-                  type="button"
-                  onClick={(e) => {
-                    setEditingMode(!editingMode);
-                  }}
-                  className={`${regBtnStyles} col-span-1 mt-6 ...`}
-                >
-                  Edit Campaign
-                </button>
-                <button
-                  type="button"
-                  onClick={(e) => {
-                    handleDelete();
-                  }}
-                  className={`${delBtnStyles} col-span-1 mt-6 ...`}
-                >
-                  Delete Campaign
-                </button>
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      setEditingMode(!editingMode);
+                    }}
+                    className={`${regBtnStyles} col-span-2 mt-10 ...`}
+                  >
+                    Edit Campaign
+                  </button>
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      handleDelete();
+                    }}
+                    className={`${delBtnStyles} col-start-4 col-span-2 mt-10 ...`}
+                  >
+                    Delete Campaign
+                  </button>
+                </div>
               </div>
             )}
           </div>

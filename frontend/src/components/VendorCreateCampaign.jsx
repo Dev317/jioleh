@@ -119,35 +119,17 @@ export default function VendorCreateCampaign(props) {
   };
 
   return (
-    <div className="relative pb-2 h-full justify-center items-center">
+    <div className="relative pb-2 h-full justify-center">
       <div className="flex flex-col pb-5">
-        <br></br>
-        {!currentAccount ? (
-          <button
-            onClick={() => connectWallet(vendor._id)}
-            className="bg-blue-500 text-white font-bold p-2 rounded-full w-fit outline-none"
-          >
-            Connect Wallet
-          </button>
-        ) : (
-          <button
-            onClick={() => {
-              window.open("https://pay.sendwyre.com/", "_blank");
-            }}
-            className="bg-purple-500 text-white font-bold p-2 rounded-full w-fit outline-none"
-          >
-            Fund Wallet
-          </button>
-        )}
-        <div className="relative flex flex-col mb-7">
+        <div className="relative flex flex-col w-full items-center">
           {vendor.hasCampaign ? (
             <p className="block font-bold mb-2 mt-3">
               A campaign has already been created!
             </p>
           ) : (
-            <form className="w-full max-w-sm text-sm" onSubmit={handleSubmit}>
+            <form className="w-full max-w-sm text-sm p-5" onSubmit={handleSubmit}>
               <div className="mb-4">
-                <label className="block font-bold mb-2 mt-3" for="campaignName">
+                <label className="block font-bold mb-2" for="campaignName">
                   Campaign Name
                 </label>
                 <input
@@ -226,12 +208,31 @@ export default function VendorCreateCampaign(props) {
                   placeholder="Enter campaign duration in days..."
                 />
               </div>
-              <button
-                type="submit"
-                className="bg-red-500 text-white font-bold p-2 rounded-full w-fit outline-none"
-              >
-                Create
-              </button>
+              <div className="flex justify-between ...">
+                {!currentAccount ? (
+                  <button
+                    onClick={() => connectWallet(vendor._id)}
+                    className="bg-blue-500 text-white font-bold p-2 rounded-full w-fit outline-none"
+                  >
+                    Connect Wallet
+                  </button>
+                ) : (
+                  <button
+                    onClick={() => {
+                      window.open("https://pay.sendwyre.com/", "_blank");
+                    }}
+                    className="bg-purple-500 text-white font-bold p-2 rounded-full w-fit outline-none"
+                  >
+                    Fund Wallet
+                  </button>
+                )}
+                <button
+                  type="submit"
+                  className="bg-red-500 text-white font-bold p-2 rounded-full w-fit outline-none"
+                >
+                  Create
+                </button>
+              </div>
             </form>
           )}
         </div>
