@@ -162,7 +162,7 @@ export default function VendorScanner({ vendor }) {
   }
 
   return (
-    <div className="relative h-screen flex flex-col items-center">
+    <div className="relative h-screen flex flex-col justify-center pb-5 items-center">
       <span className="flex py-5">
         <h1 className="text-lg font-bold mr-2">Scan a user's QR code</h1>
       </span>
@@ -219,6 +219,27 @@ export default function VendorScanner({ vendor }) {
       ) : (
         <div></div>
       )}
+      <div className="max-w-md p-5 flex text-gray-500 text-sm">
+        <svg
+          className="align-self-start mr-3 w-20 h-20"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+          ></path>
+        </svg>
+        <p>
+          When a user shows you a QR code posted by another user, scan the QR
+          code so that the referrer will receive their monetary rewards. This
+          referee will also be able to tag your eatery in their future posts!
+        </p>
+      </div>
     </div>
   );
 }

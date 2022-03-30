@@ -32,7 +32,7 @@ export default function VendorQR({ vendor }) {
   };
 
   return (
-    <div className="h-screen flex flex-col items-center">
+    <div className="h-screen flex flex-col justify-center items-center">
       <div className="p-5 text-center">
         <h1 className="text-lg font-bold">Verification QR</h1>
         <p>

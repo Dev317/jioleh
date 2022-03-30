@@ -117,9 +117,9 @@ export default function UserScanner({ user }) {
 
   return (
     <div className="relative pb-5 h-screen flex flex-col justify-center items-center">
-      <span className="flex py-5">
-        <h1 className="text-lg font-bold mr-2">Scan a vendor's QR code</h1>
-      </span>
+      <div className="flex flex-col items-center p-5 text-center">
+        <h1 className="text-lg font-bold mb-2">Scan a vendor's QR code</h1>
+      </div>
       <Scanner
         onResult={(res) => {
           handleOnResult(res);
@@ -173,6 +173,27 @@ export default function UserScanner({ user }) {
       ) : (
         <div></div>
       )}
+      <div className="max-w-md p-5 flex text-gray-500 text-sm">
+        <svg
+          className="align-self-start mr-3 w-20 h-20"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+          ></path>
+        </svg>
+        <p>
+          If you have visited an eatery registered under Jio Leh! for the first
+          time, you can ask them for their QR code. After being registered with
+          them, you can post Foodsteps and tag this eatery for rewards!
+        </p>
+      </div>
     </div>
   );
 }
