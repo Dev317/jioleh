@@ -104,6 +104,7 @@ export default function VendorCreateCampaign(props) {
         campaignName: form.campaignName,
         budget: parseFloat(form.budget),
         rewardAmount: parseFloat(form.rewardAmount),
+        refereeReward: form.refereeReward,
         dailyLimit: parseInt(form.dailyLimit),
         startDate: form.startDate,
         duration: parseInt(form.duration),
@@ -186,6 +187,19 @@ export default function VendorCreateCampaign(props) {
                   onChange={(e) => setFormField("rewardAmount", e.target.value)}
                   placeholder="Enter referrer's reward amount per scan..."
                 />
+              </div>
+              <div className="mb-4">
+                <label className="block font-bold mb-2" for="refereeReward">
+                  Reward Referee receives on First Visit
+                </label>
+                <input
+                className="shadow appearance-none border rounded w-full py-2 px-3"
+                id="refereeReward"
+                type="text"
+                value={form.refereeReward}
+                onChange={(e) => setFormField("refereeReward", e.target.value)}
+                placeholder="Enter reward referee will get on first visit..."
+              />
               </div>
               <div className="mb-4">
                 <label className="block font-bold mb-2" for="dailyLimit">

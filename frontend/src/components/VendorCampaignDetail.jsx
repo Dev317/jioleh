@@ -58,6 +58,7 @@ const VendorCampaignDetail = (props) => {
         campaignName: vendor.campaignName,
         budget: parseFloat(vendor.budget),
         rewardAmount: parseFloat(vendor.rewardAmount),
+        refereeReward: vendor.refereeReward,
         dailyLimit: parseInt(vendor.dailyLimit),
         startDate: vendor.startDate,
         duration: parseInt(vendor.duration),
@@ -78,6 +79,7 @@ const VendorCampaignDetail = (props) => {
         campaignName: form.campaignName,
         budget: parseFloat(form.budget),
         rewardAmount: parseFloat(form.rewardAmount),
+        refereeReward: form.refereeReward,
         dailyLimit: parseInt(form.dailyLimit),
         startDate: form.startDate,
         duration: parseInt(form.duration),
@@ -97,6 +99,7 @@ const VendorCampaignDetail = (props) => {
         campaignName: "",
         budget: 0,
         rewardAmount: 0,
+        refereeReward: "",
         dailyLimit: 0,
         startDate: "1970-01-01",
         duration: 0,
@@ -209,6 +212,23 @@ const VendorCampaignDetail = (props) => {
                   />
                 </div>
                 <div className="mb-4">
+                  <label
+                    className="block font-bold mb-2 mt-3"
+                    for="refereeReward"
+                  >
+                    Reward Referee receives on First Visit
+                  </label>
+                  <input
+                    className="shadow appearance-none border rounded w-full py-2 px-3"
+                    id="refereeReward"
+                    type="text"
+                    value={form.refereeReward}
+                    onChange={(e) =>
+                      setFormField("refereeReward", e.target.value)
+                    }
+                  />
+                </div>
+                <div className="mb-4">
                   <label className="block font-bold mb-2" for="dailyLimit">
                     Daily Redemption Limit
                   </label>
@@ -293,6 +313,14 @@ const VendorCampaignDetail = (props) => {
                 <div className="col-span-2 ...">
                   <p className="break-words mt-3">
                     {vendor.rewardAmount == null ? "-" : vendor.rewardAmount}
+                  </p>
+                </div>
+                <div className="...">
+                  <p className="font-bold break-words mt-3">Referee Reward:</p>
+                </div>
+                <div className="col-span-2 ...">
+                  <p className="break-words mt-3">
+                    {vendor.campaignName == null ? "-" : vendor.refereeReward}
                   </p>
                 </div>
                 <div className="...">

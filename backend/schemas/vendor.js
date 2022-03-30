@@ -101,6 +101,11 @@ export default {
       type: "number",
     },
     {
+      name: "refereeReward",
+      title: "Reward Referee receives on First Visit",
+      type: "string",
+    },
+    {
       name: "dailyLimit",
       title: "Daily Redemption Limit",
       type: "number",

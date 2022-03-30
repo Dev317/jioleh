@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { AiOutlineLogout } from 'react-icons/ai';
 import { useParams, useNavigate } from 'react-router-dom';
-import { client } from '../client';
+import { client, urlFor } from '../client';
 import Spinner from './Spinner';
 import QRModal from './QRModal';
 import { vendorQuery } from '../utils/data';
@@ -9,10 +9,10 @@ import { fetchVendor } from '../utils/fetchVendor';
 
 import { AiOutlineCloudUpload } from "react-icons/ai";
 import { MdDelete } from "react-icons/md";
+import VendorPinDetail from './VendorPinDetail';
+import { Link } from "react-router-dom";
 
 const randomImg = 'https://cdn.wallpapersafari.com/29/50/7acBKo.jpg';
-const activeBtnStyles = "p-2 font-bold border-b-2 outline-solid border-red-500 text-red-500";
-const notActiveBtnStyles = "bg-primary text-black font-bold p-2 outline-none";
 const EditBtnStyle = 'bg-red-500 text-white font-bold p-2 rounded-xl outline-none w-40';
 
 const EditProfile = ( {vendor, editProfileMode, setEditProfileMode, loggedInVendor} ) => {
@@ -20,6 +20,10 @@ const EditProfile = ( {vendor, editProfileMode, setEditProfileMode, loggedInVend
   const [category, setCategory] = useState("");
   const [location, setLocation] = useState("");
   const [description, setDescription] = useState("");
+
+  const [imageAsset, setImageAsset] = useState(null);
+  const [wrongImageType, setWrongImageType] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => { 
     setName(vendor.name);
@@ -29,7 +33,8 @@ const EditProfile = ( {vendor, editProfileMode, setEditProfileMode, loggedInVend
   }, [])
 
   const handleSaveChanges = (e) => {
-    client
+    {imageAsset == null ? 
+      client
       .patch(vendor._id) // Document ID to patch
       .set({
         name,
@@ -39,7 +44,6 @@ const EditProfile = ( {vendor, editProfileMode, setEditProfileMode, loggedInVend
       }) // Shallow merge
       .commit()
       .then((updatedVendor) => {
-        console.log('Updated')
         console.log(updatedVendor)
 
         vendor.name = name;
@@ -51,7 +55,67 @@ const EditProfile = ( {vendor, editProfileMode, setEditProfileMode, loggedInVend
       .catch((err) => {
         console.error('Update failed: ', err.message)
       })
+    :
+      client
+        .patch(vendor._id) // Document ID to patch
+        .set({
+          name,
+          category,
+          location,
+          description,
+          image: {
+            _type: "image",
+            asset: {
+              _type: "reference",
+              _ref: imageAsset?._id,
+            },
+          },
+        }) // Shallow merge
+        .commit()
+        .then((updatedVendor) => {
+          console.log(updatedVendor)
+
+          vendor.name = name;
+          vendor.category = category;
+          vendor.location = location;
+          vendor.description = description;
+          setEditProfileMode(!editProfileMode);
+        })
+        .catch((err) => {
+          console.error('Update failed: ', err.message)
+        })
+    }
+    
   }
+
+  const uploadImage = (e) => {
+    const { type, name } = e.target.files[0];
+    if (
+      type === "image/png" ||
+      type === "image/svg" ||
+      type === "image/jpeg" ||
+      type === "image/gif" ||
+      type === "image/tiff"
+    ) {
+      setWrongImageType(false);
+      setLoading(true);
+
+      client.assets
+        .upload("image", e.target.files[0], {
+          contentType: type,
+          filename: name,
+        })
+        .then((document) => {
+          setImageAsset(document);
+          setLoading(false);
+        })
+        .catch((error) => {
+          console.log("image upload error: ", error);
+        });
+    } else {
+      setWrongImageType(true);
+    }
+  };
 
   return (
     <form class="w-full px-6" onSubmit={e => handleSaveChanges(e)}>
@@ -101,72 +165,8 @@ const EditProfile = ( {vendor, editProfileMode, setEditProfileMode, loggedInVend
           value={description} onChange={e => setDescription(e.target.value)}
         ></textarea>
       </div>
-      <ChangePhoto />
-    </form> 
-  )
-}
 
-const DisplayInfo = ( { vendor } ) => {
-
-  return (
-    <div class="grid grid-cols-3 gap-2" >
-      <div class="...">
-        <p className="text-xl font-bold break-words mt-3">Category:</p>
-      </div>
-      <div class="col-span-2 ...">
-        <p className="text-xl break-words mt-3">{vendor.category == null ? "no text" : vendor.category}</p>
-      </div>
-      <div class="...">
-        <p className="text-xl font-bold break-words mt-3">Location:</p>
-      </div>
-      <div class="col-span-2 ...">
-        <p className="text-xl break-words mt-3">{vendor.location == null ? "no text" : vendor.location}</p>
-      </div><div class="...">
-        <p className="text-xl font-bold break-words mt-3">About:</p>
-      </div>
-      <div class="col-span-3 ...">
-        <p className="text-xl break-words mt-3">{vendor.description == null ? "no text" : vendor.description}</p>
-      </div>
-    </div>
-  )
-}
-
-const ChangePhoto = () => {
-  const [imageAsset, setImageAsset] = useState(null);
-  const [wrongImageType, setWrongImageType] = useState(false);
-  const [loading, setLoading] = useState(false);
-
-  const uploadImage = (e) => {
-    const { type, name } = e.target.files[0];
-    if (
-      type === "image/png" ||
-      type === "image/svg" ||
-      type === "image/jpeg" ||
-      type === "image/gif" ||
-      type === "image/tiff"
-    ) {
-      setWrongImageType(false);
-      setLoading(true);
-
-      client.assets
-        .upload("image", e.target.files[0], {
-          contentType: type,
-          filename: name,
-        })
-        .then((document) => {
-          setImageAsset(document);
-          setLoading(false);
-        })
-        .catch((error) => {
-          console.log("image upload error: ", error);
-        });
-    } else {
-      setWrongImageType(true);
-    }
-  };
-
-  return (
-    <div className="flex lg:flex-row flex-col justify-center items-center bg-white lg:p-5 p-3 lg:w4/5 w-full">
+      <div className="flex lg:flex-row flex-col justify-center items-center bg-white lg:p-5 p-3 lg:w4/5 w-full">
         <div className="bg-secondaryColor p-3 flex flex-0.7 w-full">
           <div className="flex justify-center items-center flex-col border-2 border-dotted border-gray-300 p-3 w-full h-420">
             {loading && <Spinner />}
@@ -207,11 +207,88 @@ const ChangePhoto = () => {
                 </button>
               </div>
             )}
-          </div>
         </div>
+      </div>
     </div>
-  );
-};
+    </form> 
+  )
+}
+
+const DisplayInfo = ( { vendor } ) => {
+
+  return (
+    <div>
+      <div className="flex p-3 justify-center text-center">
+        <p>{vendor.description == null ? <span className="text-gray-400">vendor has not added a description</span> : vendor.description}</p>
+      </div>
+      
+      <div className="flex mt-3 justify-center">
+        <svg 
+          className="mr-3 w-6 h-6" 
+          fill="none" 
+          stroke="#ef4444" 
+          viewBox="0 0 24 24" 
+          xmlns="http://www.w3.org/2000/svg">
+            <path 
+              strokeLinecap="round" 
+              strokeLinejoin="round" 
+              strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+            <path 
+              strokeLinecap="round" 
+              strokeLinejoin="round" 
+              strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+        </svg>
+        <p>{vendor.location == null ? <span className="text-gray-400">vendor has not added a location</span> : vendor.location}</p> 
+      </div>
+      <div className="flex p-3 justify-center">
+        <svg 
+          className="mr-3 w-6 h-6" 
+          fill="none" 
+          stroke="#ef4444" 
+          viewBox="0 0 24 24" 
+          xmlns="http://www.w3.org/2000/svg">
+            <path 
+              strokeLinecap="round" 
+              strokeLinejoin="round" 
+              strokeWidth="2" 
+              d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"></path>
+          </svg>
+        <p>{vendor.category == null ? <span className="text-gray-400">vendor has not added a category</span> : vendor.category}</p> 
+      </div>
+    </div>
+  )
+}
+
+const CampaignDetails = ( { vendor } ) => {
+  const [startDate, setStartDate] = useState();
+
+  useEffect(() => {
+    var date = new Date(vendor.startDate);
+    const options = { year: 'numeric', month: 'long', day: 'numeric' }
+    setStartDate(date.toLocaleDateString('en-US', options));
+  }, [])
+
+  return (
+    <div className="m-5 p-5 rounded overflow-hidden shadow-lg">
+      <p className="text-center font-bold text-2xl mt-3" >
+        {vendor.campaignName}
+      </p>
+      <p className="break-words mt-3">
+        From the <span className="font-bold">{startDate}</span> onwards, {vendor.name} will be offering rewards to new customers and their referrers!
+      </p>
+      <p className="break-words mt-3">
+        For every friend you refer, you will be awarded <span className="font-bold">{vendor.rewardAmount}</span> ETH!
+      </p>
+      <p className="break-words mt-3">
+        In return, said referred friend will receive <span className="font-bold">{vendor.refereeReward}</span> upon their first visit to our establishment! <span className="text-gray-400">(Minimum spending required to be met to claim reward)</span>
+      </p>
+      <p className="break-words mt-3">
+        This promotion will be available for <span className="font-bold">{vendor.duration} Days</span> from the start date of the campaign.
+      </p>
+      {vendor.dailyLimit == null ? <></>:<p className="italic text-sm break-words mt-3">Limited to the first <span className="font-bold">{vendor.dailyLimit}</span> customer(s) per day, while stocks last.</p>}
+    </div>
+  )
+}
 
 const VendorProfile = () => {
   const [vendor, setVendor] = useState(null);
@@ -244,7 +321,7 @@ const VendorProfile = () => {
   return (
     <div className="relative pb-2 h-full justify-center items-center">
       <div className="flex flex-col pb-5">
-        <div className="relative flex flex-col mb-7">
+        <div className="relative flex flex-col mb-2">
           <div className="flex flex-col justify-center items-center">
             <img
               src={randomImg}
@@ -253,7 +330,7 @@ const VendorProfile = () => {
             />
             <img
               className="rounded-full w-20 h-20 -mt-10 shadow-xl object-cover"
-              src={vendor.image}
+              src={vendor?.image && urlFor(vendor?.image).url()}
               alt="vendor-pic"
             />
           </div>
@@ -278,71 +355,40 @@ const VendorProfile = () => {
           </div>
         </div>
 
-        <div className="flex gap-2 justify-center mb-7">
-          <button
-            type="button"
-            onClick={(e) => {
-              setText(e.target.textContent);
-              setActiveBtn("about");
-            }}
-            className={`${
-              activeBtn === "about" ? activeBtnStyles : notActiveBtnStyles
-            }`}
-          >
-            About
-          </button>
-          <button
-            type="button"
-            onClick={(e) => {
-              setText(e.target.textContent);
-              setActiveBtn("campaigns");
-            }}
-            className={`${
-              activeBtn === "campaigns" ? activeBtnStyles : notActiveBtnStyles
-            }`}
-          >
-            Campaigns
-          </button>
-        </div>
-
-        <DisplayInfo vendor={vendor} />
-
-        {activeBtn == "about" ? 
-          <div className='text-center mb-7'>
+        <div className='flex justify-center mb-7'>
           {editProfileMode ? 
             <EditProfile vendor={vendor} editProfileMode={editProfileMode} setEditProfileMode={setEditProfileMode} loggedInVendor={loggedInVendor} />
           :
-          <div>
-            <div>
-              {loggedInVendor._id == vendor._id ? 
-              <div className="flex gap-2 justify-center mb-7">
-                <button
-                    type="button"
+          <div className="w-full">
+            <DisplayInfo vendor={vendor} />
+            
+            {vendor.hasCampaign ? 
+              <div>
+                <p className="text-center font-bold text-2xl mt-3">Ongoing Campaigns:</p>
+                <CampaignDetails vendor={vendor} />
+              </div>
+              :
+            <></>}
+            {loggedInVendor._id == vendor._id ? 
+              <div className="flex gap-2 justify-center p-7">
+                <button type="button"
                     onClick={(e) => {
                       setEditProfileMode(!editProfileMode);
-                    }}
-                    className={EditBtnStyle}
-                  >
-                    Edit Profile
+                    }} 
+                  className={EditBtnStyle} >
+                  Edit Profile
                 </button>
-                <button
-                    type="button"
-                    className={EditBtnStyle}
-                  >
-                    Edit Picture
-                </button>
+                <Link to={`/vendor/vendor-campaign-detail`}>
+                  <button type="button"
+                    className={EditBtnStyle} >
+                    Edit Campaign
+                  </button>
+                </Link>
               </div>
-              : <></>}
-            </div>
-              <VendorProfile vendor={vendor} />
+            : <></>}
             </div>
           }
-  
-          </div>
-          :
-          <div class='text-center'>Campaign Information</div>
-        }
-        
+        </div>
 
       </div>
     </div>
