@@ -15,7 +15,7 @@ const activeBtnStyles = "p-2 font-bold border-b-2 outline-solid border-red-500 t
 const notActiveBtnStyles = "bg-primary text-black font-bold p-2 outline-none";
 const EditBtnStyle = 'bg-red-500 text-white font-bold p-2 rounded-xl outline-none w-40';
 
-const About = ({vendor, editProfileMode, setEditProfileMode, loggedInVendor}) => {
+const EditProfile = ( {vendor, editProfileMode, setEditProfileMode, loggedInVendor} ) => {
   const [name, setName] = useState("");
   const [category, setCategory] = useState("");
   const [location, setLocation] = useState("");
@@ -29,7 +29,6 @@ const About = ({vendor, editProfileMode, setEditProfileMode, loggedInVendor}) =>
   }, [])
 
   const handleSaveChanges = (e) => {
-
     client
       .patch(vendor._id) // Document ID to patch
       .set({
@@ -53,109 +52,81 @@ const About = ({vendor, editProfileMode, setEditProfileMode, loggedInVendor}) =>
         console.error('Update failed: ', err.message)
       })
   }
-  
-  return (
-    
-    <div className='text-center mb-7'>
-        {editProfileMode ? 
-          <form class="w-full px-6" onSubmit={e => handleSaveChanges(e)}
-          >
-            <div className="flex gap-2 justify-center mb-7">
-              <button
-                type="button"
-                onClick={(e) => {
-                  setEditProfileMode(!editProfileMode);
-                }}
-                className={EditBtnStyle}
-              >
-                Cancel
-              </button>
-              <button
-                type="submit"
-                className={EditBtnStyle} 
-                //onClick={e => handleSaveChanges(e)}
-                >
-                Save Changes
-              </button>
-            </div>
-            <div class="mb-6">
-              <label class="text-left block text-gray-700 text-sm font-bold mb-2" for="name">
-                Company Name
-              </label>
-              <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="name" type="text" placeholder="Company Name" value={name} onChange={e => setName(e.target.value)}/>
-            </div>
-            <div class="mb-6">
-              <label class="text-left block text-gray-700 text-sm font-bold mb-2" for="category">
-                Category
-              </label>
-              <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="category" type="text" placeholder="Category" value={category} onChange={e => setCategory(e.target.value)} />
-            </div>
-            <div class="mb-6">
-              <label class="text-left block text-gray-700 text-sm font-bold mb-2" for="Location">
-                Location
-              </label>
-              <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" id="location" placeholder="Location" value={location} onChange={e => setLocation(e.target.value)} />
-            </div>
-            <div class="mb-6">
-              <label class="text-left block text-gray-700 text-sm font-bold mb-2" for="Description">
-                Description
-              </label>
-              <textarea
-                class="form-control block w-full px-3 py-1.5 text-base 
-                font-normal text-gray-700 bg-white bg-clip-padding
-                border border-solid border-gray-300 rounded transition
-                ease-in-out m-0 focus:text-gray-700 focus:bg-white 
-                focus:border-blue-600 focus:outline-none"
-                id="description" rows="4" placeholder="Description"
-                value={description} onChange={e => setDescription(e.target.value)}
-              ></textarea>
-            </div>
-          </form> 
-        :
-        <div>
-          <div>
-            {loggedInVendor._id == vendor._id ? 
-            <div className="flex gap-2 justify-center mb-7">
-              <button
-                  type="button"
-                  onClick={(e) => {
-                    setEditProfileMode(!editProfileMode);
-                  }}
-                  className={EditBtnStyle}
-                >
-                  Edit Profile
-              </button>
-              <button
-                  type="button"
-                  className={EditBtnStyle}
-                >
-                  Edit Picture
-              </button>
-            </div>
-            : <></>}
-          </div>
-          <div class="grid grid-cols-3 gap-2" >
-            <div class="...">
-              <p className="text-xl font-bold break-words mt-3">Category:</p>
-            </div>
-            <div class="col-span-2 ...">
-              <p className="text-xl break-words mt-3">{vendor.category == null ? "no text" : vendor.category}</p>
-            </div>
-            <div class="...">
-              <p className="text-xl font-bold break-words mt-3">Location:</p>
-            </div>
-            <div class="col-span-2 ...">
-              <p className="text-xl break-words mt-3">{vendor.location == null ? "no text" : vendor.location}</p>
-            </div><div class="...">
-              <p className="text-xl font-bold break-words mt-3">About:</p>
-            </div>
-            <div class="col-span-3 ...">
-              <p className="text-xl break-words mt-3">{vendor.description == null ? "no text" : vendor.description}</p>
-            </div>
-          </div>
-          </div>
-        }
 
+  return (
+    <form class="w-full px-6" onSubmit={e => handleSaveChanges(e)}>
+      <div className="flex gap-2 justify-center mb-7">
+        <button
+          type="button"
+          onClick={(e) => {
+            setEditProfileMode(!editProfileMode);
+          }}
+          className={EditBtnStyle}
+        >
+          Cancel
+        </button>
+        <button type="submit" className={EditBtnStyle} >
+          Save Changes
+        </button>
+      </div>
+      <div class="mb-6">
+        <label class="text-left block text-gray-700 text-sm font-bold mb-2" for="name">
+          Company Name
+        </label>
+        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="name" type="text" placeholder="Company Name" value={name} onChange={e => setName(e.target.value)}/>
+      </div>
+      <div class="mb-6">
+        <label class="text-left block text-gray-700 text-sm font-bold mb-2" for="category">
+          Category
+        </label>
+        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="category" type="text" placeholder="Category" value={category} onChange={e => setCategory(e.target.value)} />
+      </div>
+      <div class="mb-6">
+        <label class="text-left block text-gray-700 text-sm font-bold mb-2" for="Location">
+          Location
+        </label>
+        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" id="location" placeholder="Location" value={location} onChange={e => setLocation(e.target.value)} />
+      </div>
+      <div class="mb-6">
+        <label class="text-left block text-gray-700 text-sm font-bold mb-2" for="Description">
+          Description
+        </label>
+        <textarea
+          class="form-control block w-full px-3 py-1.5 text-base 
+          font-normal text-gray-700 bg-white bg-clip-padding
+          border border-solid border-gray-300 rounded transition
+          ease-in-out m-0 focus:text-gray-700 focus:bg-white 
+          focus:border-blue-600 focus:outline-none"
+          id="description" rows="4" placeholder="Description"
+          value={description} onChange={e => setDescription(e.target.value)}
+        ></textarea>
+      </div>
+      <ChangePhoto />
+    </form> 
+  )
+}
+
+const DisplayInfo = ( { vendor } ) => {
+
+  return (
+    <div class="grid grid-cols-3 gap-2" >
+      <div class="...">
+        <p className="text-xl font-bold break-words mt-3">Category:</p>
+      </div>
+      <div class="col-span-2 ...">
+        <p className="text-xl break-words mt-3">{vendor.category == null ? "no text" : vendor.category}</p>
+      </div>
+      <div class="...">
+        <p className="text-xl font-bold break-words mt-3">Location:</p>
+      </div>
+      <div class="col-span-2 ...">
+        <p className="text-xl break-words mt-3">{vendor.location == null ? "no text" : vendor.location}</p>
+      </div><div class="...">
+        <p className="text-xl font-bold break-words mt-3">About:</p>
+      </div>
+      <div class="col-span-3 ...">
+        <p className="text-xl break-words mt-3">{vendor.description == null ? "no text" : vendor.description}</p>
+      </div>
     </div>
   )
 }
@@ -334,8 +305,40 @@ const VendorProfile = () => {
           </button>
         </div>
 
+        <DisplayInfo vendor={vendor} />
+
         {activeBtn == "about" ? 
-          <About vendor={vendor} editProfileMode={editProfileMode} setEditProfileMode={setEditProfileMode} loggedInVendor={loggedInVendor}/>
+          <div className='text-center mb-7'>
+          {editProfileMode ? 
+            <EditProfile vendor={vendor} editProfileMode={editProfileMode} setEditProfileMode={setEditProfileMode} loggedInVendor={loggedInVendor} />
+          :
+          <div>
+            <div>
+              {loggedInVendor._id == vendor._id ? 
+              <div className="flex gap-2 justify-center mb-7">
+                <button
+                    type="button"
+                    onClick={(e) => {
+                      setEditProfileMode(!editProfileMode);
+                    }}
+                    className={EditBtnStyle}
+                  >
+                    Edit Profile
+                </button>
+                <button
+                    type="button"
+                    className={EditBtnStyle}
+                  >
+                    Edit Picture
+                </button>
+              </div>
+              : <></>}
+            </div>
+              <VendorProfile vendor={vendor} />
+            </div>
+          }
+  
+          </div>
           :
           <div class='text-center'>Campaign Information</div>
         }
