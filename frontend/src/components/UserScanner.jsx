@@ -81,10 +81,12 @@ export default function UserScanner({ user }) {
         reject(new Error("Invalid QR code"));
       } else {
         const vendor = url.searchParams.get("vendor");
+        console.log(vendor);
         client
           .getDocument(user?._id)
           .then((userDoc) => {
-            if (userDoc.visitedPlacesId.includes(vendor)) {
+            console.log(userDoc.visitedPlacesId);
+            if (userDoc.visitedPlacesId !== undefined && userDoc.visitedPlacesId.includes(vendor)) {
               reject(new Error("Already visited this vendor"));
             } else {
               client
