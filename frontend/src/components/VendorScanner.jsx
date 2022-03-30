@@ -55,7 +55,7 @@ const Scanner = (props) => {
   );
 };
 
-export default function VendorScanner() {
+export default function VendorScanner({vendor}) {
   const [alertMessage, setAlertMessage] = useState({
     message: "",
     error: false,
@@ -102,7 +102,7 @@ export default function VendorScanner() {
           reject(new Error("Cannot scan user's own QR code"));
         const query =
           '*[_type == "qr_scanned" && viewer == $viewer && vendor == $vendor]';
-        const vendor = JSON.parse(localStorage.getItem("vendor"));
+        //const vendor = JSON.parse(localStorage.getItem("vendor"));
         const params = { viewer: viewer, vendor: vendor._id };
 
         client.fetch(query, params).then((qrScanned) => {

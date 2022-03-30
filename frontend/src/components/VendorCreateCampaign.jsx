@@ -3,9 +3,9 @@ import { useNavigate } from "react-router-dom";
 import { client } from "../client";
 import { fetchVendor } from "../utils/fetchVendor";
 import { TokenContext } from "../context/TokenContext";
-import { ethers } from 'ethers';
-import Factory from '../contracts/Factory.json'
-import Campaign from '../contracts/Campaign.json';
+import { ethers } from "ethers";
+import Factory from "../contracts/Factory.json";
+import Campaign from "../contracts/Campaign.json";
 
 const factoryAddress = process.env.REACT_APP_FACTORY_ADDRESS;
 
@@ -13,28 +13,28 @@ const getFactoryContract = () => {
   const provider = new ethers.providers.Web3Provider(window.ethereum);
   const signer = provider.getSigner();
   const factoryContract = new ethers.Contract(
-      factoryAddress,
-      Factory.abi,
-      signer
+    factoryAddress,
+    Factory.abi,
+    signer
   );
 
   return factoryContract;
-}
+};
 
 const getCampaignContract = (campaignAddress) => {
   const provider = new ethers.providers.Web3Provider(window.ethereum);
   const signer = provider.getSigner();
   const factoryContract = new ethers.Contract(
-      campaignAddress,
-      Campaign.abi,
-      signer
+    campaignAddress,
+    Campaign.abi,
+    signer
   );
 
   return factoryContract;
-}
+};
 
-export default function VendorCreateCampaign() {
-  const [vendor, setVendor] = useState(fetchVendor());
+export default function VendorCreateCampaign(props) {
+  const [vendor, setVendor] = useState(props.vendor);
   const [form, setForm] = useState({});
   const navigate = useNavigate();
   const { connectWallet, currentAccount } = useContext(TokenContext);
@@ -54,7 +54,7 @@ export default function VendorCreateCampaign() {
   useEffect(() => {
     localStorage.getItem("campaign")
       ? setVendor(JSON.parse(localStorage.getItem("campaign")))
-      : setVendor(fetchVendor());
+      : setVendor(props.vendor);
   }, []);
 
   useEffect(() => {
@@ -79,16 +79,18 @@ export default function VendorCreateCampaign() {
       parsedBudget,
       parseInt(form.dailyLimit),
       parseInt(form.duration)
-  );
+    );
 
     await transactionHash.wait();
     const campaignCount = await factoryContract.getTotalCampaigns();
-    const campaignAddress = await factoryContract.getCampaignAddress(campaignCount - 1);
+    const campaignAddress = await factoryContract.getCampaignAddress(
+      campaignCount - 1
+    );
 
     // console.log('Campaign created successfully!');
     // console.log("Campaign address: ",campaignAddress);
     return campaignAddress;
-  }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -105,8 +107,8 @@ export default function VendorCreateCampaign() {
         dailyLimit: parseInt(form.dailyLimit),
         startDate: form.startDate,
         duration: parseInt(form.duration),
-        contractAddress : contractAddress,
-        pendingPayment : false
+        contractAddress: contractAddress,
+        pendingPayment: false,
       })
       .commit()
       .then((updatedVendor) => {
@@ -120,17 +122,23 @@ export default function VendorCreateCampaign() {
     <div className="relative pb-2 h-full justify-center items-center">
       <div className="flex flex-col pb-5">
         <br></br>
-        {!currentAccount ? (<button
-          onClick={() => connectWallet(vendor._id)}
-          className="bg-blue-500 text-white font-bold p-2 rounded-full w-fit outline-none"
+        {!currentAccount ? (
+          <button
+            onClick={() => connectWallet(vendor._id)}
+            className="bg-blue-500 text-white font-bold p-2 rounded-full w-fit outline-none"
           >
-          Connect Wallet
-        </button>) : (<button
-          onClick={() => { window.open("https://pay.sendwyre.com/" , "_blank");}}
-          className="bg-purple-500 text-white font-bold p-2 rounded-full w-fit outline-none"
+            Connect Wallet
+          </button>
+        ) : (
+          <button
+            onClick={() => {
+              window.open("https://pay.sendwyre.com/", "_blank");
+            }}
+            className="bg-purple-500 text-white font-bold p-2 rounded-full w-fit outline-none"
           >
-          Fund Wallet
-        </button>)}
+            Fund Wallet
+          </button>
+        )}
         <div className="relative flex flex-col mb-7">
           {vendor.hasCampaign ? (
             <p className="block font-bold mb-2 mt-3">

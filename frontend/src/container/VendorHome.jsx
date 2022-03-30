@@ -27,7 +27,6 @@ const VendorHome = () => {
     const query = vendorQuery(vendorInfo?._id);
     client.fetch(query).then((data) => {
       setVendor(data[0]);
-      console.log(data[0]);
     });
   }, []);
 
@@ -78,12 +77,15 @@ const VendorHome = () => {
           <Route path="/*" element={<VendorPins vendor={vendor && vendor} />} />
           <Route
             path="/vendor-campaign-detail"
-            element={<VendorCampaignDetail />}
+            element={<VendorCampaignDetail vendor={vendor && vendor} />}
           />
-          <Route path="/vendor-scanner" element={<VendorScanner />} />
+          <Route
+            path="/vendor-scanner"
+            element={<VendorScanner vendor={vendor && vendor} />}
+          />
           <Route
             path="/vendor-create-campaign"
-            element={<VendorCreateCampaign />}
+            element={<VendorCreateCampaign vendor={vendor && vendor} />}
           />
         </Routes>
       </div>

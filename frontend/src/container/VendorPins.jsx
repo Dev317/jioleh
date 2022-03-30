@@ -14,7 +14,10 @@ const VendorPins = ({ vendor }) => {
       </div> */}
       <div className="h-full">
         <Routes>
-          <Route path="/" element={<VendorFeed />} />
+          <Route
+            path="/"
+            element={<VendorFeed vendorId={vendor && vendor._id} />}
+          />
           {/* <Route path='/category/:categoryId' element={<VendorFeed />}/> */}
           <Route
             path="/pin-detail/:pinId"
