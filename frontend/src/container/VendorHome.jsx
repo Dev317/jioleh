@@ -14,6 +14,7 @@ import { VendorScanner } from "../components";
 import { UserProfile } from "../components";
 import VendorCampaignDetail from "../components/VendorCampaignDetail";
 import VendorCreateCampaign from "../components/VendorCreateCampaign";
+import VendorQR from "../components/VendorQR";
 
 const VendorHome = () => {
   const [toggleSidebar, setToggleSidebar] = useState(false);
@@ -86,6 +87,10 @@ const VendorHome = () => {
           <Route
             path="/vendor-create-campaign"
             element={<VendorCreateCampaign vendor={vendor && vendor} />}
+          />
+          <Route
+            path="/vendor-qr"
+            element={<VendorQR vendor={vendor && vendor} />}
           />
         </Routes>
       </div>

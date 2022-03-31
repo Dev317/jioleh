@@ -10,6 +10,7 @@ import { client } from "../client";
 import logo from "../assets/logo.png";
 import { fetchUser } from "../utils/fetchUser";
 import VendorProfile from "../components/VendorProfile";
+import UserScanner from "../components/UserScanner";
 
 const Home = () => {
   const [toggleSidebar, setToggleSidebar] = useState(false);
@@ -69,6 +70,10 @@ const Home = () => {
           <Route path="/user-profile/:userId" element={<UserProfile />} />
           <Route path="/*" element={<Pins user={user && user} />} />
           <Route path="/vendor-profile/:vendorId" element={<VendorProfile />} />
+          <Route
+            path="/user-scanner"
+            element={<UserScanner user={user && user} />}
+          />
         </Routes>
       </div>
     </div>
