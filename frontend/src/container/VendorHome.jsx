@@ -7,7 +7,7 @@ import VendorSidebar from "../components/VendorSidebar";
 import VendorProfile from "../components/VendorProfile";
 import VendorPins from "./VendorPins";
 import { vendorQuery } from "../utils/data";
-import { client } from "../client";
+import { client, urlFor } from "../client";
 import logo from "../assets/logo.png";
 import { fetchVendor } from "../utils/fetchVendor";
 import { VendorScanner } from "../components";
@@ -51,7 +51,7 @@ const VendorHome = () => {
             <img src={logo} alt="logo" className="w-28" />
           </Link>
           <Link to={`/vendor/vendor-profile/${vendor?._id}`}>
-            <img src={vendor?.image} alt="logo" className="w-28" />
+            <img src={vendor?.image && urlFor(vendor?.image).url()} alt="vendor image" className="w-28" />
           </Link>
         </div>
         {toggleSidebar && (
