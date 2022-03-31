@@ -9,6 +9,7 @@ import { userQuery } from "../utils/data";
 import { client } from "../client";
 import logo from "../assets/logo.png";
 import { fetchUser } from "../utils/fetchUser";
+import VendorProfile from "../components/VendorProfile";
 
 const Home = () => {
   const [toggleSidebar, setToggleSidebar] = useState(false);
@@ -67,6 +68,7 @@ const Home = () => {
         <Routes>
           <Route path="/user-profile/:userId" element={<UserProfile />} />
           <Route path="/*" element={<Pins user={user && user} />} />
+          <Route path="/vendor-profile/:vendorId" element={<VendorProfile />} />
         </Routes>
       </div>
     </div>

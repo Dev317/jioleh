@@ -302,6 +302,7 @@ const VendorProfile = () => {
   const loggedInVendor = fetchVendor();
 
   useEffect(() => {
+    console.log(vendorId);
     const query = vendorQuery(vendorId);
     client.fetch(query).then((data) => {
       setVendor(data[0]);
@@ -341,7 +342,7 @@ const VendorProfile = () => {
           <h1 className="text-xl text-center">
             @{vendor.username}
           </h1>
-
+          {loggedInVendor?._id == vendor._id ?
           <div className='absolute top-0 z-1 right-0 p-2'>logout
           {vendorId === vendor._id && (
             <button
@@ -353,6 +354,7 @@ const VendorProfile = () => {
             </button>
             )}
           </div>
+          : <></> }
         </div>
 
         <div className='flex justify-center mb-7'>
@@ -369,7 +371,7 @@ const VendorProfile = () => {
               </div>
               :
             <></>}
-            {loggedInVendor._id == vendor._id ? 
+            {loggedInVendor?._id == vendor._id ? 
               <div className="flex gap-2 justify-center p-7">
                 <button type="button"
                     onClick={(e) => {
