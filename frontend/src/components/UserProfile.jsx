@@ -69,7 +69,6 @@ const UserProfile = () => {
               alt="user-pic"
             />
           </div>
-          
           <h1 className="font-bold text-2xl text-center mt-3">
             {user.userName}
           </h1>

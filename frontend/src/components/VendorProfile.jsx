@@ -30,7 +30,7 @@ const EditProfile = ( {vendor, editProfileMode, setEditProfileMode, loggedInVend
   }, [vendor.category, vendor.description, vendor.location, vendor.name])
 
   const handleSaveChanges = (e) => {
-    {imageAsset == null ?
+    if (imageAsset == null) {
       client
       .patch(vendor._id) // Document ID to patch
       .set({
@@ -50,7 +50,7 @@ const EditProfile = ( {vendor, editProfileMode, setEditProfileMode, loggedInVend
       .catch((err) => {
         console.error('Update failed: ', err.message)
       })
-    :
+    } else {
       client
         .patch(vendor._id) // Document ID to patch
         .set({

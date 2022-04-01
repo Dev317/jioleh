@@ -26,7 +26,6 @@ const Pin = ({ pin }) => {
   let alreadySaved = pin?.save?.filter((item) => item?.postedBy?._id === user?.googleId);
   alreadySaved = alreadySaved?.length > 0 ? alreadySaved : [];
 
-
   const savePin = (id) => {
     if(alreadySaved?.length === 0) {
       setSavingPost(true);
@@ -76,7 +75,6 @@ const Pin = ({ pin }) => {
                   muted={false}
                   showControls={true}
                   height={250}
-                  width={400}
                 />
             )}
             {postHovered && (
