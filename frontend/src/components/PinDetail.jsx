@@ -15,6 +15,7 @@ const PinDetail = ({ user }) => {
   const [pins, setPins] = useState(null);
   const [pinDetail, setPinDetail] = useState(null);
   const [taggedVendor, setTaggedVendor] = useState("");
+  const [taggedVendorId, setTaggedVendorId] = useState("");
   const [comment, setComment] = useState("");
   const [addingComment, setAddingComment] = useState(false);
   const [showQRModal, setShowQRModal] = useState(false);
@@ -66,6 +67,7 @@ const PinDetail = ({ user }) => {
 
   const fetchTaggedVendor = (taggedVendor) => {
     client.getDocument(taggedVendor).then((res) => {
+      setTaggedVendorId(res._id);
       setTaggedVendor(res.name);
     }).catch((err) => {
       console.log(err.message);
@@ -74,6 +76,8 @@ const PinDetail = ({ user }) => {
 
   useEffect(() => {
     fetchPinDetails();
+    console.log(taggedVendor)
+    console.log(taggedVendorId)
   }, [pinId]);
 
   if (!pinDetail) return <Spinner message="Loading pin" />;
@@ -128,29 +132,31 @@ const PinDetail = ({ user }) => {
             </h1>
             <p className="mt-3">{pinDetail.about}</p>
           </div>
+          <Link to={`/vendor-profile/${taggedVendorId}`}>
           <div className="flex mt-3">
-            <svg
-              className="w-6 h-6"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
-              ></path>
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
-              ></path>
-            </svg>
-            <p>{taggedVendor}</p>
+              <svg
+                className="w-6 h-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+                ></path>
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+                ></path>
+              </svg>
+              <p>{taggedVendor}</p>
           </div>
+          </Link>
           <div
             className="flex mt-3 mb-5 text-red-500 cursor-pointer"
             onClick={() => setShowQRModal(true)}

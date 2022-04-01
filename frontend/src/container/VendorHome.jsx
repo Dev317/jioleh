@@ -7,7 +7,7 @@ import VendorSidebar from "../components/VendorSidebar";
 import VendorProfile from "../components/VendorProfile";
 import VendorPins from "./VendorPins";
 import { vendorQuery } from "../utils/data";
-import { client } from "../client";
+import { client, urlFor } from "../client";
 import logo from "../assets/logo.png";
 import { fetchVendor } from "../utils/fetchVendor";
 import { VendorScanner } from "../components";
@@ -38,7 +38,7 @@ const VendorHome = () => {
   return (
     <div className="flex bg-gray-50 md:flex-row flex-col h-screen transaction-height duration-75 ease-out">
       <div className="hidden md:flex h-screen flex-initial">
-        <VendorSidebar user={vendor && vendor} />
+        <VendorSidebar vendor={vendor && vendor} />
       </div>
       <div className="flex md:hidden flex-row">
         <div className="p-2 w-full flex flex-row justify-between items-center shadow-md">
@@ -51,7 +51,7 @@ const VendorHome = () => {
             <img src={logo} alt="logo" className="w-28" />
           </Link>
           <Link to={`/vendor/vendor-profile/${vendor?._id}`}>
-            <img src={vendor?.image} alt="logo" className="w-28" />
+            <img src={vendor?.image && urlFor(vendor?.image).url()} alt="vendor image" className="w-28" />
           </Link>
         </div>
         {toggleSidebar && (

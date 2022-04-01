@@ -3,6 +3,7 @@ import { NavLink, Link } from "react-router-dom";
 import { RiHomeFill } from "react-icons/ri";
 import { IoIosArrowForward } from "react-icons/io";
 import { categories } from "../utils/data";
+import { urlFor } from '../client';
 
 import logo from "../assets/logo.png";
 
@@ -11,7 +12,7 @@ const isNotActiveStyle =
 const isActiveStyle =
   "flex items-center px-5 gap-3 font-extrabold bord-r-2 border-black transition-all duration-200 ease-in-out capitalize";
 
-const VendorSidebar = ({ user, closeToggle }) => {
+const VendorSidebar = ({ vendor, closeToggle }) => {
   const handleCloseSidebar = () => {
     if (closeToggle) closeToggle(false);
   };
@@ -83,18 +84,18 @@ const VendorSidebar = ({ user, closeToggle }) => {
           </NavLink>
         </div>
       </div>
-      {user && (
+      {vendor && (
         <Link
-          to={`/vendor/vendor-profile/${user._id}`}
+          to={`/vendor/vendor-profile/${vendor._id}`}
           className="flex my-5 mb-3 gap-2 p-2 items-center bg-white rounder-lg shadow-lg mx-3"
           onClick={handleCloseSidebar}
         >
           <img
-            src={user.image}
+            src={vendor?.image && urlFor(vendor?.image).url()}
             className="w-10 h-10 rounded-full"
-            alt="user-profile"
+            alt="vendor-pic"
           />
-          <p>{user.userName}</p>
+          <p>{vendor.name}</p>
         </Link>
       )}
     </div>

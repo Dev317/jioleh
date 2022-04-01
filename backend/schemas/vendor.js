@@ -40,7 +40,10 @@ export default {
     {
       name: "image",
       title: "Image",
-      type: "string",
+      type: "image",
+      options: {
+        hotspot: true, // makes it possible to reponsively adapt the images to different aspect ratios at display time
+      },
     },
     {
       name: "password",
@@ -96,6 +99,11 @@ export default {
       name: "rewardAmount",
       title: "Reward Amount per Scan",
       type: "number",
+    },
+    {
+      name: "refereeReward",
+      title: "Reward Referee receives on First Visit",
+      type: "string",
     },
     {
       name: "dailyLimit",

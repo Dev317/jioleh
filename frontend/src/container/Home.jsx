@@ -9,6 +9,7 @@ import { userQuery } from "../utils/data";
 import { client } from "../client";
 import logo from "../assets/logo.png";
 import { fetchUser } from "../utils/fetchUser";
+import VendorProfile from "../components/VendorProfile";
 import UserScanner from "../components/UserScanner";
 
 const Home = () => {
@@ -47,7 +48,7 @@ const Home = () => {
             <img src={logo} alt="logo" className="w-28" />
           </Link>
           <Link to={`/user-profile/${user?._id}`}>
-            <img src={user?.image} alt="logo" className="w-28" />
+            <img src={user?.image} alt="user image" className="w-28" />
           </Link>
         </div>
         {toggleSidebar && (
@@ -68,6 +69,7 @@ const Home = () => {
         <Routes>
           <Route path="/user-profile/:userId" element={<UserProfile />} />
           <Route path="/*" element={<Pins user={user && user} />} />
+          <Route path="/vendor-profile/:vendorId" element={<VendorProfile />} />
           <Route
             path="/user-scanner"
             element={<UserScanner user={user && user} />}
