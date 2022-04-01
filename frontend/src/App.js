@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import { Routes, Route, useNavigate } from "react-router-dom";
-import VendorScanner from "./components/VendorScanner";
 import VendorLogin from "./components/VendorLogin";
 import VendorSignUp from "./components/VendorSignUp";
 import Login from "./components/Login";
