@@ -219,7 +219,7 @@ export default function VendorCreateCampaign(props) {
                 ) : (
                   <button
                     onClick={() => {
-                      window.open("https://pay.sendwyre.com/", "_blank");
+                      window.open("https://faucets.chain.link/rinkeby", "_blank");
                     }}
                     className="bg-purple-500 text-white font-bold p-2 rounded-full w-fit outline-none"
                   >

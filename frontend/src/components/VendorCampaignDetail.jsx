@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { client } from "../client";
 import Spinner from "./Spinner";
 import { ethers } from "ethers";
 import Campaign from "../contracts/Campaign.json";
+import { TokenContext } from "../context/TokenContext";
 
 const regBtnStyles =
   "bg-red-500 text-white font-bold p-2 rounded-full w-fit outline-none";
@@ -10,6 +11,8 @@ const delBtnStyles =
   "bg-white text-red-500 font-bold p-2 border border-red-500 rounded-full w-fit outline-none";
 const rewardBtnStyles =
   "bg-purple-500 text-white font-bold p-2 rounded-full w-fit outline-none";
+const connectBtnStyles =
+  "bg-blue-500 text-white font-bold p-2 rounded-full w-fit outline-none";
 
 const getCampaignContract = (campaignAddress) => {
   const provider = new ethers.providers.Web3Provider(window.ethereum);
@@ -24,6 +27,7 @@ const getCampaignContract = (campaignAddress) => {
 };
 
 const VendorCampaignDetail = (props) => {
+  const { connectWallet, currentAccount } = useContext(TokenContext);
   const [vendor, setVendor] = useState(props.vendor);
   const [editingMode, setEditingMode] = useState(false);
   const [form, setForm] = useState();
@@ -110,6 +114,7 @@ const VendorCampaignDetail = (props) => {
   };
 
   const transferReward = async () => {
+    console.log(currentAccount);
     const ethValue = vendor.rewardAmount;
     const parsedRewardAmount = ethers.utils.parseEther(ethValue.toString());
 
@@ -359,8 +364,8 @@ const VendorCampaignDetail = (props) => {
                     <p className="font-bold break-words mt-3">Payment Pending:</p>
                   </div>
                   <div className="col-span-2  ...">
-                    {vendor.pendingPayment ? (
-                      <button
+                    {vendor.pendingPayment ? ((currentAccount !== undefined ?
+                      (<button
                         type="button"
                         onClick={() => {
                           transferReward();
@@ -369,9 +374,17 @@ const VendorCampaignDetail = (props) => {
                       >
                         Transfer
                       </button>
-                    ) : (
+                    ) : (<button
+                      type="button"
+                      onClick={() => {
+                        connectWallet();
+                      }}
+                      className={`${connectBtnStyles}`}
+                    >
+                      Connect Wallet
+                    </button>))) : ((
                       <p className="break-words mt-3">No pending payment</p>
-                    )}
+                    ))}
                   </div>
 
                   <button
