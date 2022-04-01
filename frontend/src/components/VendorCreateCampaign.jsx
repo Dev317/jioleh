@@ -1,11 +1,9 @@
 import React, { useEffect, useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { client } from "../client";
-import { fetchVendor } from "../utils/fetchVendor";
 import { TokenContext } from "../context/TokenContext";
 import { ethers } from "ethers";
 import Factory from "../contracts/Factory.json";
-import Campaign from "../contracts/Campaign.json";
 
 const factoryAddress = process.env.REACT_APP_FACTORY_ADDRESS;
 
@@ -15,18 +13,6 @@ const getFactoryContract = () => {
   const factoryContract = new ethers.Contract(
     factoryAddress,
     Factory.abi,
-    signer
-  );
-
-  return factoryContract;
-};
-
-const getCampaignContract = (campaignAddress) => {
-  const provider = new ethers.providers.Web3Provider(window.ethereum);
-  const signer = provider.getSigner();
-  const factoryContract = new ethers.Contract(
-    campaignAddress,
-    Campaign.abi,
     signer
   );
 
@@ -55,7 +41,7 @@ export default function VendorCreateCampaign(props) {
     localStorage.getItem("campaign")
       ? setVendor(JSON.parse(localStorage.getItem("campaign")))
       : setVendor(props.vendor);
-  }, []);
+  }, [props.vendor]);
 
   useEffect(() => {
     localStorage.setItem("campaign", JSON.stringify(vendor));

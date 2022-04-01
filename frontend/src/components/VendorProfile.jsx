@@ -3,13 +3,10 @@ import { AiOutlineLogout } from 'react-icons/ai';
 import { useParams, useNavigate } from 'react-router-dom';
 import { client, urlFor } from '../client';
 import Spinner from './Spinner';
-import QRModal from './QRModal';
 import { vendorQuery } from '../utils/data';
 import { fetchVendor } from '../utils/fetchVendor';
-
 import { AiOutlineCloudUpload } from "react-icons/ai";
 import { MdDelete } from "react-icons/md";
-import VendorPinDetail from './VendorPinDetail';
 import { Link } from "react-router-dom";
 
 const randomImg = 'https://cdn.wallpapersafari.com/29/50/7acBKo.jpg';
@@ -25,15 +22,15 @@ const EditProfile = ( {vendor, editProfileMode, setEditProfileMode, loggedInVend
   const [wrongImageType, setWrongImageType] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  useEffect(() => { 
+  useEffect(() => {
     setName(vendor.name);
     setCategory(vendor.category);
     setLocation(vendor.location);
-    setDescription(vendor.description); 
-  }, [])
+    setDescription(vendor.description);
+  }, [vendor.category, vendor.description, vendor.location, vendor.name])
 
   const handleSaveChanges = (e) => {
-    {imageAsset == null ? 
+    {imageAsset == null ?
       client
       .patch(vendor._id) // Document ID to patch
       .set({
@@ -44,8 +41,6 @@ const EditProfile = ( {vendor, editProfileMode, setEditProfileMode, loggedInVend
       }) // Shallow merge
       .commit()
       .then((updatedVendor) => {
-        console.log(updatedVendor)
-
         vendor.name = name;
         vendor.category = category;
         vendor.location = location;
@@ -73,8 +68,6 @@ const EditProfile = ( {vendor, editProfileMode, setEditProfileMode, loggedInVend
         }) // Shallow merge
         .commit()
         .then((updatedVendor) => {
-          console.log(updatedVendor)
-
           vendor.name = name;
           vendor.category = category;
           vendor.location = location;
@@ -85,7 +78,6 @@ const EditProfile = ( {vendor, editProfileMode, setEditProfileMode, loggedInVend
           console.error('Update failed: ', err.message)
         })
     }
-    
   }
 
   const uploadImage = (e) => {
@@ -181,7 +173,7 @@ const EditProfile = ( {vendor, editProfileMode, setEditProfileMode, loggedInVend
                     <p className="text-lg">Click to upload</p>
                   </div>
                   <p className="mt-32 text-gray-400">
-                    Use high-uqality JPG, SVG, PNG, GIF or TIFF less than 20MB
+                    Use high-quality JPG, SVG, PNG, GIF or TIFF less than 20MB
                   </p>
                 </div>
                 <input
@@ -210,7 +202,7 @@ const EditProfile = ( {vendor, editProfileMode, setEditProfileMode, loggedInVend
         </div>
       </div>
     </div>
-    </form> 
+    </form>
   )
 }
 
@@ -221,36 +213,35 @@ const DisplayInfo = ( { vendor } ) => {
       <div className="flex p-3 justify-center text-center">
         <p>{vendor.description == null ? <span className="text-gray-400">vendor has not added a description</span> : vendor.description}</p>
       </div>
-      
       <div className="flex mt-3 justify-center">
-        <svg 
-          className="mr-3 w-6 h-6" 
-          fill="none" 
-          stroke="#ef4444" 
-          viewBox="0 0 24 24" 
+        <svg
+          className="mr-3 w-6 h-6"
+          fill="none"
+          stroke="#ef4444"
+          viewBox="0 0 24 24"
           xmlns="http://www.w3.org/2000/svg">
             <path 
-              strokeLinecap="round" 
-              strokeLinejoin="round" 
+              strokeLinecap="round"
+              strokeLinejoin="round"
               strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
             <path 
-              strokeLinecap="round" 
-              strokeLinejoin="round" 
+              strokeLinecap="round"
+              strokeLinejoin="round"
               strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
         </svg>
-        <p>{vendor.location == null ? <span className="text-gray-400">vendor has not added a location</span> : vendor.location}</p> 
+        <p>{vendor.location == null ? <span className="text-gray-400">vendor has not added a location</span> : vendor.location}</p>
       </div>
       <div className="flex p-3 justify-center">
         <svg 
-          className="mr-3 w-6 h-6" 
-          fill="none" 
-          stroke="#ef4444" 
-          viewBox="0 0 24 24" 
+          className="mr-3 w-6 h-6"
+          fill="none"
+          stroke="#ef4444"
+          viewBox="0 0 24 24"
           xmlns="http://www.w3.org/2000/svg">
-            <path 
-              strokeLinecap="round" 
-              strokeLinejoin="round" 
-              strokeWidth="2" 
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
               d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"></path>
           </svg>
         <p>{vendor.category == null ? <span className="text-gray-400">vendor has not added a category</span> : vendor.category}</p> 
@@ -266,7 +257,7 @@ const CampaignDetails = ( { vendor } ) => {
     var date = new Date(vendor.startDate);
     const options = { year: 'numeric', month: 'long', day: 'numeric' }
     setStartDate(date.toLocaleDateString('en-US', options));
-  }, [])
+  }, [vendor.startDate])
 
   return (
     <div className="m-5 p-5 rounded overflow-hidden shadow-lg">
@@ -292,17 +283,12 @@ const CampaignDetails = ( { vendor } ) => {
 
 const VendorProfile = () => {
   const [vendor, setVendor] = useState(null);
-  const [pins, setPins] = useState(null);
-  const [text, setText ] = useState('about');
-  const [activeBtn, setActiveBtn] = useState('about');
-  const [showQRModal, setShowQRModal] = useState(false);
   const [editProfileMode, setEditProfileMode] = useState(false);
   const navigate = useNavigate();
   const { vendorId } = useParams();
   const loggedInVendor = fetchVendor();
 
   useEffect(() => {
-    console.log(vendorId);
     const query = vendorQuery(vendorId);
     client.fetch(query).then((data) => {
       setVendor(data[0]);
@@ -342,8 +328,8 @@ const VendorProfile = () => {
           <h1 className="text-xl text-center">
             @{vendor.username}
           </h1>
-          {loggedInVendor?._id == vendor._id ?
-          <div className='absolute top-0 z-1 right-0 p-2'>logout
+          {loggedInVendor?._id === vendor._id ?
+          <div className='absolute top-0 z-1 right-0 p-2'>
           {vendorId === vendor._id && (
             <button
               type="button"
@@ -358,12 +344,11 @@ const VendorProfile = () => {
         </div>
 
         <div className='flex justify-center mb-7'>
-          {editProfileMode ? 
+          {editProfileMode ?
             <EditProfile vendor={vendor} editProfileMode={editProfileMode} setEditProfileMode={setEditProfileMode} loggedInVendor={loggedInVendor} />
           :
           <div className="w-full">
             <DisplayInfo vendor={vendor} />
-            
             {vendor.hasCampaign ? 
               <div>
                 <p className="text-center font-bold text-2xl mt-3">Ongoing Campaigns:</p>
@@ -371,7 +356,7 @@ const VendorProfile = () => {
               </div>
               :
             <></>}
-            {loggedInVendor?._id == vendor._id ? 
+            {loggedInVendor?._id === vendor._id ?
               <div className="flex gap-2 justify-center p-7">
                 <button type="button"
                     onClick={(e) => {
@@ -391,7 +376,6 @@ const VendorProfile = () => {
             </div>
           }
         </div>
-
       </div>
     </div>
   );

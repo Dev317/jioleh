@@ -1,8 +1,6 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState } from "react";
 import { client } from "../client";
 import Spinner from "./Spinner";
-import { fetchVendor } from "../utils/fetchVendor";
-import { TokenContext } from "../context/TokenContext";
 import { ethers } from "ethers";
 import Campaign from "../contracts/Campaign.json";
 
@@ -26,8 +24,6 @@ const getCampaignContract = (campaignAddress) => {
 };
 
 const VendorCampaignDetail = (props) => {
-  const { connectWallet, currentAccount } = useContext(TokenContext);
-
   const [vendor, setVendor] = useState(props.vendor);
   const [editingMode, setEditingMode] = useState(false);
   const [form, setForm] = useState();
@@ -48,7 +44,7 @@ const VendorCampaignDetail = (props) => {
     localStorage.getItem("campaign")
       ? setVendor(JSON.parse(localStorage.getItem("campaign")))
       : setVendor(props.vendor);
-  }, []);
+  }, [props.vendor]);
 
   useEffect(() => {
     localStorage.setItem("campaign", JSON.stringify(vendor));
@@ -316,6 +312,11 @@ const VendorCampaignDetail = (props) => {
                   <div className="col-span-2 ...">
                     <p className="break-words mt-3">
                       {vendor.rewardAmount == null ? "-" : vendor.rewardAmount}
+                    </p>
+                  </div>
+                  <div className="col-span-3 ...">
+                    <p className="font-bold break-words mt-3">
+                      Referee Reward :
                     </p>
                   </div>
                   <div className="col-span-2 ...">

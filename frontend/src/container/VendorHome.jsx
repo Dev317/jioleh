@@ -29,7 +29,7 @@ const VendorHome = () => {
     client.fetch(query).then((data) => {
       setVendor(data[0]);
     });
-  }, []);
+  }, [vendorInfo?._id]);
 
   useEffect(() => {
     scrollRef.current.scrollTo(0, 0);

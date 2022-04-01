@@ -26,7 +26,7 @@ const Home = () => {
     client.fetch(query).then((data) => {
       setUser(data[0]);
     });
-  }, []);
+  }, [userInfo?.googleId]);
 
   useEffect(() => {
     scrollRef.current.scrollTo(0, 0);
@@ -48,7 +48,7 @@ const Home = () => {
             <img src={logo} alt="logo" className="w-28" />
           </Link>
           <Link to={`/user-profile/${user?._id}`}>
-            <img src={user?.image} alt="user image" className="w-28" />
+            <img src={user?.image} alt="user-image" className="w-28" />
           </Link>
         </div>
         {toggleSidebar && (

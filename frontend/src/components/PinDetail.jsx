@@ -76,8 +76,6 @@ const PinDetail = ({ user }) => {
 
   useEffect(() => {
     fetchPinDetails();
-    console.log(taggedVendor)
-    console.log(taggedVendorId)
   }, [pinId]);
 
   if (!pinDetail) return <Spinner message="Loading pin" />;
