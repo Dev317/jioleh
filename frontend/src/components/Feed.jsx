@@ -40,6 +40,9 @@ const Feed = () => {
 
   return (
       <div>
+          <h1 className="font-bold pl-2 pb-3">
+              {categoryId ? "Discover" : "Foodsteps around you"}
+          </h1>
           {pins && (<MasonryLayout pins={pins}/>)}
       </div>
   );

@@ -26,6 +26,17 @@ export const vendorQuery = (vendorId) => {
   return query;
 };
 
+//for finding vendors in a separate carousell
+export const vendorSearchQuery = (searchTerm) => {
+  const query = `*[_type == "vendor" && username match '${searchTerm}*' || name match '${searchTerm}*']{
+        _id,
+        username,
+        name,
+        category
+    }`;
+  return query;
+};
+
 export const searchQuery = (searchTerm) => {
   const query = `*[_type == "pin" && title match '${searchTerm}*' || category match '${searchTerm}*' || about match '${searchTerm}*']{
         image {
