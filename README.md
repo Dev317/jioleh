@@ -12,7 +12,9 @@ To edit other Sanity-related project info, run `sanity manage` to open the Sanit
 
 
 # How to React
-Ensure that node modules are installed by running `npm install`. To initiate React frontend, please run `npm start` to compile and the React client will be live on `localhost:3000`
+Ensure that node modules are installed by running `npm install`.
+
+To initiate React frontend, please run `npm start` to compile and the React client will be live on `localhost:3000`.
 
 - Install dependencies to connect to sanity backend
 
@@ -49,4 +51,16 @@ npm install uuid
 ```powershell
 npm install html5-qrcode
 npm install react-qr-code
+```
+
+- Install dependencies for web3
+
+```powershell
+npm install ethers
+```
+
+- Install dependencies for mux video plug-in
+
+```powershell
+npm install sanity-mux-player
 ```
