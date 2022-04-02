@@ -9,7 +9,7 @@ import { categories } from "../utils/data";
 import { TokenContext } from "../context/TokenContext";
 
 const CreatePin = ({ user }) => {
-  const { currentAccount, connectWallet } = useContext(TokenContext);
+  const { connectWallet } = useContext(TokenContext);
   const [title, setTitle] = useState("");
   const [about, setAbout] = useState("");
   const [destination, setDestination] = useState("");
@@ -20,8 +20,28 @@ const CreatePin = ({ user }) => {
   const [taggedVendor, setTaggedVendor] = useState(null);
   const [imageAsset, setImageAsset] = useState(null);
   const [wrongImageType, setWrongImageType] = useState(false);
+  const [currentAccount, setCurrentAccount] = useState();
+  const [connected, setConnected] = useState(false);
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    checkIfWalletIsConnected();
+  }, [currentAccount, connected]);
+
+  const checkIfWalletIsConnected = async () => {
+    try {
+      if (!window.ethereum) return alert('Please install Metamask')
+
+      const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' })
+
+      if (accounts.length) {
+        setCurrentAccount(accounts[0]);
+      }
+    } catch (err) {
+      console.log(err)
+    }
+  }
 
   useEffect(() => {
     client
@@ -234,10 +254,12 @@ const CreatePin = ({ user }) => {
             </div>
 
             <div className="flex justify-end items-end mt-5">
-            {!currentAccount ? (<button
+            {(!currentAccount && !connected ) ? (<button
                 type="button"
                 className="bg-purple-500 text-white font-bold p-2 rounded-full w-28 outline-none"
-                onClick={() => connectWallet(user._id)}
+                onClick={() => {
+                  setConnected(connectWallet(user._id));
+                }}
               >
                 Connect Wallet
               </button>) : (

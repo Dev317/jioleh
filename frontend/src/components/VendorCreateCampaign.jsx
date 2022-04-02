@@ -23,7 +23,27 @@ export default function VendorCreateCampaign(props) {
   const [vendor, setVendor] = useState(props.vendor);
   const [form, setForm] = useState({});
   const navigate = useNavigate();
-  const { connectWallet, currentAccount } = useContext(TokenContext);
+  const [currentAccount, setCurrentAccount] = useState();
+  const [connected, setConnected] = useState(false);
+  const { connectWallet } = useContext(TokenContext);
+
+  useEffect(() => {
+    checkIfWalletIsConnected();
+  }, [currentAccount, connected]);
+
+  const checkIfWalletIsConnected = async () => {
+    try {
+      if (!window.ethereum) return alert('Please install Metamask')
+
+      const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' })
+
+      if (accounts.length && !connected) {
+        setCurrentAccount(accounts[0]);
+      }
+    } catch (err) {
+      console.log(err)
+    }
+  }
 
   const [errorMessage, setErrorMessage] = useState({
     message: "",
@@ -209,9 +229,11 @@ export default function VendorCreateCampaign(props) {
                 />
               </div>
               <div className="flex justify-between ...">
-                {!currentAccount ? (
+                {(!currentAccount && !connected) ? (
                   <button
-                    onClick={() => connectWallet(vendor._id)}
+                    onClick={() => {
+                      setConnected(connectWallet(vendor._id));
+                    }}
                     className="bg-blue-500 text-white font-bold p-2 rounded-full w-fit outline-none"
                   >
                     Connect Wallet

@@ -27,10 +27,11 @@ const getCampaignContract = (campaignAddress) => {
 };
 
 const VendorCampaignDetail = (props) => {
-  const { connectWallet, currentAccount } = useContext(TokenContext);
+  const { connectWallet } = useContext(TokenContext);
   const [vendor, setVendor] = useState(props.vendor);
   const [editingMode, setEditingMode] = useState(false);
   const [form, setForm] = useState();
+  const [connected, setConnected] = useState(false);
 
   const [errorMessage, setErrorMessage] = useState({
     message: "",
@@ -114,7 +115,7 @@ const VendorCampaignDetail = (props) => {
   };
 
   const transferReward = async () => {
-    console.log(currentAccount);
+    console.log(connected);
     const ethValue = vendor.rewardAmount;
     const parsedRewardAmount = ethers.utils.parseEther(ethValue.toString());
 
@@ -364,7 +365,7 @@ const VendorCampaignDetail = (props) => {
                     <p className="font-bold break-words mt-3">Payment Pending:</p>
                   </div>
                   <div className="col-span-2  ...">
-                    {vendor.pendingPayment ? ((currentAccount !== undefined ?
+                    {vendor.pendingPayment ? ((connected ?
                       (<button
                         type="button"
                         onClick={() => {
@@ -377,7 +378,7 @@ const VendorCampaignDetail = (props) => {
                     ) : (<button
                       type="button"
                       onClick={() => {
-                        connectWallet();
+                        setConnected(connectWallet(vendor?._id));
                       }}
                       className={`${connectBtnStyles}`}
                     >

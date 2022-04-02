@@ -4,9 +4,8 @@ import { client } from "../client";
 export const TokenContext = React.createContext();
 
 export const TokenProvider = ({ children }) => {
-  const [currentAccount, setCurrentAccount] = useState();
 
-  const connectWallet = async (vendorId) => {
+  const connectWallet = async (id) => {
     try {
       if (!window.ethereum) {
         return alert("Please install Meta-Mask!");
@@ -15,18 +14,19 @@ export const TokenProvider = ({ children }) => {
       const accounts = await window.ethereum.request({
         method: "eth_requestAccounts",
       });
-      setCurrentAccount(accounts[0]);
 
-      await client.patch(vendorId).set({ walletAddress: accounts[0] }).commit();
+      await client.patch(id).set({ walletAddress: accounts[0] }).commit();
+
     } catch (err) {
       console.log(err);
     }
+
+    return true;
   };
 
   return (
     <TokenContext.Provider
       value={{
-        currentAccount,
         connectWallet,
       }}
     >
