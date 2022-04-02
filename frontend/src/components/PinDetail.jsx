@@ -129,7 +129,7 @@ const PinDetail = ({ user }) => {
             </h1>
             <p className="mt-3">{pinDetail.about}</p>
           </div>
-          {/* <Link to={`/vendor-profile/${taggedVendorId}`}> */}
+          <Link to={`/vendor-profile/${taggedVendorId}`}>
           <div className="flex mt-3">
               <svg
                 className="w-6 h-6"
@@ -153,7 +153,7 @@ const PinDetail = ({ user }) => {
               </svg>
               <p>{taggedVendor}</p>
           </div>
-          {/* </Link> */}
+          </Link>
           <div
             className="flex mt-3 mb-5 text-red-500 cursor-pointer"
             onClick={() => setShowQRModal(true)}
