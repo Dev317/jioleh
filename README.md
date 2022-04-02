@@ -12,7 +12,9 @@ To edit other Sanity-related project info, run `sanity manage` to open the Sanit
 
 
 # How to React
-Ensure that node modules are installed by running `npm install`. To initiate React frontend, please run `npm start` to compile and the React client will be live on `localhost:3000`
+Ensure that node modules are installed by running `npm install`.
+
+To initiate React frontend, please run `npm start` to compile and the React client will be live on `localhost:3000`.
 
 - Install dependencies to connect to sanity backend
 
