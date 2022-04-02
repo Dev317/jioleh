@@ -1,15 +1,15 @@
-# Basic Sample Hardhat Project
+# Hardhat Vendor Campaign and Referrer Payment Project
 
-This project demonstrates a basic Hardhat use case. It comes with a sample contract, a test for that contract, a sample script that deploys that contract, and an example of a task implementation, which simply lists the available accounts.
+This project folder implements Hardhat framework to create a smart contract, a test for that contract, a script that deploys that contract on Rinkeby testnet
 
-Try running some of the following tasks:
+These are some of the command tasks that are relevant to the project:
 
 ```shell
 npx hardhat accounts
+npx hardhat keys
 npx hardhat compile
-npx hardhat clean
 npx hardhat test
 npx hardhat node
-node scripts/sample-script.js
+node scripts/deploy.js
 npx hardhat help
 ```
