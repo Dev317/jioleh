@@ -59,7 +59,7 @@ const Sidebar = ({ user, closeToggle }) => {
             Scan Vendor QR
           </NavLink>
           <h3 className="mt-2 px-5 text-base 2xl:text-xl">
-            Discover cateogries
+            Discover Categories
           </h3>
           {categories.slice(0, categories.length).map((category) => (
             <NavLink
