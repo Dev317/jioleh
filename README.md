@@ -52,3 +52,15 @@ npm install uuid
 npm install html5-qrcode
 npm install react-qr-code
 ```
+
+- Install dependencies for web3
+
+```powershell
+npm install ethers
+```
+
+- Install dependencies for mux video plug-in
+
+```powershell
+npm install sanity-mux-player
+```
