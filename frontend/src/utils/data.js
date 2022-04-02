@@ -32,10 +32,29 @@ export const vendorSearchQuery = (searchTerm) => {
         _id,
         username,
         name,
-        category
+        category,
+        location
     }`;
   return query;
 };
+
+export const vendorDefaultQuery = `*[_type == "vendor" ]{
+        _id,
+        username,
+        name,
+        category,
+        location,
+        image {
+            asset -> {
+                url
+            }
+        },
+        bgimage {
+            asset -> {
+                url
+            }
+        }
+    }`;
 
 export const searchQuery = (searchTerm) => {
   const query = `*[_type == "pin" && title match '${searchTerm}*' || category match '${searchTerm}*' || about match '${searchTerm}*']{
@@ -101,12 +120,6 @@ export const searchByVendor = (searchTerm) => {
   return query;
 };
 
-export const vendorDefaultQuery = `*[_type == "vendor" ]{
-        _id,
-        username,
-        name,
-        category
-    }`;
 
 export const feedQuery = `*[_type == "pin"] | order(_createdAt desc) {
     image {

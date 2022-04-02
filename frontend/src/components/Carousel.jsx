@@ -49,7 +49,7 @@ export default function Carousel({ data }) {
     return (
         <div className="hide-scrollbar flex overflow-x-auto">
             {data.map((card, index) => (
-                <ProfileCard key={index} imgSrc={card.image} title={card.name} />
+                <ProfileCard key={index} bgimage={card.bgimage} title={card.name} location={card.location} profilepic={card.image} vid={card._id}/>
             ))}
         </div>
     );

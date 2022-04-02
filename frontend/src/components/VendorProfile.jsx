@@ -9,7 +9,8 @@ import { AiOutlineCloudUpload } from "react-icons/ai";
 import { MdDelete } from "react-icons/md";
 import { Link } from "react-router-dom";
 
-const randomImg = 'https://cdn.wallpapersafari.com/29/50/7acBKo.jpg';
+const defaultBg = "https://cdn.wallpapersafari.com/29/50/7acBKo.jpg";
+const defaultProfile = "https://icon-library.com/images/icon-restaurant/icon-restaurant-0.jpg"
 const EditBtnStyle = 'bg-red-500 text-white font-bold p-2 rounded-xl outline-none w-40';
 
 const EditProfile = ( {vendor, editProfileMode, setEditProfileMode, loggedInVendor} ) => {
@@ -311,13 +312,13 @@ const VendorProfile = () => {
         <div className="relative flex flex-col mb-2">
           <div className="flex flex-col justify-center items-center">
             <img
-              src={randomImg}
+              src={vendor?.bgimage ? vendor?.bgimage && urlFor(vendor?.bgimage).url() : defaultBg}
               className="w-full h-370 2xl:h-510 shadow-lg object-cove"
               alt="banner-pic"
             />
             <img
               className="rounded-full w-20 h-20 -mt-10 shadow-xl object-cover"
-              src={vendor?.image && urlFor(vendor?.image).url()}
+              src={vendor?.image ? vendor?.image && urlFor(vendor?.image).url() : defaultProfile}
               alt="vendor-pic"
             />
           </div>
