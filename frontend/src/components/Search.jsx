@@ -11,8 +11,9 @@ const Search = ({ searchTerm }) => {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
+  setLoading(true);
+
     if (searchTerm !== "") {
-      setLoading(true);
       const vendorQuery = vendorSearchQuery(searchTerm.toLowerCase());
       const pinQuery = searchQuery(searchTerm.toLowerCase());
       Promise.all([client.fetch(pinQuery), client.fetch(vendorQuery)]).then(

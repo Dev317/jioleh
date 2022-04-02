@@ -101,6 +101,13 @@ export const searchByVendor = (searchTerm) => {
   return query;
 };
 
+export const vendorDefaultQuery = `*[_type == "vendor" ]{
+        _id,
+        username,
+        name,
+        category
+    }`;
+
 export const feedQuery = `*[_type == "pin"] | order(_createdAt desc) {
     image {
       asset -> {
