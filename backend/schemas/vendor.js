@@ -39,7 +39,15 @@ export default {
     },
     {
       name: "image",
-      title: "Image",
+      title: "Profile Image",
+      type: "image",
+      options: {
+        hotspot: true, // makes it possible to reponsively adapt the images to different aspect ratios at display time
+      },
+    },
+    {
+      name: "bgimage",
+      title: "Background Image",
       type: "image",
       options: {
         hotspot: true, // makes it possible to reponsively adapt the images to different aspect ratios at display time
