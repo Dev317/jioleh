@@ -1,9 +1,7 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import { Html5Qrcode } from "html5-qrcode";
 import { client } from "../client";
 import { userQuery, vendorQuery } from "../utils/data";
-import { fetchVendor } from "../utils/fetchVendor";
-import { useNavigate } from "react-router-dom";
 
 const qrConfig = { fps: 10, qrbox: { width: 300, height: 300 } };
 
@@ -64,8 +62,6 @@ export default function VendorScanner({ vendor }) {
   });
 
   const [startQR, setStartQR] = useState(true);
-
-  const navigate = useNavigate();
 
   useEffect(() => {
     if (alertMessage.show) {

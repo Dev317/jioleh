@@ -1,17 +1,11 @@
 import React, { useState } from "react";
 import { useEffect } from "react";
-import { useParams } from "react-router-dom";
-
 import { client } from "../client";
 import VendorMasonryLayout from "./VendorMasonryLayout";
 import Spinner from "./Spinner";
 import {
-  feedQuery,
-  searchQuery,
-  vendorQuery,
   searchByVendor,
 } from "../utils/data";
-import { fetchVendor } from "../utils/fetchVendor";
 
 const VendorFeed = ({ vendorId }) => {
   const [loading, setLoading] = useState(true);

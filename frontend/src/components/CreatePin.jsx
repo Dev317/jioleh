@@ -2,7 +2,6 @@ import React, { useState, useEffect, useContext } from "react";
 import { AiOutlineCloudUpload } from "react-icons/ai";
 import { MdDelete } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
-
 import { client } from "../client";
 import Spinner from "./Spinner";
 import { categories } from "../utils/data";
@@ -31,17 +30,19 @@ const CreatePin = ({ user }) => {
 
   const checkIfWalletIsConnected = async () => {
     try {
-      if (!window.ethereum) return alert('Please install Metamask')
+      if (!window.ethereum) return alert("Please install Metamask");
 
-      const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' })
+      const accounts = await window.ethereum.request({
+        method: "eth_requestAccounts",
+      });
 
       if (accounts.length) {
         setCurrentAccount(accounts[0]);
       }
     } catch (err) {
-      console.log(err)
+      console.log(err);
     }
-  }
+  };
 
   useEffect(() => {
     client
@@ -254,22 +255,25 @@ const CreatePin = ({ user }) => {
             </div>
 
             <div className="flex justify-end items-end mt-5">
-            {(!currentAccount && !connected ) ? (<button
-                type="button"
-                className="bg-purple-500 text-white font-bold p-2 rounded-full w-28 outline-none"
-                onClick={() => {
-                  setConnected(connectWallet(user._id));
-                }}
-              >
-                Connect Wallet
-              </button>) : (
-              <button
-                type="button"
-                onClick={savePin}
-                className="bg-red-500 text-white font-bold p-2 rounded-full w-28 outline-none"
-              >
-                Save FoodStep
-              </button>)}
+              {!currentAccount && !connected ? (
+                <button
+                  type="button"
+                  className="bg-purple-500 text-white font-bold p-2 rounded-full w-28 outline-none"
+                  onClick={() => {
+                    setConnected(connectWallet(user._id));
+                  }}
+                >
+                  Connect Wallet
+                </button>
+              ) : (
+                <button
+                  type="button"
+                  onClick={savePin}
+                  className="bg-red-500 text-white font-bold p-2 rounded-full w-28 outline-none"
+                >
+                  Save FoodStep
+                </button>
+              )}
             </div>
           </div>
         </div>

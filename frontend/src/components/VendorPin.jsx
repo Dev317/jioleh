@@ -1,11 +1,7 @@
 import React, { useState } from "react";
-import { client, urlFor } from "../client";
+import { urlFor } from "../client";
 import SanityMuxPlayer from "sanity-mux-player";
 import { Link, useNavigate } from "react-router-dom";
-import { v4 as uuidv4 } from "uuid";
-import { MdDownloadForOffline } from "react-icons/md";
-import { AiTwotoneDelete } from "react-icons/ai";
-import { BsFillArrowUpRightCircleFill } from "react-icons/bs";
 import { fetchUser } from "../utils/fetchUser";
 
 const Pin = ({ pin }) => {
@@ -19,13 +15,13 @@ const Pin = ({ pin }) => {
     const { asset } = pin.video;
     assetDocument = asset;
   }
-  const { destination, postedBy, image, _id } = pin;
+  const { postedBy, _id } = pin;
   const user = fetchUser();
 
   let alreadySaved = pin?.save?.filter(
     (item) => item?.postedBy?._id === user?.googleId
   );
-  alreadySaved = alreadySaved?.length > 0 ? alreadySaved : [];
+  // alreadySaved = alreadySaved?.length > 0 ? alreadySaved : [];
 
   // const savePin = (id) => {
   //   if(alreadySaved?.length === 0) {
@@ -80,7 +76,6 @@ const Pin = ({ pin }) => {
             muted={false}
             showControls={true}
             height={250}
-            width={400}
           />
         )}
         {/* {postHovered && (

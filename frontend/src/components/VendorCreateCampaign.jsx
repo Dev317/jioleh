@@ -33,17 +33,23 @@ export default function VendorCreateCampaign(props) {
 
   const checkIfWalletIsConnected = async () => {
     try {
-      if (!window.ethereum) return alert('Please install Metamask')
+      if (!window.ethereum) {
+        return alert("Please install Metamask");
+      }
 
-      const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' })
+      if (!vendor.hasCampaign) {
+        const accounts = await window.ethereum.request({
+          method: "eth_requestAccounts",
+        });
 
-      if (accounts.length && !connected) {
-        setCurrentAccount(accounts[0]);
+        if (accounts.length && !connected) {
+          setCurrentAccount(accounts[0]);
+        }
       }
     } catch (err) {
-      console.log(err)
+      console.log(err);
     }
-  }
+  };
 
   const [errorMessage, setErrorMessage] = useState({
     message: "",
@@ -134,7 +140,10 @@ export default function VendorCreateCampaign(props) {
               A campaign has already been created!
             </p>
           ) : (
-            <form className="w-full max-w-sm text-sm p-5" onSubmit={handleSubmit}>
+            <form
+              className="w-full max-w-sm text-sm p-5"
+              onSubmit={handleSubmit}
+            >
               <div className="mb-4">
                 <label className="block font-bold mb-2" for="campaignName">
                   Campaign Name
@@ -181,13 +190,15 @@ export default function VendorCreateCampaign(props) {
                   Reward Referee receives on First Visit
                 </label>
                 <input
-                className="shadow appearance-none border rounded w-full py-2 px-3"
-                id="refereeReward"
-                type="text"
-                value={form.refereeReward}
-                onChange={(e) => setFormField("refereeReward", e.target.value)}
-                placeholder="Enter reward referee will get on first visit..."
-              />
+                  className="shadow appearance-none border rounded w-full py-2 px-3"
+                  id="refereeReward"
+                  type="text"
+                  value={form.refereeReward}
+                  onChange={(e) =>
+                    setFormField("refereeReward", e.target.value)
+                  }
+                  placeholder="Enter reward referee will get on first visit..."
+                />
               </div>
               <div className="mb-4">
                 <label className="block font-bold mb-2" for="dailyLimit">
@@ -229,7 +240,7 @@ export default function VendorCreateCampaign(props) {
                 />
               </div>
               <div className="flex justify-between ...">
-                {(!currentAccount && !connected) ? (
+                {!currentAccount && !connected ? (
                   <button
                     onClick={() => {
                       setConnected(connectWallet(vendor._id));
@@ -241,7 +252,10 @@ export default function VendorCreateCampaign(props) {
                 ) : (
                   <button
                     onClick={() => {
-                      window.open("https://faucets.chain.link/rinkeby", "_blank");
+                      window.open(
+                        "https://faucets.chain.link/rinkeby",
+                        "_blank"
+                      );
                     }}
                     className="bg-purple-500 text-white font-bold p-2 rounded-full w-fit outline-none"
                   >

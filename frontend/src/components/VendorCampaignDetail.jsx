@@ -171,10 +171,7 @@ const VendorCampaignDetail = (props) => {
             {editingMode ? (
               <form className="w-full max-w-sm text-sm p-5">
                 <div className="mb-4">
-                  <label
-                    className="block font-bold mb-2"
-                    for="campaignName"
-                  >
+                  <label className="block font-bold mb-2" for="campaignName">
                     Campaign Name
                   </label>
                   <input
@@ -303,7 +300,9 @@ const VendorCampaignDetail = (props) => {
                     </p>
                   </div>
                   <div className="col-span-3 ...">
-                    <p className="font-bold break-words mt-3">Campaign Budget:</p>
+                    <p className="font-bold break-words mt-3">
+                      Campaign Budget:
+                    </p>
                   </div>
                   <div className="col-span-2 ...">
                     <p className="break-words mt-3">
@@ -362,30 +361,36 @@ const VendorCampaignDetail = (props) => {
                   </div>
 
                   <div className="col-span-3 ...">
-                    <p className="font-bold break-words mt-3">Payment Pending:</p>
+                    <p className="font-bold break-words mt-3">
+                      Payment Pending:
+                    </p>
                   </div>
                   <div className="col-span-2  ...">
-                    {vendor.pendingPayment ? ((connected ?
-                      (<button
-                        type="button"
-                        onClick={() => {
-                          transferReward();
-                        }}
-                        className={`${rewardBtnStyles}`}
-                      >
-                        Transfer
-                      </button>
-                    ) : (<button
-                      type="button"
-                      onClick={() => {
-                        setConnected(connectWallet(vendor?._id));
-                      }}
-                      className={`${connectBtnStyles}`}
-                    >
-                      Connect Wallet
-                    </button>))) : ((
+                    {vendor.pendingPayment ? (
+                      connected ? (
+                        <button
+                          type="button"
+                          onClick={() => {
+                            transferReward();
+                          }}
+                          className={`${rewardBtnStyles}`}
+                        >
+                          Transfer
+                        </button>
+                      ) : (
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setConnected(connectWallet(vendor?._id));
+                          }}
+                          className={`${connectBtnStyles}`}
+                        >
+                          Connect Wallet
+                        </button>
+                      )
+                    ) : (
                       <p className="break-words mt-3">No pending payment</p>
-                    ))}
+                    )}
                   </div>
 
                   <button

@@ -1,8 +1,7 @@
 import React from "react";
 import { NavLink, Link } from "react-router-dom";
 import { RiHomeFill } from "react-icons/ri";
-import { urlFor } from '../client';
-
+import { urlFor } from "../client";
 import logo from "../assets/logo.png";
 
 const isNotActiveStyle =

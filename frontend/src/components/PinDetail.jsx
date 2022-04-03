@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { MdDownloadForOffline } from "react-icons/md";
 import { Link, useParams } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
-
 import { client, urlFor } from "../client";
 import MasonryLayout from "./MasonryLayout";
 import { pinDetailMorePinQuery, pinDetailQuery } from "../utils/data";
@@ -66,12 +65,15 @@ const PinDetail = ({ user }) => {
   };
 
   const fetchTaggedVendor = (taggedVendor) => {
-    client.getDocument(taggedVendor).then((res) => {
-      setTaggedVendorId(res._id);
-      setTaggedVendor(res.name);
-    }).catch((err) => {
-      console.log(err.message);
-    })
+    client
+      .getDocument(taggedVendor)
+      .then((res) => {
+        setTaggedVendorId(res._id);
+        setTaggedVendor(res.name);
+      })
+      .catch((err) => {
+        console.log(err.message);
+      });
   };
 
   useEffect(() => {
@@ -130,7 +132,7 @@ const PinDetail = ({ user }) => {
             <p className="mt-3">{pinDetail.about}</p>
           </div>
           <Link to={`/vendor-profile/${taggedVendorId}`}>
-          <div className="flex mt-3">
+            <div className="flex mt-3">
               <svg
                 className="w-6 h-6"
                 fill="none"
@@ -152,7 +154,7 @@ const PinDetail = ({ user }) => {
                 ></path>
               </svg>
               <p>{taggedVendor}</p>
-          </div>
+            </div>
           </Link>
           <div
             className="flex mt-3 mb-5 text-red-500 cursor-pointer"

@@ -51,7 +51,7 @@ const VendorHome = () => {
             <img src={logo} alt="logo" className="w-28" />
           </Link>
           <Link to={`/vendor/vendor-profile/${vendor?._id}`}>
-            <img src={vendor?.image && urlFor(vendor?.image).url()} alt="vendor image" className="w-28" />
+            <img src={vendor?.image && urlFor(vendor?.image).url()} alt="vendor-img" className="w-28" />
           </Link>
         </div>
         {toggleSidebar && (

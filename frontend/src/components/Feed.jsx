@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
-
 import { client } from "../client";
 import MasonryLayout from "./MasonryLayout";
 import Spinner from "./Spinner";
@@ -34,7 +33,6 @@ const Feed = () => {
         }
       );
     } else {
-      const vendorQuery = vendorSearchQuery("");
       Promise.all([
         client.fetch(feedQuery),
         client.fetch(vendorDefaultQuery),

@@ -2,18 +2,15 @@ import React, { useState, useEffect } from "react";
 import { MdDownloadForOffline } from "react-icons/md";
 import { Link, useParams } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
-
 import { client, urlFor } from "../client";
-import MasonryLayout from "./MasonryLayout";
 import { pinDetailMorePinQuery, pinDetailQuery } from "../utils/data";
 import Spinner from "./Spinner";
 import { fetchUser } from "../utils/fetchUser";
 import SanityMuxPlayer from "sanity-mux-player";
-import QRModal from "./QRModal";
 
 const VendorPinDetail = ({ user }) => {
-  const [pins, setPins] = useState(null);
   const [pinDetail, setPinDetail] = useState(null);
+  const [pins, setPins] = useState(null);
   const [taggedVendor, setTaggedVendor] = useState("");
   const [taggedVendorId, setTaggedVendorId] = useState("");
   const [comment, setComment] = useState("");
@@ -105,7 +102,6 @@ const VendorPinDetail = ({ user }) => {
               muted={false}
               showControls={true}
               height={250}
-              width={300}
             />
           )}
         </div>
@@ -134,29 +130,29 @@ const VendorPinDetail = ({ user }) => {
             <p className="mt-3">{pinDetail.about}</p>
           </div>
           <Link to={`/vendor/vendor-profile/${taggedVendorId}`}>
-          <div className="flex mt-3">
-            <svg
-              className="w-6 h-6"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
-              ></path>
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
-              ></path>
-            </svg>
-            <p>{taggedVendor}</p>
-          </div>
+            <div className="flex mt-3">
+              <svg
+                className="w-6 h-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+                ></path>
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+                ></path>
+              </svg>
+              <p>{taggedVendor}</p>
+            </div>
           </Link>
           <div
             className="flex mt-3 mb-5 text-red-500 cursor-pointer"

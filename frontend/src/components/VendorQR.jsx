@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import QRCode from "react-qr-code";
 import { MdDownloadForOffline } from "react-icons/md";
 

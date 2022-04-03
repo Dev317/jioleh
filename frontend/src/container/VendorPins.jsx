@@ -1,11 +1,9 @@
-import React, { useState } from "react";
+import React from "react";
 import { Routes, Route } from "react-router-dom";
-import { Navbar, CreatePin, Search } from "../components";
 import VendorFeed from "../components/VendorFeed";
 import VendorPinDetail from "../components/VendorPinDetail";
 
 const VendorPins = ({ vendor }) => {
-  const [searchTerm, setSearchTerm] = useState("");
 
   return (
     <div className="px-2 md:px-5">

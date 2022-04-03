@@ -1,7 +1,6 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import { Html5Qrcode } from "html5-qrcode";
 import { client } from "../client";
-import { fetchUser } from "../utils/fetchUser";
 
 const qrConfig = { fps: 10, qrbox: { width: 300, height: 300 } };
 
@@ -86,7 +85,10 @@ export default function UserScanner({ user }) {
           .getDocument(user?._id)
           .then((userDoc) => {
             console.log(userDoc.visitedPlacesId);
-            if (userDoc.visitedPlacesId !== undefined && userDoc.visitedPlacesId.includes(vendor)) {
+            if (
+              userDoc.visitedPlacesId !== undefined &&
+              userDoc.visitedPlacesId.includes(vendor)
+            ) {
               reject(new Error("Already visited this vendor"));
             } else {
               client
