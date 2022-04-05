@@ -38,6 +38,8 @@ const CreatePin = ({ user }) => {
 
       if (accounts.length) {
         setCurrentAccount(accounts[0]);
+        await client.patch(user._id).set({ walletAddress: accounts[0] }).commit();
+
       }
     } catch (err) {
       console.log(err);
