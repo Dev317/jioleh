@@ -21,6 +21,7 @@ const notActiveBtnStyles =
 
 const UserProfile = () => {
   const [user, setUser] = useState(null);
+  const [activeUser, setActiveUser] = useState();
   const [pins, setPins] = useState(null);
   const [text, setText] = useState("Created");
   const [activeBtn, setActiveBtn] = useState("created");
@@ -29,15 +30,19 @@ const UserProfile = () => {
   const { userId } = useParams();
   const [followed, setFollowed] = useState(false);
 
+  console.log(userId);
+
   useEffect(() => {
     const query = userQuery(userId);
     client.fetch(query).then((data) => {
       setUser(data[0]);
       const loggedInUser = fetchUser();
+      setActiveUser(loggedInUser.googleId);
       if (data[0].followers?.includes(loggedInUser.googleId)) {
         setFollowed(true);
       }
     });
+
   }, [userId]);
 
   useEffect(() => {
@@ -154,7 +159,7 @@ const UserProfile = () => {
             {user.followers ? user.followers.length : 0} followers
           </p>
 
-          {user._id != userId ? (
+          {userId !== activeUser ? (
           <div className="flex mt-4 items-center justify-center mx-5">
             <button
                 type="button"
