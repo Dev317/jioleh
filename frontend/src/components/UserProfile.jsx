@@ -151,7 +151,7 @@ const UserProfile = () => {
             />
           </div>
           <h1 className="font-bold text-2xl text-center mt-3">
-            {user.userName}
+            {user.username}
           </h1>
 
           <p className="font-bold text-center">

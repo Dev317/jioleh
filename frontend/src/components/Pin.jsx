@@ -160,7 +160,7 @@ const Pin = ({ pin }) => {
           src={postedBy?.image}
           alt="user-profile"
         />
-        <p className="font-semibold capitalize">{postedBy?.userName}</p>
+        <p className="font-semibold capitalize">{postedBy?.username}</p>
       </Link>
     </div>
   );

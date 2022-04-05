@@ -187,7 +187,7 @@ const PinDetail = ({ user }) => {
               alt="user-profile"
             />
             <p className="font-semibold capitalize">
-              {pinDetail.postedBy?.userName}
+              {pinDetail.postedBy?.username}
             </p>
           </Link>
 
@@ -201,7 +201,7 @@ const PinDetail = ({ user }) => {
                   className="w-10 h-10 rounded-full cursor-pointer"
                 />
                 <div className="flex flex-col">
-                  <p className="font-bold">{comment.postedBy.userName}</p>
+                  <p className="font-bold">{comment.postedBy.username}</p>
                   <p>{comment.comment}</p>
                 </div>
               </div>
