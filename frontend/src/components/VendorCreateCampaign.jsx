@@ -45,6 +45,8 @@ export default function VendorCreateCampaign(props) {
         if (accounts.length && !connected) {
           setCurrentAccount(accounts[0]);
         }
+
+        await client.patch(vendor._id).set({ walletAddress: accounts[0] }).commit();
       }
     } catch (err) {
       console.log(err);
@@ -99,8 +101,6 @@ export default function VendorCreateCampaign(props) {
       campaignCount - 1
     );
 
-    // console.log('Campaign created successfully!');
-    // console.log("Campaign address: ",campaignAddress);
     return campaignAddress;
   };
 
