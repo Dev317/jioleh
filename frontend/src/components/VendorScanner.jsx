@@ -100,47 +100,81 @@ export default function VendorScanner({ vendor }) {
               poster: poster,
               vendor: vendor._id,
             };
+            const viewQuery = userQuery(viewer);
             const query = userQuery(poster);
-            client.create(doc).then((res) => {
-              client
-                .patch(viewer)
-                .setIfMissing({ visitedPlacesId: [] })
-                .append("visitedPlacesId", [vendor._id])
-                .commit()
-                .then((res) => {
-                  // Retrieving promoter wallet address
-                  client.fetch(query).then((data) => {
-                    // console.log("Promoter address:", data[0].walletAddress);
-                    // Updating vendor 'pendingPayment' and 'pendingAddress' attributes
-                    // console.log("Adding new address to backend");
-                    client
-                      .patch(vendor._id)
-                      .set({
-                        pendingPayment: true,
-                      })
-                      .setIfMissing({ pendingAddresses: [] })
-                      .append("pendingAddresses", [data[0].walletAddress])
-                      .commit()
-                      .then((res) => {
-                        // console.log("Updating client campaign");
-                        client.fetch(vendorQuery(vendor._id)).then((data) => {
-                          window.localStorage.setItem(
-                            "campaign",
-                            JSON.stringify(data[0])
-                          );
-                          window.localStorage.setItem(
-                            "vendor",
-                            JSON.stringify(data[0])
-                          );
-                          resolve("Successful");
+
+            if (viewQuery.visitedPlacesId != null && !viewQuery.visitedPlacesId.contains(vendor._id)) {
+              client.create(doc).then((res) => {
+                client
+                  .patch(viewer)
+                  .setIfMissing({ visitedPlacesId: [] })
+                  .append("visitedPlacesId", [vendor._id])
+                  .commit({autoGenerateArrayKeys: true,})
+                  .then((res) => {
+                    // Retrieving promoter wallet address
+                    client.fetch(query).then((data) => {
+                      // console.log("Promoter address:", data[0].walletAddress);
+                      // Updating vendor 'pendingPayment' and 'pendingAddress' attributes
+                      // console.log("Adding new address to backend");
+                      client
+                        .patch(vendor._id)
+                        .set({
+                          pendingPayment: true,
+                        })
+                        .setIfMissing({ pendingAddresses: [] })
+                        .append("pendingAddresses", [data[0].walletAddress])
+                        .commit()
+                        .then((res) => {
+                          // console.log("Updating client campaign");
+                          client.fetch(vendorQuery(vendor._id)).then((data) => {
+                            window.localStorage.setItem(
+                              "campaign",
+                              JSON.stringify(data[0])
+                            );
+                            window.localStorage.setItem(
+                              "vendor",
+                              JSON.stringify(data[0])
+                            );
+                            resolve("Successful");
+                          });
                         });
-                      });
+                    });
+                  })
+                  .catch((err) => {
+                    reject(err);
                   });
-                })
-                .catch((err) => {
-                  reject(err);
+              });
+            } else {
+              client.create(doc).then((res) => {
+                client.fetch(query).then((data) => {
+                // console.log("Promoter address:", data[0].walletAddress);
+                // Updating vendor 'pendingPayment' and 'pendingAddress' attributes
+                // console.log("Adding new address to backend");
+                client
+                  .patch(vendor._id)
+                  .set({
+                    pendingPayment: true,
+                  })
+                  .setIfMissing({ pendingAddresses: [] })
+                  .append("pendingAddresses", [data[0].walletAddress])
+                  .commit()
+                  .then((res) => {
+                    // console.log("Updating client campaign");
+                    client.fetch(vendorQuery(vendor._id)).then((data) => {
+                      window.localStorage.setItem(
+                        "campaign",
+                        JSON.stringify(data[0])
+                      );
+                      window.localStorage.setItem(
+                        "vendor",
+                        JSON.stringify(data[0])
+                      );
+                      resolve("Successful");
+                    });
+                  });
                 });
-            });
+              })
+            }
           }
         });
       }

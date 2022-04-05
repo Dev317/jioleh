@@ -154,6 +154,7 @@ const UserProfile = () => {
             {user.followers ? user.followers.length : 0} followers
           </p>
 
+          {user._id != userId ? (
           <div className="flex mt-4 items-center justify-center mx-5">
             <button
                 type="button"
@@ -167,7 +168,7 @@ const UserProfile = () => {
               {followed ? "Following" : "Follow"}
             </button>
 
-          </div>
+          </div>) : (<div></div>)}
 
           <div className="absolute top-0 z-1 right-0 p-2">
             {userId === user._id && (
