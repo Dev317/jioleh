@@ -28,7 +28,6 @@ const UserProfile = () => {
   const navigate = useNavigate();
   const { userId } = useParams();
   const [followed, setFollowed] = useState(false);
-  const [selfView, setSelfView] = useState(false);
 
   useEffect(() => {
     const query = userQuery(userId);
@@ -37,9 +36,6 @@ const UserProfile = () => {
       const loggedInUser = fetchUser();
       if (data[0].followers?.includes(loggedInUser.googleId)) {
         setFollowed(true);
-      }
-      if (user?.name === loggedInUser?.username) {//check if user is looking at their own profile
-        setSelfView(true);
       }
     });
   }, [userId]);
@@ -158,7 +154,7 @@ const UserProfile = () => {
             {user.followers ? user.followers.length : 0} followers
           </p>
 
-          {selfView ? <div></div>:<div className="flex mt-4 items-center justify-center mx-5">
+          <div className="flex mt-4 items-center justify-center mx-5">
             <button
                 type="button"
                 onClick={handleFollow}
@@ -171,7 +167,7 @@ const UserProfile = () => {
               {followed ? "Following" : "Follow"}
             </button>
 
-          </div>}
+          </div>
 
           <div className="absolute top-0 z-1 right-0 p-2">
             {userId === user._id && (
