@@ -11,6 +11,7 @@ import { client } from "../client";
 import MasonryLayout from "./MasonryLayout";
 import Spinner from "./Spinner";
 import QRModal from "./QRModal";
+import { fetchUser } from "../utils/fetchUser";
 
 const randomImg = "https://cdn.wallpapersafari.com/29/50/7acBKo.jpg";
 const activeBtnStyles =
@@ -26,11 +27,20 @@ const UserProfile = () => {
   const [showQRModal, setShowQRModal] = useState(false);
   const navigate = useNavigate();
   const { userId } = useParams();
+  const [followed, setFollowed] = useState(false);
+  const [selfView, setSelfView] = useState(false);
 
   useEffect(() => {
     const query = userQuery(userId);
     client.fetch(query).then((data) => {
       setUser(data[0]);
+      const loggedInUser = fetchUser();
+      if (data[0].followers?.includes(loggedInUser.googleId)) {
+        setFollowed(true);
+      }
+      if (user?.name === loggedInUser?.username) {//check if user is looking at their own profile
+        setSelfView(true);
+      }
     });
   }, [userId]);
 
@@ -52,6 +62,72 @@ const UserProfile = () => {
     localStorage.clear();
 
     navigate("/login");
+  };
+
+  const handleFollow = (e) => {
+    e.preventDefault();
+    const loggedInUser = fetchUser();
+    if (!followed) {
+      client
+          .patch(loggedInUser.googleId)
+          .setIfMissing({ following: [] })
+          .append("following", [userId])
+          .commit()
+          .then((res) => {
+            client
+                .patch(userId)
+                .setIfMissing({ followers: [] })
+                .append("followers", [loggedInUser.googleId])
+                .commit()
+                .then((res) => {
+                  const query = userQuery(userId);
+                  client
+                      .fetch(query)
+                      .then((data) => {
+                        setUser(data[0]);
+                        setFollowed(true);
+                      })
+                      .catch((err) => {
+                        console.log(err.message);
+                      });
+                })
+                .catch((err) => {
+                  console.log(err.message);
+                });
+          })
+          .catch((err) => {
+            console.log(err.message);
+          });
+    } else {
+      client
+          .patch(loggedInUser.googleId)
+          .unset([`following[@=="${userId}"]`])
+          .commit()
+          .then((res) => {
+            client
+                .patch(userId)
+                .unset([`followers[@=="${loggedInUser.googleId}"]`])
+                .commit()
+                .then((res) => {
+                  const query = userQuery(userId);
+                  client
+                      .fetch(query)
+                      .then((data) => {
+                        setUser(data[0]);
+                        setFollowed(false);
+                      })
+                      .catch((err) => {
+                        console.log(err.message);
+                      });
+                })
+                .catch((err) => {
+                  console.log(err.message);
+                });
+          })
+          .catch((err) => {
+            console.log(err.message);
+          });
+    }
   };
 
   if (!user) {
@@ -77,6 +153,25 @@ const UserProfile = () => {
           <h1 className="font-bold text-2xl text-center mt-3">
             {user.userName}
           </h1>
+
+          <p className="font-bold text-center">
+            {user.followers ? user.followers.length : 0} followers
+          </p>
+
+          {selfView ? <div></div>:<div className="flex mt-4 items-center justify-center mx-5">
+            <button
+                type="button"
+                onClick={handleFollow}
+                className={
+                  followed
+                      ? "md:w-20 flex-1 border-red-500 border-2 text-red-500 outline-solid font-bold rounded-lg p-3 mx-1"
+                      : "md:w-20 bg-red-500 flex-1 font-bold text-white rounded-lg p-3 mx-1"
+                }
+            >
+              {followed ? "Following" : "Follow"}
+            </button>
+
+          </div>}
 
           <div className="absolute top-0 z-1 right-0 p-2">
             {userId === user._id && (

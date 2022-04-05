@@ -24,6 +24,20 @@ export default {
       name: "walletAddress",
       title: "Wallet Address",
       type: "string"
-    }
+    },
+    {
+      title: "Followers",
+      name: "followers",
+      type: "array",
+      of: [{ type: "string" }],
+      validation: (Rule) => Rule.unique(),
+    },
+    {
+      title: "Following",
+      name: "following",
+      type: "array",
+      of: [{ type: "string" }],
+      validation: (Rule) => Rule.unique(),
+    },
   ],
 };
