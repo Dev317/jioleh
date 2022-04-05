@@ -2,7 +2,7 @@ export const categories = [
   {
     name: "Cafe",
     image:
-      "https://i.pinimg.com/564x/67/cd/c1/67cdc1683f91f9916de003ca3c94ef57.jpg",
+      "https://www.escoffieronline.com/wp-content/uploads/2013/12/a-guide-to-latte-art-_1107_524867_1_14094340_500.jpg",
   },
   {
     name: "Restaurant",
@@ -10,9 +10,19 @@ export const categories = [
       "https://i.pinimg.com/564x/d2/6b/71/d26b71d4bcb1609f11d7c5f7440792f6.jpg",
   },
   {
-    name: "FoodStalls",
+    name: "Brunch",
     image:
-      "https://i.pinimg.com/564x/87/12/d5/8712d56c722be25ad2496c99934624d8.jpg",
+      "https://cdn.i-scmp.com/sites/default/files/d8/images/methode/2019/11/13/f36323f0-0440-11ea-a68f-66ebddf9f136_image_hires_151131.jpg",
+  },
+  {
+    name: "Pet-Friendly",
+    image:
+        "https://mymodernmet.com/wp/wp-content/uploads/2020/10/cooper-baby-corgi-dogs-8.jpg",
+  },
+  {
+    name: "Teatime",
+    image:
+        "https://static.onecms.io/wp-content/uploads/sites/44/2018/08/20/5677706.jpg",
   },
 ];
 
