@@ -257,7 +257,7 @@ const CreatePin = ({ user }) => {
             </div>
 
             <div className="flex justify-end items-end mt-5">
-              {!currentAccount && !connected ? (
+              {(!currentAccount || !connected) ? (
                 <button
                   type="button"
                   className="bg-purple-500 text-white font-bold p-2 rounded-full w-28 outline-none"
