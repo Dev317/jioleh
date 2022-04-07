@@ -5,15 +5,17 @@ export const TokenContext = React.createContext();
 
 export const TokenProvider = ({ children }) => {
 
-  const connectWallet = async (id) => {
+  const connectWallet = async(id) => {
     try {
       if (!window.ethereum) {
-        return alert("Please install Meta-Mask!");
+        return false;
       }
 
       const accounts = await window.ethereum.request({
         method: "eth_requestAccounts",
       });
+
+      if (accounts[0] == null) return false;
 
       await client.patch(id).set({ walletAddress: accounts[0] }).commit();
 
